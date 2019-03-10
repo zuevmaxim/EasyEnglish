@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">EasyEnglish</string>
+    <string name="dictionary">Dictionary</string>
+    <string name="enter_word">Enter word</string>
+    <string name="translate">translate</string>
+    <string name="error">error</string>
+    <string name="ERROR">ERROR</string>
+    <string name="local_games">Local Games</string>
+    <string name="matching">Matching</string>
+    <string name="letter_puzzle">Letter puzzle</string>
+    <string name="word_puzzle">Word puzzle</string>
+    <string name="definitions">Definitions</string>
+    <string name="synonyms">Synonyms</string>
+    <string name="games">Games</string>
+    <string name="_10_words">10 words</string>
+    <string name="word_chain">Word chain</string>
+    <string name="statistics">Statistics</string>
+    <string name="no_statistics_yet">No statistics yet :(</string>
+    <string name="menu">Menu</string>
+</resources>
