@@ -1,4 +1,4 @@
-package com.hse.easyenglish;
+package ru.hse.android.easyenglish;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.hse.easyenglish", appContext.getPackageName());
+        assertEquals("ru.hse.android.easyenglish", appContext.getPackageName());
     }
 }

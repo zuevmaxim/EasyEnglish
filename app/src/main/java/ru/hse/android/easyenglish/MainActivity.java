@@ -1,4 +1,4 @@
-package com.hse.easyenglish;
+package ru.hse.android.easyenglish;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -13,17 +13,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button games = findViewById(R.id.button_games);
-        games.setOnClickListener(new View.OnClickListener() {
+        Button gamesButton = findViewById(R.id.games_button);
+        gamesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GamesMenu.class);
+                Intent intent = new Intent(MainActivity.this, GamesMenuActivity.class);
                 startActivity(intent);
             }
         });
 
-        Button dictionary = findViewById(R.id.button_dictionary);
-        dictionary.setOnClickListener(new View.OnClickListener() {
+        Button dictionaryButton = findViewById(R.id.dictionary_button);
+        dictionaryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, DictionaryActivity.class);
@@ -31,15 +31,13 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        Button statistics = findViewById(R.id.button_statistics);
-        statistics.setOnClickListener(new View.OnClickListener() {
+        Button statisticsButton = findViewById(R.id.statistics_button);
+        statisticsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
                 startActivity(intent);
             }
         });
-
-
     }
 }

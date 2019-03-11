@@ -1,4 +1,4 @@
-package com.hse.easyenglish;
+package ru.hse.android.easyenglish;
 
 import org.junit.Test;
 
