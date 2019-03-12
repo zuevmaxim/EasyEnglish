@@ -8,6 +8,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+
 public class DictionaryActivity extends AppCompatActivity {
 
     @Override
@@ -17,14 +19,15 @@ public class DictionaryActivity extends AppCompatActivity {
 
         Button translateButton = findViewById(R.id.translate_button);
         final TextView translateResult = findViewById(R.id.translation_text);
+        final TextView yandexText = findViewById(R.id.yandex_text);
         final EditText enterText = findViewById(R.id.enter_word);
         translateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String word = enterText.getText().toString();
-                //String translation = TranslateController.translateEnglishToRussian(word);
-                //translateResult.setText(translation);
-                Toast.makeText(DictionaryActivity.this, "Now I can not translate a word " + word + ". Sorry :(", Toast.LENGTH_LONG).show();
+                String translation = TranslateController.translate(word);
+                translateResult.setText(translation);
+                yandexText.setText("translated by Yandex.translate\n http://translate.yandex.ru/");
             }
         });
     }
