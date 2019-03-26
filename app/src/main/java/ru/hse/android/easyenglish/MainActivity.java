@@ -3,8 +3,6 @@ package ru.hse.android.easyenglish;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -13,31 +11,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button gamesButton = findViewById(R.id.games_button);
-        gamesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, GamesMenuActivity.class);
-                startActivity(intent);
-            }
-        });
+        MainController.init();
 
-        Button dictionaryButton = findViewById(R.id.dictionary_button);
-        dictionaryButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, DictionaryActivity.class);
-                startActivity(intent);
-            }
-        });
+        Intent intent = new Intent(MainActivity.this, MainMenuActivity.class);
+        startActivity(intent);
 
-        Button statisticsButton = findViewById(R.id.statistics_button);
-        statisticsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, StatisticsActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
