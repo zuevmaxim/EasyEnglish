@@ -17,4 +17,8 @@
     <string name="statistics">Statistics</string>
     <string name="no_statistics_yet">No statistics yet :(</string>
     <string name="menu">Menu</string>
+    <string name="try_again">Try again</string>
+    <string name="next">Next word</string>
+    <string name="finish">Finish</string>
+    <string name="ckeck_answer">Check answer</string>
 </resources>
