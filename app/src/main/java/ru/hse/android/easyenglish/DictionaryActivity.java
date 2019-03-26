@@ -25,7 +25,7 @@ public class DictionaryActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 String word = enterText.getText().toString();
-                String translation = TranslateController.translate(word);
+                String translation = TranslateController.translate(word, "en-ru");
                 translateResult.setText(translation);
                 yandexText.setText("translated by Yandex.translate\n http://translate.yandex.ru/");
             }

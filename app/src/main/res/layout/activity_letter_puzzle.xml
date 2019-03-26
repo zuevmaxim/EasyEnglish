@@ -57,20 +57,21 @@
 
     <TextView
         android:id="@+id/shuffled_word"
-        android:layout_width="335dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="38dp"
+        android:layout_width="393dp"
+        android:layout_height="54dp"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="38dp"
+        android:layout_marginEnd="8dp"
         android:textColor="@android:color/black"
         android:textSize="24sp"
-        android:textStyle="bold"
+        android:textStyle="normal"
+        android:gravity="center"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView6"
-        app:layout_constraintVertical_bias="0.217" />
+        app:layout_constraintVertical_bias="0.274" />
 
     <EditText
         android:id="@+id/answer"
@@ -86,7 +87,7 @@
         app:layout_constraintHorizontal_bias="0.456"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/shuffled_word"
-        app:layout_constraintVertical_bias="0.111" />
+        app:layout_constraintVertical_bias="0.083" />
 
     <Button
         android:id="@+id/finish_game"

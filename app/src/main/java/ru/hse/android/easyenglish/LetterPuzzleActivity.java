@@ -9,9 +9,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -36,12 +34,12 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         Button finishGameButton = findViewById(R.id.finish_game);
         Button checkAnswerButton = findViewById(R.id.check_answer);
 
-        final String word = "cat";
-        String shuffledWord = shuffleLetters(word);
+        final String translation = MainController.getGameController().getWordFactory().nextWord();
+        final String word = TranslateController.translate(translation, "ru-en");
+        final String shuffledWord = shuffleLetters(word);
 
-        final TextView shuffledWordWindow = findViewById(R.id.shuffled_word);
-        shuffledWordWindow.setText(shuffledWord);
-
+        final TextView shuffledWordText = findViewById(R.id.shuffled_word);
+        shuffledWordText.setText((shuffledWord + " - " + translation));
 
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +59,8 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         nextWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Intent intent = new Intent(LetterPuzzleActivity.this, ErrorActivity.class);
+                startActivity(intent);
             }
         });
 

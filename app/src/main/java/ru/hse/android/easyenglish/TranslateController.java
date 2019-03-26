@@ -12,9 +12,9 @@ import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
 class TranslateController {
-    static String translate(String word) {
+    static String translate(String word, String languagePair) {
         TranslatorTask translatorTask = new TranslatorTask();
-        translatorTask.execute(word, "en-ru");
+        translatorTask.execute(word, languagePair);
         String translation = null;
         try {
             translation = translatorTask.get();

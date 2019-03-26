@@ -5,7 +5,7 @@ public class MainController {
 
     private MainController() { }
 
-    private static GameController getGameController() {
+    public static GameController getGameController() {
         return gameController;
     }
 
