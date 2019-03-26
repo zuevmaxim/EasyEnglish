@@ -17,57 +17,60 @@ import java.util.List;
 
 public class LetterPuzzleActivity extends AppCompatActivity {
 
-    private final static int GAME_CYCLE = 10;
+    private String shuffleLetters(String word) {
+        List<String> letters = Arrays.asList(word.split(""));
+        Collections.shuffle(letters);
+        StringBuilder shuffledWord = new StringBuilder();
+        for (String letter : letters) {
+            shuffledWord.append(letter);
+        }
+        return shuffledWord.toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_letter_puzzle);
 
-        Button checkAnswerButton = findViewById(R.id.check_answer);
         Button nextWordButton = findViewById(R.id.next_word);
         Button finishGameButton = findViewById(R.id.finish_game);
+        Button checkAnswerButton = findViewById(R.id.check_answer);
 
-        for (int i = 0; i < GAME_CYCLE; i++) {
-            final String word = "cat";
+        final String word = "cat";
+        String shuffledWord = shuffleLetters(word);
 
-            List<String> letters = Arrays.asList(word.split(""));
-            Collections.shuffle(letters);
-            String shuffledWord = "";
-            for (String letter : letters) {
-                shuffledWord += letter;
+        final TextView shuffledWordWindow = findViewById(R.id.shuffled_word);
+        shuffledWordWindow.setText(shuffledWord);
+
+
+        checkAnswerButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                final EditText answerText = findViewById(R.id.answer);
+                String answer = answerText.getText().toString();
+                if (answer.equals(word)) {
+                    Toast.makeText(LetterPuzzleActivity.this, "Right ;)", Toast.LENGTH_LONG).show();
+                    v.setEnabled(false);
+                } else {
+                    Toast.makeText(LetterPuzzleActivity.this, "Wrong ;(", Toast.LENGTH_LONG).show();
+                    v.setEnabled(false);
+                }
             }
+        });
 
-            final TextView shuffledWordWindow = findViewById(R.id.shuffled_word);
-            shuffledWordWindow.setText(shuffledWord);
+        nextWordButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
-            checkAnswerButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    final EditText answerText = findViewById(R.id.answer);
-                    String answer = answerText.getText().toString();
-                    if (answer.equals(word)) {
-                        Toast.makeText(LetterPuzzleActivity.this, "Right ;)", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(LetterPuzzleActivity.this, "Wrong ;(", Toast.LENGTH_LONG).show();
-                    }
-                }
-            });
+            }
+        });
 
-            nextWordButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-
-            finishGameButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                }
-            });
-        }
-
+        finishGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LetterPuzzleActivity.this, ErrorActivity.class);
+                startActivity(intent);
+            }
+        });
     }
-
-
 }
