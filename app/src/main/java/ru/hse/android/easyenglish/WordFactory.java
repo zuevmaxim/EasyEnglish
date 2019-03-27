@@ -10,7 +10,7 @@ public class WordFactory {
     }
 
     private static final List<String> words = Arrays.asList(
-            "кошка", "собака", "проводник", "кислота", "молоко", "кафтан", "багет");
+            "кошка", "собака", "курица", "кислота", "молоко", "карман", "багет");
 
     private static final Random random = new Random();
 

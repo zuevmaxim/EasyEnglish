@@ -1,7 +1,7 @@
 package ru.hse.android.easyenglish;
 
 public class MainController {
-    private static final GameController gameController = new GameController();
+    private static GameController gameController;
 
     private MainController() { }
 
@@ -10,6 +10,6 @@ public class MainController {
     }
 
     static void init() {
-
+        gameController = new GameController();
     }
 }

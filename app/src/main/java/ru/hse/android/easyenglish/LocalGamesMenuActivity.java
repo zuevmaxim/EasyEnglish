@@ -26,7 +26,8 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
         letterPuzzleButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LocalGamesMenuActivity.this, LetterPuzzleActivity.class);
+                Intent intent = new Intent(LocalGamesMenuActivity.this, GameActivity.class);
+                intent.putExtra("game name", "Letter Puzzle");
                 startActivity(intent);
             }
         });

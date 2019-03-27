@@ -15,14 +15,20 @@ import java.util.List;
 
 public class LetterPuzzleActivity extends AppCompatActivity {
 
+    private boolean result;
+
     private String shuffleLetters(String word) {
         List<String> letters = Arrays.asList(word.split(""));
-        Collections.shuffle(letters);
-        StringBuilder shuffledWord = new StringBuilder();
-        for (String letter : letters) {
-            shuffledWord.append(letter);
+        String shuffledWordResult = word;
+        while (shuffledWordResult.equals(word) && word.length() > 0) {
+            StringBuilder shuffledWord = new StringBuilder();
+            Collections.shuffle(letters);
+            for (String letter : letters) {
+                shuffledWord.append(letter);
+            }
+            shuffledWordResult = shuffledWord.toString();
         }
-        return shuffledWord.toString();
+        return shuffledWordResult;
     }
 
     @Override
@@ -30,8 +36,6 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_letter_puzzle);
 
-        Button nextWordButton = findViewById(R.id.next_word);
-        Button finishGameButton = findViewById(R.id.finish_game);
         Button checkAnswerButton = findViewById(R.id.check_answer);
 
         final String translation = MainController.getGameController().getWordFactory().nextWord();
@@ -46,29 +50,19 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             public void onClick(View v) {
                 final EditText answerText = findViewById(R.id.answer);
                 String answer = answerText.getText().toString();
+                v.setEnabled(false);
                 if (answer.equals(word)) {
                     Toast.makeText(LetterPuzzleActivity.this, "Right ;)", Toast.LENGTH_LONG).show();
-                    v.setEnabled(false);
+                    result = true;
                 } else {
                     Toast.makeText(LetterPuzzleActivity.this, "Wrong ;(", Toast.LENGTH_LONG).show();
-                    v.setEnabled(false);
+                    result = false;
                 }
-            }
-        });
-
-        nextWordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LetterPuzzleActivity.this, ErrorActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        finishGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(LetterPuzzleActivity.this, ErrorActivity.class);
-                startActivity(intent);
+                MainController.getGameController().saveWordResult(translation, result);
+                Intent intent = new Intent();
+                intent.putExtra("game result", result);
+                setResult(RESULT_OK, intent);
+                finish();
             }
         });
     }
