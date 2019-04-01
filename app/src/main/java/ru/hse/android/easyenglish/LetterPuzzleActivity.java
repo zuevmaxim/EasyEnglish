@@ -51,13 +51,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
                 final EditText answerText = findViewById(R.id.answer);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
-                if (answer.equals(word)) {
-                    Toast.makeText(LetterPuzzleActivity.this, "Right ;)", Toast.LENGTH_LONG).show();
-                    result = true;
-                } else {
-                    Toast.makeText(LetterPuzzleActivity.this, "Wrong ;(", Toast.LENGTH_LONG).show();
-                    result = false;
-                }
+                result = answer.equals(word);
                 MainController.getGameController().saveWordResult(translation, result);
                 Intent intent = new Intent();
                 intent.putExtra("game result", result);
