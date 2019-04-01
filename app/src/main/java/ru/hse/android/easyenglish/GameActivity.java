@@ -1,12 +1,14 @@
 package ru.hse.android.easyenglish;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.ImageView;
 
 public class GameActivity extends AppCompatActivity {
     private int succeedTasks = 0;
@@ -18,7 +20,17 @@ public class GameActivity extends AppCompatActivity {
         if (requestCode == 42) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
-                succeedTasks += data.getBooleanExtra("game result", false) ? 1 : 0;
+                boolean result = data.getBooleanExtra("game result", false);
+                Drawable drawable;
+                ImageView imageView = findViewById(R.id.result);
+                if (result) {
+                    drawable = getResources().getDrawable(R.drawable.right,null);
+                    imageView.setImageDrawable(drawable);
+                } else {
+                    drawable = getResources().getDrawable(R.drawable.wrong,null);
+                    imageView.setImageDrawable(drawable);
+                }
+                succeedTasks += result ? 1 : 0;
                 totalTasks++;
             }
         }
@@ -52,7 +64,9 @@ public class GameActivity extends AppCompatActivity {
         finishGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
+                ImageView imageView = findViewById(R.id.result);
+                imageView.setVisibility(View.GONE);
+                gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
             }
         });
     }
