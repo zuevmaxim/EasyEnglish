@@ -1,6 +1,7 @@
 package ru.hse.android.easyenglish;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
@@ -23,10 +24,15 @@ public class GameActivity extends AppCompatActivity {
                 boolean result = data.getBooleanExtra("game result", false);
                 Drawable drawable;
                 ImageView imageView = findViewById(R.id.result);
+                final TextView gameResultText = findViewById(R.id.game_result);
                 if (result) {
+                    gameResultText.setTextColor(Color.parseColor("#FF00574B"));
+                    gameResultText.setText("RIGHT!");
                     drawable = getResources().getDrawable(R.drawable.right,null);
                     imageView.setImageDrawable(drawable);
                 } else {
+                    gameResultText.setTextColor(Color.parseColor("#FFD81B60"));
+                    gameResultText.setText("WRONG!");
                     drawable = getResources().getDrawable(R.drawable.wrong,null);
                     imageView.setImageDrawable(drawable);
                 }
@@ -50,8 +56,10 @@ public class GameActivity extends AppCompatActivity {
 
         runGame(gameClass);
 
-        Button nextWordButton = findViewById(R.id.next_word_button);
-        Button finishGameButton = findViewById(R.id.finish_game_button);
+        final Button toGamesButton = findViewById(R.id.to_games_button);
+        toGamesButton.setVisibility(View.INVISIBLE);
+        final Button nextWordButton = findViewById(R.id.next_word_button);
+        final Button finishGameButton = findViewById(R.id.finish_game_button);
         final TextView gameResultText = findViewById(R.id.game_result_text);
 
         nextWordButton.setOnClickListener(new View.OnClickListener() {
@@ -66,7 +74,19 @@ public class GameActivity extends AppCompatActivity {
             public void onClick(View v) {
                 ImageView imageView = findViewById(R.id.result);
                 imageView.setVisibility(View.GONE);
+                nextWordButton.setVisibility(View.INVISIBLE);
+                finishGameButton.setVisibility(View.INVISIBLE);
+                gameResultText.setVisibility(View.INVISIBLE);
+                toGamesButton.setVisibility(View.VISIBLE);
                 gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
+            }
+        });
+
+        toGamesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(GameActivity.this, LocalGamesMenuActivity.class);
+                startActivity(intent);
             }
         });
     }

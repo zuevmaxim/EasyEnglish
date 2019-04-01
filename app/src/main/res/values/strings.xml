@@ -20,4 +20,7 @@
     <string name="next">Next word</string>
     <string name="finish">Finish</string>
     <string name="check_answer">Check answer</string>
+    <string name="to_menu">Menu</string>
+    <string name="swap"><![CDATA[<->]]></string>
+    <string name="to_games">Games</string>
 </resources>
