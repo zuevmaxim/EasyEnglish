@@ -23,4 +23,5 @@
     <string name="to_menu">Menu</string>
     <string name="swap"><![CDATA[<->]]></string>
     <string name="to_games">Games</string>
+    <string name="end_game">End Game</string>
 </resources>

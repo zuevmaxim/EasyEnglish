@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -37,6 +35,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_letter_puzzle);
 
         Button checkAnswerButton = findViewById(R.id.check_answer);
+        Button endGameButton = findViewById(R.id.end_game_button);
 
         final String translation = MainController.getGameController().getWordFactory().nextWord();
         final String word = TranslateController.translate(translation, "ru-en");
@@ -55,6 +54,16 @@ public class LetterPuzzleActivity extends AppCompatActivity {
                 MainController.getGameController().saveWordResult(translation, result);
                 Intent intent = new Intent();
                 intent.putExtra("game result", result);
+                setResult(RESULT_OK, intent);
+                finish();
+            }
+        });
+
+        endGameButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.putExtra("end game", true);
                 setResult(RESULT_OK, intent);
                 finish();
             }

@@ -49,14 +49,5 @@ public class DictionaryActivity extends AppCompatActivity {
                 yandexText.setText("translated by Yandex.translate\n http://translate.yandex.ru/");
             }
         });
-
-        Button toMainMenuButton = findViewById(R.id.to_menu_button);
-        toMainMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DictionaryActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-            }
-        });
     }
 }
