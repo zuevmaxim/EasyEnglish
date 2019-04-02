@@ -45,7 +45,8 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
         definitionsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LocalGamesMenuActivity.this, ErrorActivity.class);
+                Intent intent = new Intent(LocalGamesMenuActivity.this, GameActivity.class);
+                intent.putExtra("game name", "Choose Definition");
                 startActivity(intent);
             }
         });

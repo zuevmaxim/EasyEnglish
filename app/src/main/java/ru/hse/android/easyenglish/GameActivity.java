@@ -109,6 +109,7 @@ public class GameActivity extends AppCompatActivity {
     private Class<?> chooseGameByName(String gameName) {
         switch (gameName) {
             case "Letter Puzzle" : return LetterPuzzleActivity.class;
+            case "Choose Definition" : return ChooseDefinitionActivity.class;
         }
         return null;
     }

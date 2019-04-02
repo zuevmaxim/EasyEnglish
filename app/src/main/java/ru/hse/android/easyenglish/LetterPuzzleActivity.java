@@ -1,5 +1,4 @@
 package ru.hse.android.easyenglish;
-
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -35,9 +34,9 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         setContentView(R.layout.activity_letter_puzzle);
 
         Button checkAnswerButton = findViewById(R.id.check_answer);
-        Button endGameButton = findViewById(R.id.end_game_button);
+        Button endGameButton = findViewById(R.id.end_letter_puzzle_game_button);
 
-        final String translation = MainController.getGameController().getWordFactory().nextWord();
+        final String translation = MainController.getGameController().getWordStorage().nextWord();
         final String word = TranslateController.translate(translation, "ru-en");
         final String shuffledWord = shuffleLetters(word);
 
@@ -47,7 +46,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText answerText = findViewById(R.id.answer_button);
+                final EditText answerText = findViewById(R.id.answer_radio_button_1);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
                 result = answer.equals(word);
