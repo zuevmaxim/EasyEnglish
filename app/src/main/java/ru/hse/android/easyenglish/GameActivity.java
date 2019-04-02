@@ -61,6 +61,7 @@ public class GameActivity extends AppCompatActivity {
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
         final TextView gameResultText = findViewById(R.id.game_result_text);
+        final TextView gameSubResultText = findViewById(R.id.game_result);
 
         nextWordButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +77,7 @@ public class GameActivity extends AppCompatActivity {
                 imageView.setVisibility(View.GONE);
                 nextWordButton.setVisibility(View.INVISIBLE);
                 finishGameButton.setVisibility(View.INVISIBLE);
-                gameResultText.setVisibility(View.INVISIBLE);
+                gameSubResultText.setVisibility(View.INVISIBLE);
                 toGamesButton.setVisibility(View.VISIBLE);
                 gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
             }
