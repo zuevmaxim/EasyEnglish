@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -48,7 +47,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText answerText = findViewById(R.id.answer);
+                final EditText answerText = findViewById(R.id.answer_radio_button_1);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
                 result = answer.equals(word);

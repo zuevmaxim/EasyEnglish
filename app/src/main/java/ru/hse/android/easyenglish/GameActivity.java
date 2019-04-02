@@ -76,7 +76,6 @@ public class GameActivity extends AppCompatActivity {
                 imageView.setVisibility(View.GONE);
                 nextWordButton.setVisibility(View.INVISIBLE);
                 finishGameButton.setVisibility(View.INVISIBLE);
-                gameResultText.setVisibility(View.INVISIBLE);
                 toGamesButton.setVisibility(View.VISIBLE);
                 gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
             }
