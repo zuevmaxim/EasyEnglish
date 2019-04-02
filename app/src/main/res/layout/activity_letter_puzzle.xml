@@ -18,7 +18,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/answer"
+        app:layout_constraintTop_toBottomOf="@+id/answer_radio_button_1"
         app:layout_constraintVertical_bias="0.165" />
 
     <Button
@@ -89,7 +89,7 @@
         app:layout_constraintVertical_bias="0.274" />
 
     <EditText
-        android:id="@+id/answer"
+        android:id="@+id/answer_radio_button_1"
         android:layout_width="wrap_content"
         android:layout_height="52dp"
         android:layout_marginStart="16dp"

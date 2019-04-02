@@ -1,19 +1,36 @@
 package ru.hse.android.easyenglish;
 
+import android.content.Context;
 import android.util.Log;
 
 public class GameController {
-    GameController() {
-
+    GameController(Context context) {
+        wordFactory = new WordFactory(context);
+        wordListController = new WordListController(context);
+        wordStorage = new WordStorage();
     }
 
-    private static final WordFactory wordFactory = new WordFactory();
+    void init(Context context) {
+        wordStorage.updateStorage(context);
+    }
+
+    private final WordStorage wordStorage;
+    private final WordFactory wordFactory;
+    private final WordListController wordListController;
 
     public void saveWordResult(String word, boolean result) {
-        Log.d("save result", word + " : " + result);
+        wordFactory.saveWordStatistic(word, result);
     }
 
     public WordFactory getWordFactory() {
         return wordFactory;
+    }
+
+    public WordListController getWordListController(Context context) {
+        return wordListController;
+    }
+
+    public WordStorage getWordStorage() {
+        return wordStorage;
     }
 }

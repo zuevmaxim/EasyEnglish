@@ -1,5 +1,7 @@
 package ru.hse.android.easyenglish;
 
+import android.content.Context;
+
 public class MainController {
     private static GameController gameController;
 
@@ -9,7 +11,8 @@ public class MainController {
         return gameController;
     }
 
-    static void init() {
-        gameController = new GameController();
+    static void init(Context context) {
+        gameController = new GameController(context);
+        gameController.init(context);
     }
 }

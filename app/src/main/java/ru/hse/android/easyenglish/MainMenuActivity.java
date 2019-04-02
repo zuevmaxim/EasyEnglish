@@ -39,5 +39,14 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button wordListButton = findViewById(R.id.word_list_button);
+        wordListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainMenuActivity.this, WordListActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
