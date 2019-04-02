@@ -47,7 +47,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText answerText = findViewById(R.id.answer);
+                final EditText answerText = findViewById(R.id.answer_button);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
                 result = answer.equals(word);
