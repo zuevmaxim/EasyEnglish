@@ -27,16 +27,16 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 switch (checkedId) {
                     case R.id.answer_radio_button_0:
-                        mInfoTextView.setText("Подумайте ещё раз");
+                        //mInfoTextView.setText("Подумайте ещё раз");
                         break;
                     case R.id.answer_radio_button_1:
-                        mInfoTextView.setText("Подумайте ещё раз");
+                        //mInfoTextView.setText("Подумайте ещё раз");
                         break;
                     case R.id.answer_radio_button_2:
-                        mInfoTextView.setText("Подумайте ещё раз");
+                        //mInfoTextView.setText("Подумайте ещё раз");
                         break;
                     case R.id.answer_radio_button_3:
-                        mInfoTextView.setText("Подумайте ещё раз");
+                        //mInfoTextView.setText("Подумайте ещё раз");
                         break;
                 }
             }
