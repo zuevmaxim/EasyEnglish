@@ -37,7 +37,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
 
         Button checkAnswerButton = findViewById(R.id.check_answer);
 
-        final String translation = MainController.getGameController().getWordFactory().nextWord();
+        final String translation = MainController.getGameController().getWordStorage().nextWord();
         final String word = TranslateController.translate(translation, "ru-en");
         final String shuffledWord = shuffleLetters(word);
 
