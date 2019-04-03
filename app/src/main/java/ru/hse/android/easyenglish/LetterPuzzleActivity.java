@@ -64,7 +64,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                RuleActivity rules = new RuleActivity();
+                ShowInfoActivity rules = new ShowInfoActivity();
                 Bundle args = new Bundle();
                 args.putString("game", "Letter puzzle");
                 args.putString("rule", "You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.");

@@ -94,7 +94,6 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             }
         });
 
-
         Button endGameButton = findViewById(R.id.end_choose_definition_game_button);
         endGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
