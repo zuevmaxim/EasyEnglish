@@ -33,20 +33,21 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_letter_puzzle);
 
-        Button checkAnswerButton = findViewById(R.id.check_answer);
-        Button endGameButton = findViewById(R.id.end_letter_puzzle_game_button);
+        Button checkAnswerButton = findViewById(R.id.check_answer_letter_puzzle_button);
+        Button endGameButton = findViewById(R.id.end_game_letter_puzzle_button);
+        Button showRulesButton = findViewById(R.id.show_rules_letter_puzzle_button);
 
         final String translation = MainController.getGameController().getWordStorage().nextWord();
         final String word = TranslateController.translate(translation, "ru-en");
         final String shuffledWord = shuffleLetters(word);
 
-        final TextView shuffledWordText = findViewById(R.id.shuffled_word);
+        final TextView shuffledWordText = findViewById(R.id.shuffled_word_text);
         shuffledWordText.setText((shuffledWord + " - " + translation));
 
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final EditText answerText = findViewById(R.id.answer_radio_button_1);
+                final EditText answerText = findViewById(R.id.answer_letter_puzzle_text);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
                 result = answer.equals(word);
@@ -55,6 +56,20 @@ public class LetterPuzzleActivity extends AppCompatActivity {
                 intent.putExtra("game result", result);
                 setResult(RESULT_OK, intent);
                 finish();
+            }
+        });
+
+
+        showRulesButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                RuleActivity rules = new RuleActivity();
+                Bundle args = new Bundle();
+                args.putString("game", "Letter puzzle");
+                args.putString("rule", "You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.");
+                rules.setArguments(args);
+                rules.show(getSupportFragmentManager(), "rule");
             }
         });
 
@@ -67,5 +82,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
                 finish();
             }
         });
+
+
     }
 }

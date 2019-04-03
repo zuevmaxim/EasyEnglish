@@ -88,6 +88,8 @@ public class GameActivity extends AppCompatActivity {
     private void endGame() {
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
+        final TextView gameResult = findViewById(R.id.game_result);
+        gameResult.setVisibility(View.GONE);
         ImageView imageView = findViewById(R.id.result);
         imageView.setVisibility(View.GONE);
         nextWordButton.setVisibility(View.INVISIBLE);

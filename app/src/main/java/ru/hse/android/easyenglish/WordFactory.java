@@ -108,7 +108,7 @@ public class WordFactory extends SQLiteOpenHelper {
 
         getReadableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
                 ERRORS_NUMBER_COLUMN + " = " + (result ? previousErrorResult : previousErrorResult + 1) + ", " +
-                TOTAL_NUMBER_COLUMN + " = " + previousTotalResult + 1 +
+                TOTAL_NUMBER_COLUMN + " = " + (previousTotalResult + 1) +
                 " WHERE " + WORD_COLUMN + " = '" + word + "'");
     }
 
