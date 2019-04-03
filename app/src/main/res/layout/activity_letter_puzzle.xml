@@ -7,6 +7,21 @@
     tools:context=".LetterPuzzleActivity">
 
     <Button
+        android:id="@+id/end_game_letter_puzzle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="32dp"
+        android:text="@string/end_letter_puzzle_game"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/check_answer_letter_puzzle_button"
+        app:layout_constraintVertical_bias="0.885" />
+
+    <Button
         android:id="@+id/show_rules_letter_puzzle_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,20 +68,7 @@
         app:layout_constraintTop_toBottomOf="@+id/answer_letter_puzzle_text"
         app:layout_constraintVertical_bias="0.166" />
 
-    <Button
-        android:id="@+id/end_game_letter_puzzle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/end_letter_puzzle_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_answer_letter_puzzle_button"
-        app:layout_constraintVertical_bias="0.885" />
+
 
     <TextView
         android:id="@+id/textView5"

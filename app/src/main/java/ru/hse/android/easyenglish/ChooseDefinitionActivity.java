@@ -51,7 +51,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
                     case R.id.answer_radio_button_0:
                         checkAnswer(0, answerNumber, answer);
                         break;
-                    case R.id.answer_letter_puzzle_text:
+                    case R.id.answer_radio_button_1:
                         checkAnswer(1, answerNumber, answer);
                         break;
                     case R.id.answer_radio_button_2:

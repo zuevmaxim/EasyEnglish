@@ -27,6 +27,6 @@
     <string name="word_list">Word list</string>
     <string name="choose_definition">Choose definition</string>
     <string name="end_letter_puzzle_game">End Game</string>
-    <string name="rules">\?</string>
-    <string name="hints">!</string>
+    <string name="rules">Rules</string>
+    <string name="hints">Hints</string>
 </resources>

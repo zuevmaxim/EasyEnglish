@@ -24,7 +24,6 @@
 
     <Button
         android:id="@+id/show_hints_choose_definition_button"
-        style="@style/hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
