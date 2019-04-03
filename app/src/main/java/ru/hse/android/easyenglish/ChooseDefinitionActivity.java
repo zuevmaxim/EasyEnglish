@@ -22,17 +22,14 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_definition);
 
-        RadioGroup answersRadioGroup = findViewById(R.id.answers_radio_group);
-        Button endGameButton = findViewById(R.id.end_choose_definition_game_button);
-
         final RadioButton answerRadioButton0 = findViewById(R.id.answer_radio_button_0);
-        final RadioButton answerRadioButton1 = findViewById(R.id.answer_letter_puzzle_text);
+        final RadioButton answerRadioButton1 = findViewById(R.id.answer_radio_button_1);
         final RadioButton answerRadioButton2 = findViewById(R.id.answer_radio_button_2);
         final RadioButton answerRadioButton3 = findViewById(R.id.answer_radio_button_3);
 
         final TextView taskWordText = findViewById(R.id.word_task_text);
 
-        List<String> answerList = new ArrayList<>();
+        final List<String> answerList = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             answerList.add(MainController.getGameController().getWordStorage().nextWord());
         }
@@ -46,7 +43,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         answerRadioButton3.setText(answerList.get(3));
         taskWordText.setText(TranslateController.translate(answer, "ru-en"));
 
-        answersRadioGroup.clearCheck();
+        RadioGroup answersRadioGroup = findViewById(R.id.answers_radio_group);
         answersRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -71,16 +68,34 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                RuleActivity rules = new RuleActivity();
+                ShowInfoActivity rules = new ShowInfoActivity();
                 Bundle args = new Bundle();
-                args.putString("game", "Choose definition");
-                args.putString("rule", "You are given a word in English. Your task is to choose right Russian definition for it.");
+                args.putString("game", "Choose definition rules:");
+                args.putString("message", "You are given a word in English. Your task is to choose right Russian definition for it.");
                 rules.setArguments(args);
                 rules.show(getSupportFragmentManager(), "rule");
             }
         });
 
+        Button showHintsButton = findViewById(R.id.show_hints_choose_definition_button);
+        showHintsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ShowInfoActivity rules = new ShowInfoActivity();
+                Bundle args = new Bundle();
+                int wrongAnswerNumber = (new Random()).nextInt(4);
+                while (wrongAnswerNumber == answerNumber) {
+                    wrongAnswerNumber = (new Random()).nextInt(4);
+                }
+                args.putString("title", "Choose definition hints:");
+                args.putString("message", answerList.get(wrongAnswerNumber) + " is a wrong answer");
+                rules.setArguments(args);
+                rules.show(getSupportFragmentManager(), "rule");
+            }
+        });
+
+
+        Button endGameButton = findViewById(R.id.end_choose_definition_game_button);
         endGameButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,9 +114,5 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         intent.putExtra("game result", result);
         setResult(RESULT_OK, intent);
         finish();
-    }
-
-
-    public static class GameRule extends AppCompatDialogFragment {
     }
 }

@@ -6,16 +6,17 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 
-public class RuleActivity extends DialogFragment {
+public class ShowInfoActivity extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
-        String game = getArguments().getString("game");
-        String rule = getArguments().getString("rule");
+        assert getArguments() != null;
+        String title = getArguments().getString("title");
+        String message = getArguments().getString("message");
         return builder
-                .setTitle(game + " rules:")
+                .setTitle(title)
                 .setIcon(android.R.drawable.ic_dialog_info)
-                .setMessage(rule)
+                .setMessage(message)
                 .setPositiveButton("OK", null)
                 .create();
     }
