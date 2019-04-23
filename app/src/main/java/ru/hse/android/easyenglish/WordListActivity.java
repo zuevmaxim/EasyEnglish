@@ -22,7 +22,7 @@ public class WordListActivity extends AppCompatActivity {
 
         final ListView wordLists = findViewById(R.id.word_lists);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_multiple_choice, wordListNames);
+                android.R.layout.simple_list_item_single_choice, wordListNames);
         wordLists.setAdapter(adapter);
 
         int position = wordListNames.indexOf(wordListController.getCurrentWordList());
