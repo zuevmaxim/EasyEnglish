@@ -36,6 +36,12 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         Collections.shuffle(answerList);
 
         final int answerNumber = (new Random()).nextInt(4);
+        int newWrongAnswerNumber = (new Random()).nextInt(4);
+        while (newWrongAnswerNumber == answerNumber) {
+            newWrongAnswerNumber = (new Random()).nextInt(4);
+        }
+        final int wrongAnswerNumber = newWrongAnswerNumber;
+
         final String answer = answerList.get(answerNumber);
         answerRadioButton0.setText(answerList.get(0));
         answerRadioButton1.setText(answerList.get(1));
@@ -73,7 +79,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
                 args.putString("game", "Choose definition rules:");
                 args.putString("message", "You are given a word in English. Your task is to choose right Russian definition for it.");
                 rules.setArguments(args);
-                rules.show(getSupportFragmentManager(), "rule");
+                rules.show(getSupportFragmentManager(), "rules");
             }
         });
 
@@ -81,16 +87,12 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         showHintsButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ShowInfoActivity rules = new ShowInfoActivity();
+                ShowInfoActivity hints = new ShowInfoActivity();
                 Bundle args = new Bundle();
-                int wrongAnswerNumber = (new Random()).nextInt(4);
-                while (wrongAnswerNumber == answerNumber) {
-                    wrongAnswerNumber = (new Random()).nextInt(4);
-                }
                 args.putString("title", "Choose definition hints:");
                 args.putString("message", answerList.get(wrongAnswerNumber) + " is a wrong answer");
-                rules.setArguments(args);
-                rules.show(getSupportFragmentManager(), "rule");
+                hints.setArguments(args);
+                hints.show(getSupportFragmentManager(), "hints");
             }
         });
 
