@@ -63,7 +63,6 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ShowInfoActivity rules = new ShowInfoActivity();
                 Bundle args = new Bundle();
                 args.putString("game", "Letter puzzle");
