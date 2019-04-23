@@ -37,6 +37,15 @@ public class WordListController extends SQLiteOpenHelper {
         db.execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                 "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + RANDOM_WORD_LIST_TABLE_NAME + "', 1)");
+        // TODO ADD EXTRA WORD LISTS. THIS IS TEMPORARY LIST
+        final String TEMPORARY_WORD_LIST_TABLE_NAME = "temporary_word_list";
+        db.execSQL(
+                "CREATE TABLE " + TEMPORARY_WORD_LIST_TABLE_NAME +
+                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        WORD_COLUMN + " VARCHAR)");
+        db.execSQL(
+                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
+                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + TEMPORARY_WORD_LIST_TABLE_NAME + "', 0)");
         updateRandomWordList(db);
     }
 
@@ -59,7 +68,7 @@ public class WordListController extends SQLiteOpenHelper {
 
     }
 
-    private List<String> getWordLists() {
+    public List<String> getWordLists() {
         List<String> lists = new ArrayList<>();
         String[] columns = {NAME_COLUMN};
         Cursor cursor = getReadableDatabase().query(WORD_LISTS_TABLE_NAME, columns, null, null, null, null, null);

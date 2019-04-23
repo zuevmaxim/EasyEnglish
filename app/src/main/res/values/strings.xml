@@ -29,4 +29,5 @@
     <string name="end_letter_puzzle_game">End Game</string>
     <string name="rules">Rules</string>
     <string name="hints">Hints</string>
+    <string name="set">set</string>
 </resources>
