@@ -17,9 +17,9 @@ public class LearnWordsActivity extends AppCompatActivity {
         List<String> words = wordListController.getCurrentListWords();
 
 
-        final ListView wordLists = findViewById(R.id.learn_words_list);
+        final ListView currentWordList = findViewById(R.id.learn_words_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, words);
-        wordLists.setAdapter(adapter);
+        currentWordList.setAdapter(adapter);
     }
 }
