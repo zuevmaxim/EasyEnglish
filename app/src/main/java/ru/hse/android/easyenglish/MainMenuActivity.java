@@ -48,5 +48,14 @@ public class MainMenuActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Button learnWordsButton = findViewById(R.id.learn_words_button);
+        learnWordsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainMenuActivity.this, LearnWordsActivity.class);
+                startActivity(intent);
+            }
+        });
     }
 }

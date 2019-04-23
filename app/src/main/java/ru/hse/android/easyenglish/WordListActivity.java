@@ -1,12 +1,12 @@
 package ru.hse.android.easyenglish;
 
-import android.content.Context;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,17 +20,22 @@ public class WordListActivity extends AppCompatActivity {
         WordListController wordListController = MainController.getGameController().getWordListController(this);
         List<String> wordListNames = wordListController.getWordLists();
 
-        WordListAdapter adapter = new WordListAdapter(this, wordListNames);
         final ListView wordLists = findViewById(R.id.word_lists);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_list_item_multiple_choice, wordListNames);
+        wordLists.setAdapter(adapter);
 
-        final Context context = this;
-        wordLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        int position = wordListNames.indexOf(wordListController.getCurrentWordList());
+        wordLists.setItemChecked(position, true);
+
+        Button editListsButton = findViewById(R.id.edit_lists_button);
+        editListsButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, "checked", Toast.LENGTH_LONG).show();
-                wordLists.setItemChecked(position, true);
+            public void onClick(View v) {
+                Intent intent = new Intent(WordListActivity.this, WordListEditorActivity.class);
+                startActivity(intent);
             }
         });
-        wordLists.setAdapter(adapter);
+
     }
 }

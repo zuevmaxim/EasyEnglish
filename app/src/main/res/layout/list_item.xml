@@ -12,11 +12,11 @@
         android:layout_weight="1"
         android:text="@string/set" />
 
-    <CheckedTextView
-        android:id="@+id/checked_text_view"
+    <TextView
+        android:id="@+id/list_name"
         android:layout_width="281dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:checkMark="?android:attr/textCheckMark" />
+        />
 
 </LinearLayout>
