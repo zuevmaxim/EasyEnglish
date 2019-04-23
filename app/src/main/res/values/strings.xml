@@ -30,4 +30,6 @@
     <string name="rules">Rules</string>
     <string name="hints">Hints</string>
     <string name="set">set</string>
+    <string name="en">EN</string>
+    <string name="ru">RU</string>
 </resources>

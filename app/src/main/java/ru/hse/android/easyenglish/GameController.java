@@ -1,7 +1,6 @@
 package ru.hse.android.easyenglish;
 
 import android.content.Context;
-import android.util.Log;
 
 public class GameController {
     GameController(Context context) {
