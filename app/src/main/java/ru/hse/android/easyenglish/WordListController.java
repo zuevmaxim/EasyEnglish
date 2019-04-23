@@ -20,8 +20,11 @@ public class WordListController extends SQLiteOpenHelper {
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
     private static final String WORD_COLUMN = "word";
+    private Context context;
+
     public WordListController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     @Override
@@ -46,6 +49,9 @@ public class WordListController extends SQLiteOpenHelper {
         db.execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + TEMPORARY_WORD_LIST_TABLE_NAME + "', 0)");
+        db.execSQL(
+                "INSERT INTO " + TEMPORARY_WORD_LIST_TABLE_NAME +
+                        "(" + WORD_COLUMN + ") VALUES ('" + "попкорн" + "')");
         updateRandomWordList(db);
     }
 
@@ -125,5 +131,13 @@ public class WordListController extends SQLiteOpenHelper {
             result.put(list, wordList);
         }
         return result;
+    }
+
+    public void setCurrentWordList(String newListName) {
+        String currentListName = getCurrentWordList().replace(' ', '_');
+        String newCurrentListName = newListName.replace(' ', '_');
+        getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
+        getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
+        MainController.getGameController().getWordStorage().updateStorage(context);
     }
 }
