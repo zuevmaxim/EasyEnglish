@@ -13,6 +13,6 @@ public class MainController {
 
     static void init(Context context) {
         gameController = new GameController(context);
-        gameController.init(context);
+        gameController.init();
     }
 }

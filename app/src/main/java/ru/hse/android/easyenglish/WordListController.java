@@ -7,9 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class WordListController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -19,12 +17,12 @@ public class WordListController extends SQLiteOpenHelper {
     private static final String NAME_COLUMN = "name";
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
-    private static final String WORD_COLUMN = "word";
-    private Context context;
+    private static final String WORD_ID_COLUMN = "word_id";
+
+    private static final int RANDOM_WORD_LIST_LENGTH = 10;
 
     public WordListController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        this.context = context;
     }
 
     @Override
@@ -36,7 +34,7 @@ public class WordListController extends SQLiteOpenHelper {
         db.execSQL(
                 "CREATE TABLE " + RANDOM_WORD_LIST_TABLE_NAME +
                         "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        WORD_COLUMN + " VARCHAR)");
+                        WORD_ID_COLUMN + " INTEGER)");
         db.execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                 "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + RANDOM_WORD_LIST_TABLE_NAME + "', 1)");
@@ -45,28 +43,24 @@ public class WordListController extends SQLiteOpenHelper {
         db.execSQL(
                 "CREATE TABLE " + TEMPORARY_WORD_LIST_TABLE_NAME +
                         "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        WORD_COLUMN + " VARCHAR)");
+                        WORD_ID_COLUMN + " INTEGER)");
         db.execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + TEMPORARY_WORD_LIST_TABLE_NAME + "', 0)");
         db.execSQL(
                 "INSERT INTO " + TEMPORARY_WORD_LIST_TABLE_NAME +
-                        "(" + WORD_COLUMN + ") VALUES ('" + "попкорн" + "')");
+                        "(" + WORD_ID_COLUMN + ") VALUES ('" + 33 + "')");
         updateRandomWordList(db);
     }
 
     private void updateRandomWordList(SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + RANDOM_WORD_LIST_TABLE_NAME);
-        for (int i = 0; i < 10; i++) {
-            String word = MainController.getGameController().getWordFactory().nextWord();
+        for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
+            int wordId = MainController.getGameController().getWordFactory().nextWordId();
             db.execSQL(
                     "INSERT INTO " + RANDOM_WORD_LIST_TABLE_NAME +
-                            "(" + WORD_COLUMN + ") VALUES ('" + word + "')");
+                            "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
         }
-    }
-
-    public void updateRandomWordList() {
-        updateRandomWordList(getWritableDatabase());
     }
 
     @Override
@@ -86,14 +80,15 @@ public class WordListController extends SQLiteOpenHelper {
         return lists;
     }
 
-    public List<String> getCurrentListWords() {
-        List<String> words = new ArrayList<>();
-        String[] columns = {WORD_COLUMN};
+    public List<Word> getCurrentListWords() {
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        List<Word> words = new ArrayList<>();
+        String[] columns = {WORD_ID_COLUMN};
         String currentListName = getCurrentWordList().replace(' ', '_');
         Cursor cursor = getReadableDatabase().query(currentListName, columns, null, null, null, null, null);
         while(cursor.moveToNext()) {
-            String word = cursor.getString(cursor.getColumnIndexOrThrow(WORD_COLUMN));
-            words.add(word);
+            int wordId = cursor.getInt(cursor.getColumnIndexOrThrow(WORD_ID_COLUMN));
+            words.add(wordFactory.getWordById(wordId));
         }
         cursor.close();
         return words;
@@ -115,29 +110,11 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    public Map<String, List<String>> getAllWordLists() {
-        List<String> lists = getWordLists();
-        Map<String, List<String>> result = new HashMap<>();
-        for (String list : lists) {
-            List<String> wordList = new ArrayList<>();
-            String listName = list.replace(' ', '_');
-            String[] columns = {WORD_COLUMN};
-            Cursor cursor = getReadableDatabase().query(listName, columns, null, null, null, null, null);
-            while(cursor.moveToNext()) {
-                String word = cursor.getString(cursor.getColumnIndexOrThrow(WORD_COLUMN));
-                wordList.add(word);
-            }
-            cursor.close();
-            result.put(list, wordList);
-        }
-        return result;
-    }
-
     public void setCurrentWordList(String newListName) {
         String currentListName = getCurrentWordList().replace(' ', '_');
         String newCurrentListName = newListName.replace(' ', '_');
         getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
         getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
-        MainController.getGameController().getWordStorage().updateStorage(context);
+        MainController.getGameController().getWordStorage().updateStorage();
     }
 }

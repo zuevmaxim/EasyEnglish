@@ -36,4 +36,6 @@
     <string name="add_new_list">add new list</string>
     <string name="learn_words">Learn words</string>
     <string name="switch_to_cards_mode">Switch to cards mode</string>
+    <string name="right_answer">RIGHT!</string>
+    <string name="wrong_answer">WRONG!</string>
 </resources>

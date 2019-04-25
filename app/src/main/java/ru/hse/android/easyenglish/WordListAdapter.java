@@ -13,10 +13,10 @@ import android.widget.Toast;
 import java.util.List;
 
 public class WordListAdapter extends ArrayAdapter<String> {
-    private int layout;
-    private LayoutInflater layoutInflater;
-    private List<String> wordListNames;
-    private Context context;
+    private final int layout;
+    private final LayoutInflater layoutInflater;
+    private final List<String> wordListNames;
+    private final Context context;
 
     public WordListAdapter(Context context, int resource, List<String> objects) {
         super(context, resource, objects);

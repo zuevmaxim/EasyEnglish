@@ -19,7 +19,7 @@ public class WordListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list);
 
-        final WordListController wordListController = MainController.getGameController().getWordListController(this);
+        final WordListController wordListController = MainController.getGameController().getWordListController();
         final List<String> wordListNames = wordListController.getWordLists();
 
         final ListView wordLists = findViewById(R.id.word_lists);

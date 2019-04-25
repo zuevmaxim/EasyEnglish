@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 public class LearnWordsActivity extends AppCompatActivity {
 
@@ -13,8 +15,13 @@ public class LearnWordsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn_words);
 
-        WordListController wordListController = MainController.getGameController().getWordListController(this);
-        List<String> words = wordListController.getCurrentListWords();
+        WordListController wordListController = MainController.getGameController().getWordListController();
+        List<String> words = wordListController.getCurrentListWords().stream().map(new Function<Word, String>() {
+            @Override
+            public String apply(Word word) {
+                return word.getRussian() + " - " + word.getEnglish() + word.getTranscription();
+            }
+        }).collect(Collectors.<String>toList());
 
 
         final ListView currentWordList = findViewById(R.id.learn_words_list);

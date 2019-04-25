@@ -17,25 +17,30 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 42) {
+        if (requestCode == 42) { //TODO
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 boolean endOfGame = data.getBooleanExtra("end game", false);
                 if (endOfGame) {
                     endGame();
                 } else {
+                    final TextView wordAnswerText = findViewById(R.id.word_answer);
+                    wordAnswerText.setVisibility(View.VISIBLE);
+                    String word = data.getStringExtra("word");
+                    wordAnswerText.setText(word);
+
                     boolean result = data.getBooleanExtra("game result", false);
                     Drawable drawable;
                     ImageView imageView = findViewById(R.id.result);
                     final TextView gameResultText = findViewById(R.id.game_result);
                     if (result) {
                         gameResultText.setTextColor(Color.parseColor("#FF00574B"));
-                        gameResultText.setText("RIGHT!");
+                        gameResultText.setText(getString(R.string.right_answer));
                         drawable = getResources().getDrawable(R.drawable.right, null);
                         imageView.setImageDrawable(drawable);
                     } else {
                         gameResultText.setTextColor(Color.parseColor("#FFD81B60"));
-                        gameResultText.setText("WRONG!");
+                        gameResultText.setText(getString(R.string.wrong_answer));
                         drawable = getResources().getDrawable(R.drawable.wrong, null);
                         imageView.setImageDrawable(drawable);
                     }
@@ -89,6 +94,8 @@ public class GameActivity extends AppCompatActivity {
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
         final TextView gameResult = findViewById(R.id.game_result);
+        final TextView wordAnswerText = findViewById(R.id.word_answer);
+        wordAnswerText.setVisibility(View.INVISIBLE);
         gameResult.setVisibility(View.GONE);
         ImageView imageView = findViewById(R.id.result);
         imageView.setVisibility(View.GONE);

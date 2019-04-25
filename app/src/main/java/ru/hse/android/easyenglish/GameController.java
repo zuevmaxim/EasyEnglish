@@ -9,15 +9,15 @@ public class GameController {
         wordStorage = new WordStorage();
     }
 
-    void init(Context context) {
-        wordStorage.updateStorage(context);
+    void init() {
+        wordStorage.updateStorage();
     }
 
     private final WordStorage wordStorage;
     private final WordFactory wordFactory;
     private final WordListController wordListController;
 
-    public void saveWordResult(String word, boolean result) {
+    public void saveWordResult(Word word, boolean result) {
         wordFactory.saveWordStatistic(word, result);
     }
 
@@ -25,7 +25,7 @@ public class GameController {
         return wordFactory;
     }
 
-    public WordListController getWordListController(Context context) {
+    public WordListController getWordListController() {
         return wordListController;
     }
 

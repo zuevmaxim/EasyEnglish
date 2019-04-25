@@ -9,7 +9,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ExpandableListView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -22,7 +21,7 @@ public class WordListEditorActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list_editor);
 
-        WordListController wordListController = MainController.getGameController().getWordListController(this);
+        WordListController wordListController = MainController.getGameController().getWordListController();
         List<String> wordListNames = wordListController.getWordLists();
 
         final ListView wordLists = findViewById(R.id.current_word_lists);

@@ -15,14 +15,14 @@ public class StatisticsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_statistics);
 
-        WordListController wordListController = MainController.getGameController().getWordListController(this);
+        WordListController wordListController = MainController.getGameController().getWordListController();
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
-        List<String> words = wordListController.getCurrentListWords();
+        List<Word> words = wordListController.getCurrentListWords();
         List<String> statistics = new ArrayList<>();
-        for (String word : words) {
+        for (Word word : words) {
             int errorNumber = wordFactory.getWordErrorNumber(word);
             int totalNumber = wordFactory.getWordTotalNumber(word);
-            statistics.add(word  + " - " + TranslateController.translate(word, "ru-en") + " " + (totalNumber - errorNumber) + "/" + totalNumber);
+            statistics.add(word.getRussian() + " - " + word.getEnglish() + " " + (totalNumber - errorNumber) + "/" + totalNumber);
         }
 
         ListView listView = findViewById(R.id.word_list_statistics);

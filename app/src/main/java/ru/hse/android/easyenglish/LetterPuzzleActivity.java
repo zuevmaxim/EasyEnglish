@@ -37,12 +37,13 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         Button endGameButton = findViewById(R.id.end_game_letter_puzzle_button);
         Button showRulesButton = findViewById(R.id.show_rules_letter_puzzle_button);
 
-        final String translation = MainController.getGameController().getWordStorage().nextWord();
-        final String word = TranslateController.translate(translation, "ru-en");
-        final String shuffledWord = shuffleLetters(word);
+        final Word word = MainController.getGameController().getWordStorage().nextWord();
+        final String english = word.getEnglish();
+        final String russian = word.getRussian();
+        final String shuffledEnglish = shuffleLetters(english);
 
         final TextView shuffledWordText = findViewById(R.id.shuffled_word_text);
-        shuffledWordText.setText((shuffledWord + " - " + translation));
+        shuffledWordText.setText((shuffledEnglish + " - " + russian));
 
         checkAnswerButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,10 +51,11 @@ public class LetterPuzzleActivity extends AppCompatActivity {
                 final EditText answerText = findViewById(R.id.answer_letter_puzzle_text);
                 String answer = answerText.getText().toString();
                 v.setEnabled(false);
-                result = answer.equals(word);
-                MainController.getGameController().saveWordResult(translation, result);
+                result = answer.equals(english);
+                MainController.getGameController().saveWordResult(word, result);
                 Intent intent = new Intent();
                 intent.putExtra("game result", result);
+                intent.putExtra("word", word.getRussian() + "-" + word.getEnglish() + word.getTranscription());
                 setResult(RESULT_OK, intent);
                 finish();
             }

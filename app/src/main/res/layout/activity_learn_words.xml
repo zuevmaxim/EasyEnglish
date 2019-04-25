@@ -36,7 +36,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/current_word_lists"
+        app:layout_constraintTop_toBottomOf="@+id/learn_words_list"
         app:layout_constraintVertical_bias="0.166" />
 
     <TextView

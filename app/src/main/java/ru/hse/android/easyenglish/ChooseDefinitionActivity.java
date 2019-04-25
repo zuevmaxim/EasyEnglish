@@ -15,38 +15,41 @@ import java.util.List;
 import java.util.Random;
 
 public class ChooseDefinitionActivity extends AppCompatActivity {
+    private final Random random = new Random();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_definition);
 
-        final RadioButton answerRadioButton0 = findViewById(R.id.answer_radio_button_0);
-        final RadioButton answerRadioButton1 = findViewById(R.id.answer_radio_button_1);
-        final RadioButton answerRadioButton2 = findViewById(R.id.answer_radio_button_2);
-        final RadioButton answerRadioButton3 = findViewById(R.id.answer_radio_button_3);
+        final RadioButton[] answerRadioButtons = new RadioButton[4];
+
+        answerRadioButtons[0] = findViewById(R.id.answer_radio_button_0);
+        answerRadioButtons[1] = findViewById(R.id.answer_radio_button_1);
+        answerRadioButtons[2] = findViewById(R.id.answer_radio_button_2);
+        answerRadioButtons[3] = findViewById(R.id.answer_radio_button_3);
 
         final TextView taskWordText = findViewById(R.id.word_task_text);
 
-        final List<String> answerList = new ArrayList<>();
+        final List<Word> answerList = new ArrayList<>();
+        final WordStorage wordStorage = MainController.getGameController().getWordStorage();
         for (int i = 0; i < 4; i++) {
-            answerList.add(MainController.getGameController().getWordStorage().nextWord());
+            answerList.add(wordStorage.nextWord());
         }
         Collections.shuffle(answerList);
 
-        final int answerNumber = (new Random()).nextInt(4);
-        int newWrongAnswerNumber = (new Random()).nextInt(4);
+        final int answerNumber = random.nextInt(4);
+        int newWrongAnswerNumber = random.nextInt(4);
         while (newWrongAnswerNumber == answerNumber) {
-            newWrongAnswerNumber = (new Random()).nextInt(4);
+            newWrongAnswerNumber = random.nextInt(4);
         }
         final int wrongAnswerNumber = newWrongAnswerNumber;
 
-        final String answer = answerList.get(answerNumber);
-        answerRadioButton0.setText(answerList.get(0));
-        answerRadioButton1.setText(answerList.get(1));
-        answerRadioButton2.setText(answerList.get(2));
-        answerRadioButton3.setText(answerList.get(3));
-        taskWordText.setText(TranslateController.translate(answer, "ru-en"));
+        final Word answer = answerList.get(answerNumber);
+        for (int i = 0; i < 4; ++i) {
+            answerRadioButtons[i].setText(answerList.get(i).getRussian());
+        }
+        taskWordText.setText(answer.getEnglish());
 
         RadioGroup answersRadioGroup = findViewById(R.id.answers_radio_group);
         answersRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -107,11 +110,12 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         });
     }
 
-    private void checkAnswer(int givenAnswer, int modelAnswer, String answer) {
+    private void checkAnswer(int givenAnswer, int modelAnswer, Word answer) {
         boolean result = (givenAnswer == modelAnswer);
         MainController.getGameController().saveWordResult(answer, result);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
+        intent.putExtra("word", answer.getRussian() + "-" + answer.getEnglish() + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();
     }
