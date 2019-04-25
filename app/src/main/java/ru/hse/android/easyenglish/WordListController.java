@@ -117,4 +117,42 @@ public class WordListController extends SQLiteOpenHelper {
         getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
         MainController.getGameController().getWordStorage().updateStorage();
     }
+
+    private boolean wordListExists(String name) {
+        boolean result = false;
+        Cursor cursor = getReadableDatabase()
+                .query(WORD_LISTS_TABLE_NAME,
+                        new String[]{NAME_COLUMN},
+                        NAME_COLUMN + " = ? ",
+                        new String[]{name}, null, null, null);
+        if (cursor.moveToNext()) {
+            result = true;
+        }
+        cursor.close();
+        return result;
+    }
+
+    public void addNewWordList(String name) {
+        String wordListName = name.replace(' ', '_');
+        if (wordListExists(wordListName)) {
+            return;
+        }
+        getWritableDatabase().execSQL(
+                "CREATE TABLE " + wordListName +
+                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        WORD_ID_COLUMN + " INTEGER)");
+        getWritableDatabase().execSQL(
+                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
+                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
+    }
+
+    public void addNewWordIntoList(String name, int wordId) {
+        String wordListName = name.replace(' ', '_');
+        if (!wordListExists(wordListName)) {
+            return;
+        }
+        getWritableDatabase().execSQL(
+                "INSERT INTO " + wordListName +
+                        "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
+    }
 }

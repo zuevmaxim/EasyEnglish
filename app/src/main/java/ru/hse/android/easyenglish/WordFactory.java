@@ -93,10 +93,33 @@ public class WordFactory extends SQLiteAssetHelper {
         int previousErrorResult = getWordErrorNumber(word);
         int previousTotalResult = getWordTotalNumber(word);
 
-        getReadableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
+        getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
                 ERRORS_NUMBER_COLUMN + " = " + (result ? previousErrorResult : previousErrorResult + 1) + ", " +
                 TOTAL_NUMBER_COLUMN + " = " + (previousTotalResult + 1) +
                 " WHERE " + RUSSIAN_COLUMN + " = '" + word.getRussian() + "' AND " +
                 ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
+    }
+
+    public int addNewWord(Word word) {
+        Cursor cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        new String[]{ID_COLUMN},
+                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+        int id;
+        if (!cursor.moveToNext()) {
+            getWritableDatabase().execSQL(
+                    "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN +  ") " +
+                            "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "'");
+            cursor.close();
+            cursor = getReadableDatabase()
+                    .query(TABLE_NAME,
+                            new String[]{ID_COLUMN},
+                            RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                            new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+        }
+        id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        cursor.close();
+        return id;
     }
 }
