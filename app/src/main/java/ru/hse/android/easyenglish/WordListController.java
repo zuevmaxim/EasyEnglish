@@ -118,7 +118,8 @@ public class WordListController extends SQLiteOpenHelper {
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
-    private boolean wordListExists(String name) {
+    public boolean containsWordList(String listName) {
+        String name = listName.replace(' ', '_');
         boolean result = false;
         Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
@@ -132,11 +133,8 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    public void addNewWordList(String name) {
+    private void addNewWordList(String name) throws IllegalArgumentException {
         String wordListName = name.replace(' ', '_');
-        if (wordListExists(wordListName)) {
-            return;
-        }
         getWritableDatabase().execSQL(
                 "CREATE TABLE " + wordListName +
                         "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
@@ -146,13 +144,22 @@ public class WordListController extends SQLiteOpenHelper {
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
     }
 
-    public void addNewWordIntoList(String name, int wordId) {
+    private void addNewWordIntoList(String name, int wordId) {
         String wordListName = name.replace(' ', '_');
-        if (!wordListExists(wordListName)) {
-            return;
-        }
         getWritableDatabase().execSQL(
                 "INSERT INTO " + wordListName +
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
+    }
+
+    public void addNewWordList(String listName, List<Word> wordList) throws IllegalArgumentException {
+        if (containsWordList(listName)) {
+            throw new IllegalArgumentException("Such list already exists.");
+        }
+        addNewWordList(listName);
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        for (Word word : wordList) {
+            int wordId = wordFactory.addNewWord(word);
+            addNewWordIntoList(listName, wordId);
+        }
     }
 }
