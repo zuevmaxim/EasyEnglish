@@ -8,7 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.List;
 
 public class AddNewListActivity extends AppCompatActivity {
 
@@ -21,8 +22,8 @@ public class AddNewListActivity extends AppCompatActivity {
         final EditText russianWordText = findViewById(R.id.new_russian_word_text);
         final EditText englishWordText = findViewById(R.id.new_english_word_text);
 
-        final ArrayList<String> newList = new ArrayList<>();
-        final ArrayList<Word> newWordsList = new ArrayList<>();
+        final List<String> newList = new LinkedList<>();
+        final List<Word> newWordsList = new LinkedList<>();
         final ArrayAdapter<String> adapter;
         adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_1, newList);
@@ -52,7 +53,7 @@ public class AddNewListActivity extends AppCompatActivity {
             String newWordLIstName = newWordLIstNameText.getText().toString();
             WordListController controller = MainController.getGameController().getWordListController();
             controller.addNewWordList(newWordLIstName, newWordsList);
-            Intent intent = new Intent( AddNewListActivity.this, WordListActivity.class);
+            Intent intent = new Intent( this, WordListActivity.class);
             startActivity(intent);
         });
     }
