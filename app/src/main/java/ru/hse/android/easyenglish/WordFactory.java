@@ -110,7 +110,7 @@ public class WordFactory extends SQLiteAssetHelper {
         if (!cursor.moveToNext()) {
             getWritableDatabase().execSQL(
                     "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN +  ") " +
-                            "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "'");
+                            "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "')");
             cursor.close();
             cursor = getReadableDatabase()
                     .query(TABLE_NAME,
