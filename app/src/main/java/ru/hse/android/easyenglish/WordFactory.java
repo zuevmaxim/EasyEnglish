@@ -106,19 +106,24 @@ public class WordFactory extends SQLiteAssetHelper {
                         new String[]{ID_COLUMN},
                         RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
                         new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
-        int id;
-        if (!cursor.moveToNext()) {
-            getWritableDatabase().execSQL(
-                    "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN +  ") " +
-                            "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "')");
+        int id = 1;
+        if (cursor.moveToNext()) {
+            id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
             cursor.close();
-            cursor = getReadableDatabase()
-                    .query(TABLE_NAME,
-                            new String[]{ID_COLUMN},
-                            RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
-                            new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+            return id;
         }
-        id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        cursor.close();
+        getWritableDatabase().execSQL(
+                "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN +  ") " +
+                        "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "')");
+        cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        new String[]{ID_COLUMN},
+                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+        if (cursor.moveToNext()) {
+            id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        }
         cursor.close();
         return id;
     }
