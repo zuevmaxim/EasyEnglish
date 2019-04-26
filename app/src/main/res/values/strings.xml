@@ -42,4 +42,6 @@
     <string name="enter_list_name">Enter list name</string>
     <string name="english_word">English word</string>
     <string name="russian_word">Russian word</string>
+    <string name="add">Add</string>
+    <string name="save">Save</string>
 </resources>
