@@ -38,4 +38,8 @@
     <string name="switch_to_cards_mode">Switch to cards mode</string>
     <string name="right_answer">RIGHT!</string>
     <string name="wrong_answer">WRONG!</string>
+    <string name="title_activity_add_new_list">AddNewListActivity</string>
+    <string name="enter_list_name">Enter list name</string>
+    <string name="english_word">English word</string>
+    <string name="russian_word">Russian word</string>
 </resources>
