@@ -20,7 +20,7 @@ public class WordListActivity extends AppCompatActivity {
         final WordListController wordListController = MainController.getGameController().getWordListController();
         final List<String> wordListNames = wordListController.getWordLists();
 
-        final ListView wordLists = findViewById(R.id.word_lists);
+        final ListView wordLists = findViewById(R.id.new_word_lists);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_single_choice, wordListNames);
         wordLists.setAdapter(adapter);
