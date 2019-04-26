@@ -70,19 +70,9 @@ public class GameActivity extends AppCompatActivity {
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
 
-        nextWordButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                runGame(gameClass);
-            }
-        });
+        nextWordButton.setOnClickListener(v -> runGame(gameClass));
 
-        finishGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                endGame();
-            }
-        });
+        finishGameButton.setOnClickListener(v -> endGame());
     }
 
     private void runGame(Class<?> gameClass) {
@@ -106,12 +96,9 @@ public class GameActivity extends AppCompatActivity {
         toMenuButton.setVisibility(View.VISIBLE);
         gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
 
-        toMenuButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
-                startActivity(intent);
-            }
+        toMenuButton.setOnClickListener(v -> {
+            Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
+            startActivity(intent);
         });
     }
 

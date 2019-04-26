@@ -2,7 +2,6 @@ package ru.hse.android.easyenglish;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,43 +44,34 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         final TextView shuffledWordText = findViewById(R.id.shuffled_word_text);
         shuffledWordText.setText((shuffledEnglish + " - " + russian));
 
-        checkAnswerButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final EditText answerText = findViewById(R.id.answer_letter_puzzle_text);
-                String answer = answerText.getText().toString();
-                v.setEnabled(false);
-                result = answer.equals(english);
-                MainController.getGameController().saveWordResult(word, result);
-                Intent intent = new Intent();
-                intent.putExtra("game result", result);
-                intent.putExtra("word", word.getRussian() + "-" + word.getEnglish() + word.getTranscription());
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+        checkAnswerButton.setOnClickListener(v -> {
+            final EditText answerText = findViewById(R.id.answer_letter_puzzle_text);
+            String answer = answerText.getText().toString();
+            v.setEnabled(false);
+            result = answer.equals(english);
+            MainController.getGameController().saveWordResult(word, result);
+            Intent intent = new Intent();
+            intent.putExtra("game result", result);
+            intent.putExtra("word", word.getRussian() + "-" + word.getEnglish() + " " + word.getTranscription());
+            setResult(RESULT_OK, intent);
+            finish();
         });
 
 
-        showRulesButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ShowInfoActivity rules = new ShowInfoActivity();
-                Bundle args = new Bundle();
-                args.putString("game", "Letter puzzle");
-                args.putString("rule", "You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.");
-                rules.setArguments(args);
-                rules.show(getSupportFragmentManager(), "rule");
-            }
+        showRulesButton.setOnClickListener(v -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("game", "Letter puzzle");
+            args.putString("rule", "You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.");
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "rule");
         });
 
-        endGameButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent();
-                intent.putExtra("end game", true);
-                setResult(RESULT_OK, intent);
-                finish();
-            }
+        endGameButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("end game", true);
+            setResult(RESULT_OK, intent);
+            finish();
         });
 
 

@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -28,20 +26,12 @@ public class WordListEditorActivity extends AppCompatActivity {
         ArrayAdapter<String> adapter = new WordListAdapter(this,  R.layout.list_item, wordListNames);
         wordLists.setAdapter(adapter);
         final Context context = this;
-        wordLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(context, "checked", Toast.LENGTH_LONG).show();
-            }
-        });
+        wordLists.setOnItemClickListener((parent, view, position, id) -> Toast.makeText(context, "checked", Toast.LENGTH_LONG).show());
 
         Button addNewListButton = findViewById(R.id.add_new_list_button);
-        addNewListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WordListEditorActivity.this, ErrorActivity.class);
-                startActivity(intent);
-            }
+        addNewListButton.setOnClickListener(v -> {
+            Intent intent = new Intent(WordListEditorActivity.this, ErrorActivity.class);
+            startActivity(intent);
         });
 
         /*

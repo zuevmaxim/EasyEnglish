@@ -3,8 +3,6 @@ package ru.hse.android.easyenglish;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -29,23 +27,17 @@ public class WordListActivity extends AppCompatActivity {
 
         currentListNumber = wordListNames.indexOf(wordListController.getCurrentWordList());
         wordLists.setItemChecked(currentListNumber, true);
-        wordLists.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if (position != currentListNumber) {
-                    currentListNumber = position;
-                    wordListController.setCurrentWordList(wordListNames.get(currentListNumber));
-                }
+        wordLists.setOnItemClickListener((parent, view, position, id) -> {
+            if (position != currentListNumber) {
+                currentListNumber = position;
+                wordListController.setCurrentWordList(wordListNames.get(currentListNumber));
             }
         });
 
         Button editListsButton = findViewById(R.id.edit_lists_button);
-        editListsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(WordListActivity.this, WordListEditorActivity.class);
-                startActivity(intent);
-            }
+        editListsButton.setOnClickListener(v -> {
+            Intent intent = new Intent(WordListActivity.this, WordListEditorActivity.class);
+            startActivity(intent);
         });
 
     }
