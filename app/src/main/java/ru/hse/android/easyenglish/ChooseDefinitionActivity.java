@@ -83,7 +83,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Choose definition hints:");
-            args.putString("message", answerList.get(wrongAnswerNumber) + " is a wrong answer");
+            args.putString("message", answerList.get(wrongAnswerNumber).getRussian() + " is a wrong answer");
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });
