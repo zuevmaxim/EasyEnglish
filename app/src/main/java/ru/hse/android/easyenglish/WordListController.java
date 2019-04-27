@@ -134,7 +134,7 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    private void addNewWordList(String name) throws WrongListNameException {
+    public void checkNameSpelling(String name)throws WrongListNameException {
         if (containsWordList(name)) {
             throw new WrongListNameException("Such list already exists.");
         } else if (name.isEmpty()) {
@@ -142,6 +142,10 @@ public class WordListController extends SQLiteOpenHelper {
         } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
             throw new WrongListNameException("List name should starts with letter and only contains letters and spaces.");
         }
+    }
+
+    private void addNewWordList(String name) throws WrongListNameException {
+        checkNameSpelling(name);
         String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(
                 "CREATE TABLE " + wordListName +
@@ -162,6 +166,10 @@ public class WordListController extends SQLiteOpenHelper {
     }
 
     public void addNewWordList(String listName, List<Word> wordList) throws WrongListNameException, WrongWordException {
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        for (Word word : wordList) {
+            wordFactory.checkWordSpelling(word);
+        }
         addNewWordList(listName);
         for (Word word : wordList) {
             addNewWordIntoList(listName, word);

@@ -44,5 +44,7 @@
     <string name="russian_word">Russian word</string>
     <string name="add">Add</string>
     <string name="save">Save</string>
-    <string name="add_word">Add words</string>
+    <string name="add_word">Add word</string>
+    <string name="Russian">Russian</string>
+    <string name="English">English</string>
 </resources>

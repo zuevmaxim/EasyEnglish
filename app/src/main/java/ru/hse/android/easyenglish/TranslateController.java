@@ -26,13 +26,16 @@ class TranslateController {
         return translation;
     }
 
+
     static class TranslatorTask extends AsyncTask<String, Void, String> {
 
         @Override
         protected String doInBackground(String... params) {
             String textToBeTranslated = params[0];
             String languagePair = params[1];
-
+            if (textToBeTranslated.isEmpty()) {
+                return "";
+            }
             String yandexKey = "trnsl.1.1.20190312T113058Z.7f00768b72b9448a.44608f0910349bb5b3217137b8e605101fa2e17d";
             String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate"
                     + "?key=" + yandexKey

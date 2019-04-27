@@ -42,6 +42,7 @@ public class WordListAdapter extends ArrayAdapter<String> {
 
         viewHolder.setButton.setOnClickListener(v -> Toast.makeText(context, "set button", Toast.LENGTH_LONG).show());
         return convertView;
+
     }
 
     private class ViewHolder {

@@ -7,57 +7,20 @@
     tools:context=".AddNewListActivity">
 
     <ListView
-        android:id="@+id/new_word_lists"
+        android:id="@+id/new_word_list"
         android:layout_width="397dp"
         android:layout_height="255dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="44dp"
         android:choiceMode="singleChoice"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_russian_word_text"
-        app:layout_constraintVertical_bias="0.0" />
-
-    <EditText
-        android:id="@+id/new_english_word_text"
-        android:layout_width="151dp"
-        android:layout_height="42dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="80dp"
-        android:layout_marginBottom="16dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/english_word"
-        android:inputType="textPersonName|text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/new_list_name_text"
-        app:layout_constraintVertical_bias="0.0"
-        tools:targetApi="o" />
-
-    <EditText
-        android:id="@+id/new_russian_word_text"
-        android:layout_width="151dp"
-        android:layout_height="42dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:autofillHints=""
-        android:ems="10"
-        android:hint="@string/russian_word"
-        android:inputType="textPersonName|text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/new_english_word_text"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_list_name_text"
-        app:layout_constraintVertical_bias="0.0"
-        tools:targetApi="o" />
+        app:layout_constraintVertical_bias="0.158" />
 
     <EditText
         android:id="@+id/new_list_name_text"
@@ -117,24 +80,24 @@
 
     <Button
         android:id="@+id/add_word_button"
-        android:layout_width="68dp"
+        android:layout_width="100dp"
         android:layout_height="47dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="248dp"
         android:layout_marginBottom="8dp"
-        android:text="@string/add"
+        android:text="@string/add_word"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.6"
-        app:layout_constraintStart_toEndOf="@+id/new_english_word_text"
-        app:layout_constraintTop_toBottomOf="@+id/new_list_name_text"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/new_word_list"
+        app:layout_constraintVertical_bias="0.269" />
 
     <Button
         android:id="@+id/save_list_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="100dp"
+        android:layout_height="47dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -142,9 +105,8 @@
         android:text="@string/save"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/new_word_lists"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintStart_toEndOf="@+id/add_word_button"
+        app:layout_constraintTop_toBottomOf="@+id/new_word_list"
+        app:layout_constraintVertical_bias="0.285" />
 
 </android.support.constraint.ConstraintLayout>

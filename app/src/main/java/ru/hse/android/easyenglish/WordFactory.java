@@ -100,12 +100,34 @@ public class WordFactory extends SQLiteAssetHelper {
                 ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
     }
 
+    public void checkWordSpelling(Word word) throws WrongWordException {
+        checkEnglishSpelling(word.getEnglish());
+        checkRussianSpelling(word.getRussian());
+    }
+
+    public void checkRussianSpelling(String russianWord) throws WrongWordException {
+        if (russianWord.isEmpty()) {
+            throw new WrongWordException("Empty word");
+        }
+        if (!russianWord.matches("[А-Яа-я\\-\\s]+")) {
+            throw new WrongWordException("Letters and spaces only");
+        }
+    }
+
+    public void checkEnglishSpelling(String englishWord) throws WrongWordException {
+        if (englishWord.isEmpty()) {
+            throw new WrongWordException("Empty word");
+        }
+        if (!englishWord.matches("[A-Za-z\\-\\s]+")) {
+            throw new WrongWordException("Letters and spaces only");
+        }
+    }
+
     public int addNewWord(Word word) throws WrongWordException {
         String russianWord = word.getRussian();
         String englishWord = word.getEnglish();
-        if (!russianWord.matches("[А-Яа-я\\s]+") || !englishWord.matches("[A-Za-z\\s]+")) {
-            throw new WrongWordException("Words should only contains letters and spaces. Check your spelling.");
-        }
+        checkWordSpelling(word);
+
         Cursor cursor = getReadableDatabase()
                 .query(TABLE_NAME,
                         new String[]{ID_COLUMN},
