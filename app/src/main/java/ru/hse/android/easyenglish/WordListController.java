@@ -134,6 +134,15 @@ public class WordListController extends SQLiteOpenHelper {
     }
 
     private void addNewWordList(String name) throws IllegalArgumentException {
+        if (containsWordList(name)) {
+            throw new IllegalArgumentException("Such list already exists.");
+        }
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Enter list name.");
+        }
+        if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
+            throw new IllegalArgumentException("List name should starts with letter and only contains latin letters and spaces.");
+        }
         String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(
                 "CREATE TABLE " + wordListName +
@@ -144,22 +153,19 @@ public class WordListController extends SQLiteOpenHelper {
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
     }
 
-    private void addNewWordIntoList(String name, int wordId) {
+    private void addNewWordIntoList(String name, Word word) throws IllegalArgumentException {
         String wordListName = name.replace(' ', '_');
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        int wordId = wordFactory.addNewWord(word);
         getWritableDatabase().execSQL(
                 "INSERT INTO " + wordListName +
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
     }
 
     public void addNewWordList(String listName, List<Word> wordList) throws IllegalArgumentException {
-        if (containsWordList(listName)) {
-            throw new IllegalArgumentException("Such list already exists.");
-        }
         addNewWordList(listName);
-        WordFactory wordFactory = MainController.getGameController().getWordFactory();
         for (Word word : wordList) {
-            int wordId = wordFactory.addNewWord(word);
-            addNewWordIntoList(listName, wordId);
+            addNewWordIntoList(listName, word);
         }
     }
 }

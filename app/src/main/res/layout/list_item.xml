@@ -3,13 +3,6 @@
     android:layout_height="wrap_content"
     android:padding="16dp">
 
-    <Button
-        android:id="@+id/set_list_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/set" />
-
     <TextView
         android:id="@+id/list_name"
         android:layout_width="264dp"
@@ -17,5 +10,12 @@
         android:layout_weight="1"
         android:textAlignment="textStart"
         android:textSize="18sp" />
+
+    <Button
+        android:id="@+id/set_list_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="@string/add_word" />
 
 </LinearLayout>

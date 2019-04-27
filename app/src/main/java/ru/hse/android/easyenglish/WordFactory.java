@@ -100,31 +100,37 @@ public class WordFactory extends SQLiteAssetHelper {
                 ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
     }
 
-    public int addNewWord(Word word) {
-        Cursor cursor = getReadableDatabase()
-                .query(TABLE_NAME,
-                        new String[]{ID_COLUMN},
-                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
-                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
-        int id = 1;
-        if (cursor.moveToNext()) {
-            id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+    public int addNewWord(Word word) throws IllegalArgumentException {
+        String russianWord = word.getRussian();
+        String englishWord = word.getEnglish();
+        if (!russianWord.matches("[А-Яа-я\\s]+") || !englishWord.matches("[A-Za-z\\s]+")) {
+            throw new IllegalArgumentException("Words should only contains letters and spaces. Check your spelling.");
+        } else {
+            Cursor cursor = getReadableDatabase()
+                    .query(TABLE_NAME,
+                            new String[]{ID_COLUMN},
+                            RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                            new String[]{russianWord, englishWord}, null, null, null);
+            int id = 1;
+            if (cursor.moveToNext()) {
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+                cursor.close();
+                return id;
+            }
+            cursor.close();
+            getWritableDatabase().execSQL(
+                    "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN + ") " +
+                            "VALUES ('" + russianWord + "', '" + englishWord + "', '" + word.getTranscription() + "')");
+            cursor = getReadableDatabase()
+                    .query(TABLE_NAME,
+                            new String[]{ID_COLUMN},
+                            RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                            new String[]{russianWord, englishWord}, null, null, null);
+            if (cursor.moveToNext()) {
+                id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+            }
             cursor.close();
             return id;
         }
-        cursor.close();
-        getWritableDatabase().execSQL(
-                "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN +  ") " +
-                        "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "')");
-        cursor = getReadableDatabase()
-                .query(TABLE_NAME,
-                        new String[]{ID_COLUMN},
-                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
-                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
-        if (cursor.moveToNext()) {
-            id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
-        }
-        cursor.close();
-        return id;
     }
 }
