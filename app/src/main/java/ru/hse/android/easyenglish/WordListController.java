@@ -49,14 +49,15 @@ public class WordListController extends SQLiteOpenHelper {
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + TEMPORARY_WORD_LIST_TABLE_NAME + "', 0)");
         db.execSQL(
                 "INSERT INTO " + TEMPORARY_WORD_LIST_TABLE_NAME +
-                        "(" + WORD_ID_COLUMN + ") VALUES ('" + 33 + "')");
+                        "(" + WORD_ID_COLUMN + ") VALUES ('" + 42 + "')");
         updateRandomWordList(db);
     }
 
     private void updateRandomWordList(SQLiteDatabase db) {
         db.execSQL("DELETE FROM " + RANDOM_WORD_LIST_TABLE_NAME);
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
         for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
-            int wordId = MainController.getGameController().getWordFactory().nextWordId();
+            int wordId = wordFactory.nextWordId();
             db.execSQL(
                     "INSERT INTO " + RANDOM_WORD_LIST_TABLE_NAME +
                             "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
@@ -133,15 +134,13 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    private void addNewWordList(String name) throws IllegalArgumentException {
+    private void addNewWordList(String name) throws WrongListNameException {
         if (containsWordList(name)) {
-            throw new IllegalArgumentException("Such list already exists.");
-        }
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Enter list name.");
-        }
-        if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
-            throw new IllegalArgumentException("List name should starts with letter and only contains letters and spaces.");
+            throw new WrongListNameException("Such list already exists.");
+        } else if (name.isEmpty()) {
+            throw new WrongListNameException("Enter list name.");
+        } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
+            throw new WrongListNameException("List name should starts with letter and only contains letters and spaces.");
         }
         String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(
@@ -153,7 +152,7 @@ public class WordListController extends SQLiteOpenHelper {
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
     }
 
-    private void addNewWordIntoList(String name, Word word) throws IllegalArgumentException {
+    private void addNewWordIntoList(String name, Word word) throws WrongWordException {
         String wordListName = name.replace(' ', '_');
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         int wordId = wordFactory.addNewWord(word);
@@ -162,7 +161,7 @@ public class WordListController extends SQLiteOpenHelper {
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
     }
 
-    public void addNewWordList(String listName, List<Word> wordList) throws IllegalArgumentException {
+    public void addNewWordList(String listName, List<Word> wordList) throws WrongListNameException, WrongWordException {
         addNewWordList(listName);
         for (Word word : wordList) {
             addNewWordIntoList(listName, word);

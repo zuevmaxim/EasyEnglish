@@ -31,9 +31,9 @@ public class AddNewListActivity extends AppCompatActivity {
                 android.R.layout.simple_list_item_1, newList);
 
         newWordsListView.setAdapter(adapter);
-        Context context = this;
-        Button addWord = findViewById(R.id.add_word_button);
-        addWord.setOnClickListener(v -> {
+        final Context context = this;
+        Button addWordButton = findViewById(R.id.add_word_button);
+        addWordButton.setOnClickListener(v -> {
             String russianWord = russianWordText.getText().toString();
             String englishWord = englishWordText.getText().toString();
             if (russianWord.isEmpty() && englishWord.isEmpty()) {
@@ -67,7 +67,7 @@ public class AddNewListActivity extends AppCompatActivity {
             try {
                 tryAgain = false;
                 controller.addNewWordList(newWordListName, newWordsList);
-            } catch (IllegalArgumentException e) {
+            } catch (WrongWordException | WrongListNameException e) {
                 tryAgain = true;
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
