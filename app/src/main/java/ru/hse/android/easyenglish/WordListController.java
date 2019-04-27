@@ -141,7 +141,7 @@ public class WordListController extends SQLiteOpenHelper {
             throw new IllegalArgumentException("Enter list name.");
         }
         if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
-            throw new IllegalArgumentException("List name should starts with letter and only contains latin letters and spaces.");
+            throw new IllegalArgumentException("List name should starts with letter and only contains letters and spaces.");
         }
         String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(

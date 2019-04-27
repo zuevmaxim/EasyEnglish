@@ -36,7 +36,6 @@ public class AddNewListActivity extends AppCompatActivity {
         addWord.setOnClickListener(v -> {
             String russianWord = russianWordText.getText().toString();
             String englishWord = englishWordText.getText().toString();
-            Boolean tryAgain = false;
             if (russianWord.isEmpty() && englishWord.isEmpty()) {
                 Toast.makeText(context, "Enter word", Toast.LENGTH_LONG).show();
             } else {
@@ -60,15 +59,15 @@ public class AddNewListActivity extends AppCompatActivity {
 
 
         WordListController controller = MainController.getGameController().getWordListController();
-        final EditText newWordLIstNameText = findViewById(R.id.new_list_name_text);
+        final EditText newWordListNameText = findViewById(R.id.new_list_name_text);
         Button saveWordList = findViewById(R.id.save_list_button);
         saveWordList.setOnClickListener(v -> {
             boolean tryAgain;
-            String newWordLIstName = newWordLIstNameText.getText().toString();
+            String newWordListName = newWordListNameText.getText().toString();
             try {
                 tryAgain = false;
-                controller.addNewWordList(newWordLIstName, newWordsList);
-            } catch (Exception e) {
+                controller.addNewWordList(newWordListName, newWordsList);
+            } catch (IllegalArgumentException e) {
                 tryAgain = true;
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
