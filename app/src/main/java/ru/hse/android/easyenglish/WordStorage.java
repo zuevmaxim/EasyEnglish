@@ -26,4 +26,25 @@ public class WordStorage {
         }
         return word;
     }
+
+    /**
+     * Get a list of words of length min(number, maxLength).
+     * maxLength -- current size of storage.
+     * @param number requested length of list
+     * @return list of words
+     */
+    public List<Word> getSetOfWords(int number) {
+        if (number >= words.size()) {
+            return new ArrayList<>(words);
+        }
+        List<Word> wordList = new ArrayList<>(number);
+        for (int j = 0; j < number; j++) {
+            wordList.add(words.get(i));
+            i++;
+            if (i == words.size()) {
+                i = 0;
+            }
+        }
+        return wordList;
+    }
 }

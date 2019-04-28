@@ -14,33 +14,33 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
 
         Button matchingButton = findViewById(R.id.matching_button);
         matchingButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LocalGamesMenuActivity.this, ErrorActivity.class);
+            Intent intent = new Intent(this, ErrorActivity.class);
             startActivity(intent);
         });
 
         Button letterPuzzleButton = findViewById(R.id.letter_puzzle_button);
         letterPuzzleButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LocalGamesMenuActivity.this, GameActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("game name", "Letter Puzzle");
             startActivity(intent);
         });
 
         Button wordPuzzleButton = findViewById(R.id.word_puzzle_button);
         wordPuzzleButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LocalGamesMenuActivity.this, ErrorActivity.class);
+            Intent intent = new Intent(this, ErrorActivity.class);
             startActivity(intent);
         });
 
         Button definitionsButton = findViewById(R.id.definitions_button);
         definitionsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LocalGamesMenuActivity.this, GameActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
             intent.putExtra("game name", "Choose Definition");
             startActivity(intent);
         });
 
         Button synonymsButton = findViewById(R.id.synonyms_button);
         synonymsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(LocalGamesMenuActivity.this, ErrorActivity.class);
+            Intent intent = new Intent(this, ErrorActivity.class);
             startActivity(intent);
         });
     }

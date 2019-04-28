@@ -114,8 +114,8 @@ public class WordListController extends SQLiteOpenHelper {
     public void setCurrentWordList(String newListName) {
         String currentListName = getCurrentWordList().replace(' ', '_');
         String newCurrentListName = newListName.replace(' ', '_');
-        getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
-        getReadableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
+        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
+        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
@@ -134,7 +134,7 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    public void checkNameSpelling(String name)throws WrongListNameException {
+    private void checkNameSpelling(String name)throws WrongListNameException {
         if (containsWordList(name)) {
             throw new WrongListNameException("Such list already exists.");
         } else if (name.isEmpty()) {

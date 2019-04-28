@@ -15,12 +15,11 @@ import java.util.List;
 public class WordAdapter extends BaseAdapter {
     private final int layout;
     private final LayoutInflater layoutInflater;
-    private List<Word> words;
-    private final Context context;
+    private final List<Word> words;
 
+    @SuppressWarnings("SameParameterValue")
     WordAdapter(Context context, int layout, List<Word> words) {
         this.words = words;
-        this.context = context;
         this.layout = layout;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -37,7 +36,7 @@ public class WordAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return 0;
+        return position;
     }
 
     private void setErrorIfWrongSpelling(ViewHolder viewHolder) {

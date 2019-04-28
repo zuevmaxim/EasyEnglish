@@ -108,8 +108,7 @@ public class WordFactory extends SQLiteAssetHelper {
     public void checkRussianSpelling(String russianWord) throws WrongWordException {
         if (russianWord.isEmpty()) {
             throw new WrongWordException("Empty word");
-        }
-        if (!russianWord.matches("[А-Яа-я\\-\\s]+")) {
+        } else if (!russianWord.matches("[А-Яа-я\\-\\s]+")) {
             throw new WrongWordException("Letters and spaces only");
         }
     }

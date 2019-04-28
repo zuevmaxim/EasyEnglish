@@ -14,10 +14,11 @@ import android.widget.ImageView;
 public class GameActivity extends AppCompatActivity {
     private int succeedTasks = 0;
     private int totalTasks = 0;
+    private static final int GAME_RESULT_CODE = 42;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == 42) { //TODO
+        if (requestCode == GAME_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
                 boolean endOfGame = data.getBooleanExtra("end game", false);
@@ -76,8 +77,8 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void runGame(Class<?> gameClass) {
-        Intent intent = new Intent(GameActivity.this, gameClass);
-        startActivityForResult(intent, 42);
+        Intent intent = new Intent(this, gameClass);
+        startActivityForResult(intent, GAME_RESULT_CODE);
     }
 
     private void endGame() {

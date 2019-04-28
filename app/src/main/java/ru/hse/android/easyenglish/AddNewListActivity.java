@@ -21,12 +21,11 @@ public class AddNewListActivity extends AppCompatActivity {
         final ListView newWordView = findViewById(R.id.new_word_list);
         List<Word> newWordList = new ArrayList<>();
         WordAdapter adapter = new WordAdapter(this, R.layout.word_item, newWordList);
+        adapter.addRow();
         newWordView.setAdapter(adapter);
 
         Button addNewListButton = findViewById(R.id.add_word_button);
-        addNewListButton.setOnClickListener(v -> {
-            adapter.addRow();
-        });
+        addNewListButton.setOnClickListener(v -> adapter.addRow());
 
         WordListController controller = MainController.getGameController().getWordListController();
         EditText newWordListNameText = findViewById(R.id.new_list_name_text);
@@ -43,8 +42,8 @@ public class AddNewListActivity extends AppCompatActivity {
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
             }
             if (!tryAgain) {
-                Intent intent = new Intent(this, WordListActivity.class);
-                startActivity(intent);
+                setResult(RESULT_OK);
+                finish();
             }
         });
     }

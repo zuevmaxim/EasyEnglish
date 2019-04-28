@@ -9,7 +9,7 @@ package ru.hse.android.easyenglish;
 public class ShowInfoActivity extends DialogFragment {
     @NonNull
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder=new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
         assert getArguments() != null;
         String title = getArguments().getString("title");
         String message = getArguments().getString("message");

@@ -14,31 +14,31 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Button gamesButton = findViewById(R.id.games_button);
         gamesButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainMenuActivity.this, GamesMenuActivity.class);
+            Intent intent = new Intent(this, GamesMenuActivity.class);
             startActivity(intent);
         });
 
         Button dictionaryButton = findViewById(R.id.dictionary_button);
         dictionaryButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainMenuActivity.this, DictionaryActivity.class);
+            Intent intent = new Intent(this, DictionaryActivity.class);
             startActivity(intent);
         });
 
         Button statisticsButton = findViewById(R.id.statistics_button);
         statisticsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainMenuActivity.this, StatisticsActivity.class);
+            Intent intent = new Intent(this, StatisticsActivity.class);
             startActivity(intent);
         });
 
         Button wordListButton = findViewById(R.id.word_list_button);
         wordListButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainMenuActivity.this, WordListActivity.class);
+            Intent intent = new Intent(this, WordListActivity.class);
             startActivity(intent);
         });
 
         Button learnWordsButton = findViewById(R.id.learn_words_button);
         learnWordsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(MainMenuActivity.this, LearnWordsActivity.class);
+            Intent intent = new Intent(this, LearnWordsActivity.class);
             startActivity(intent);
         });
     }

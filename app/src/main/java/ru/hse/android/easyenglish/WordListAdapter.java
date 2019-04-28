@@ -40,7 +40,7 @@ public class WordListAdapter extends ArrayAdapter<String> {
 
         viewHolder.nameView.setText(listName);
 
-        viewHolder.setButton.setOnClickListener(v -> Toast.makeText(context, "set button", Toast.LENGTH_LONG).show());
+        viewHolder.setButton.setOnClickListener(v -> Toast.makeText(context, "set button", Toast.LENGTH_LONG).show()); //TODO
         return convertView;
 
     }

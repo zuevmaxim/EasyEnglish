@@ -14,19 +14,19 @@ public class GamesMenuActivity extends AppCompatActivity {
 
         Button words10Button = findViewById(R.id._10words_button);
         words10Button.setOnClickListener(v -> {
-            Intent intent = new Intent(GamesMenuActivity.this, ErrorActivity.class);
+            Intent intent = new Intent(this, ErrorActivity.class);
             startActivity(intent);
         });
 
         Button localGamesButton = findViewById(R.id.local_games_button);
         localGamesButton.setOnClickListener(v -> {
-            Intent intent = new Intent(GamesMenuActivity.this, LocalGamesMenuActivity.class);
+            Intent intent = new Intent(this, LocalGamesMenuActivity.class);
             startActivity(intent);
         });
 
         Button wordChainButton = findViewById(R.id.word_chain_button);
         wordChainButton.setOnClickListener(v -> {
-            Intent intent = new Intent(GamesMenuActivity.this, ErrorActivity.class);
+            Intent intent = new Intent(this, ErrorActivity.class);
             startActivity(intent);
         });
     }
