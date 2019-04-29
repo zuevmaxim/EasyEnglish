@@ -1,7 +1,6 @@
 package ru.hse.android.easyenglish;
 
 import android.content.Context;
-import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -11,7 +10,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 public class AddNewListActivity extends AppCompatActivity {
@@ -21,8 +19,8 @@ public class AddNewListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_list);
 
         final ListView newWordView = findViewById(R.id.new_word_list);
-        List<Pair<Word, WordAdapter.AUTOCHANGES>> newWordList = new ArrayList<>();
-        WordAdapter adapter = new WordAdapter(this, R.layout.word_item, newWordList);
+        List<Pair<Word, EditWordListAdapter.AUTOCHANGES>> newWordList = new ArrayList<>();
+        EditWordListAdapter adapter = new EditWordListAdapter(this, R.layout.editable_word_item, newWordList);
         adapter.addRow();
         newWordView.setAdapter(adapter);
 

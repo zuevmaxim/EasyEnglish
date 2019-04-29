@@ -14,13 +14,13 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class WordAdapter extends BaseAdapter {
+public class EditWordListAdapter extends BaseAdapter {
     private final int layout;
     private final LayoutInflater layoutInflater;
     private final List<Pair<Word, AUTOCHANGES>> words;
 
     @SuppressWarnings("SameParameterValue")
-    WordAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
+    EditWordListAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
         this.layout = layout;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
