@@ -21,6 +21,10 @@ public class GameController {
         wordFactory.saveWordStatistic(word, result);
     }
 
+    public void resetStatistics(Word word) {
+        wordFactory.resetStatistics(word);
+    }
+
     public WordFactory getWordFactory() {
         return wordFactory;
     }

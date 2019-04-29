@@ -57,6 +57,14 @@ public class WordFactory extends SQLiteAssetHelper {
         return word;
     }
 
+    public void resetStatistics(Word word) {
+        getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
+                ERRORS_NUMBER_COLUMN + " = 0, " +
+                TOTAL_NUMBER_COLUMN + " = 0" +
+                " WHERE " + RUSSIAN_COLUMN + " = '" + word.getRussian() + "' AND " +
+                ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
+    }
+
     public int getWordErrorNumber(Word word) {
         int errorNumber = 0;
         String[] columns = {ERRORS_NUMBER_COLUMN};
