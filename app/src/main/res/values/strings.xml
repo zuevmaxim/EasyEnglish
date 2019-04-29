@@ -47,4 +47,8 @@
     <string name="add_word">Add word</string>
     <string name="Russian">Russian</string>
     <string name="English">English</string>
+    <string name="edit">edit</string>
+    <string name="right">Right</string>
+    <string name="wrong">Wrong</string>
+    <string name="reset">Reset</string>
 </resources>
