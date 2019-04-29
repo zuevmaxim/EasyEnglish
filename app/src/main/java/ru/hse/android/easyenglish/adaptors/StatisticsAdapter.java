@@ -71,7 +71,7 @@ public class StatisticsAdapter extends BaseAdapter {
         viewHolder.englishWordText.setText(word.getEnglish());
         int errorNumber = wordFactory.getWordErrorNumber(word);
         int totalNumber = wordFactory.getWordTotalNumber(word);
-        viewHolder.rightScore.setText(String.valueOf(totalNumber));
+        viewHolder.rightScore.setText(String.valueOf(totalNumber - errorNumber));
         viewHolder.wrongScore.setText(String.valueOf(errorNumber));
         return convertView;
     }
