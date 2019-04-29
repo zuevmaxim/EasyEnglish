@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.words;
 
 public class ExtendedWord extends Word {
     private final PartOfSpeech partOfSpeech;

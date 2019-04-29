@@ -9,6 +9,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.words.Word;
+
 public class LetterPuzzleActivity extends AppCompatActivity {
 
     private boolean result;

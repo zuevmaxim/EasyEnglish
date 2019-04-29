@@ -1,10 +1,12 @@
 package ru.hse.android.easyenglish;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import ru.hse.android.easyenglish.controllers.TranslateController;
 
 public class DictionaryActivity extends AppCompatActivity {
 

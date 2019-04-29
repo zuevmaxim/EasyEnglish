@@ -10,6 +10,9 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.controllers.WordListController;
+
 public class WordListActivity extends AppCompatActivity {
     private static final int SET_LISTS_CODE = 23;
 

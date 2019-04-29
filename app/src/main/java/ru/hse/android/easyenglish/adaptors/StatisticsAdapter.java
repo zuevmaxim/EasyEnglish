@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.adaptors;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,12 +9,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import java.util.List;
 
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.R;
+import ru.hse.android.easyenglish.words.Word;
+import ru.hse.android.easyenglish.words.WordFactory;
+
 public class StatisticsAdapter extends BaseAdapter {
 
     private Context context;
-    private List<Word> words;
-    private int layout;
-    private LayoutInflater layoutInflater;
+    private final List<Word> words;
+    private final int layout;
+    private final LayoutInflater layoutInflater;
 
     public StatisticsAdapter(Context context, int layout, List<Word> words) {
         this.layout = layout;

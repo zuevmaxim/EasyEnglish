@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.adaptors;
 
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;
@@ -14,13 +14,20 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import ru.hse.android.easyenglish.Pair;
+import ru.hse.android.easyenglish.R;
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.controllers.TranslateController;
+import ru.hse.android.easyenglish.exceptions.WrongWordException;
+import ru.hse.android.easyenglish.words.Word;
+
 public class EditWordListAdapter extends BaseAdapter {
     private final int layout;
     private final LayoutInflater layoutInflater;
     private final List<Pair<Word, AUTOCHANGES>> words;
 
     @SuppressWarnings("SameParameterValue")
-    EditWordListAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
+    public EditWordListAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
         this.layout = layout;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -186,7 +193,7 @@ public class EditWordListAdapter extends BaseAdapter {
     }
     
     
-    enum AUTOCHANGES {
+    public enum AUTOCHANGES {
         RUSSIAN,
         BOTH,
         NONE,

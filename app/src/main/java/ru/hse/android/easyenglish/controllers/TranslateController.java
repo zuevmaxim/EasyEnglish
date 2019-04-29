@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.controllers;
 
 import android.os.AsyncTask;
 
@@ -11,8 +11,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.concurrent.ExecutionException;
 
-class TranslateController {
-    static String translate(String word, String languagePair) {
+public class TranslateController {
+    public static String translate(String word, String languagePair) {
         TranslatorTask translatorTask = new TranslatorTask();
         translatorTask.execute(word, languagePair);
         String translation = null;

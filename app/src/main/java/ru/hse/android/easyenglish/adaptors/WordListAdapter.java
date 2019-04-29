@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.adaptors;
 
 
 import android.content.Context;
@@ -11,6 +11,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.List;
+
+import ru.hse.android.easyenglish.R;
 
 public class WordListAdapter extends ArrayAdapter<String> {
     private final int layout;

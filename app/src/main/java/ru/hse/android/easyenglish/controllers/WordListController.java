@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.controllers;
 
 
 import android.content.Context;
@@ -9,6 +9,11 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ru.hse.android.easyenglish.exceptions.WrongListNameException;
+import ru.hse.android.easyenglish.exceptions.WrongWordException;
+import ru.hse.android.easyenglish.words.Word;
+import ru.hse.android.easyenglish.words.WordFactory;
 
 public class WordListController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -98,7 +103,7 @@ public class WordListController extends SQLiteOpenHelper {
         }
     }
 
-    private void updateRandomWordList() {
+    public void updateRandomWordList() {
         updateRandomWordList(getWritableDatabase());
     }
 

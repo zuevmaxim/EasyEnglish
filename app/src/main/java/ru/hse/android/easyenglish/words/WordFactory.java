@@ -1,8 +1,10 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.words;
 
 import android.content.Context;
 import android.database.Cursor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+
+import ru.hse.android.easyenglish.exceptions.WrongWordException;
 
 public class WordFactory extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;

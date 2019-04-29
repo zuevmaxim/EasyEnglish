@@ -13,6 +13,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.words.Word;
+import ru.hse.android.easyenglish.controllers.WordStorage;
+
 public class ChooseDefinitionActivity extends AppCompatActivity {
     private final Random random = new Random();
 

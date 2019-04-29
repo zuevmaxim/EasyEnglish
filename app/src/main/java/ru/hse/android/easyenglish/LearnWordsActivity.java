@@ -1,11 +1,15 @@
 package ru.hse.android.easyenglish;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.controllers.WordListController;
 
 public class LearnWordsActivity extends AppCompatActivity {
 

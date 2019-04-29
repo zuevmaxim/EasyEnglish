@@ -1,8 +1,10 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.controllers;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
+import ru.hse.android.easyenglish.words.Word;
 
 public class WordStorage {
     WordStorage() {

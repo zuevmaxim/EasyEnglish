@@ -1,8 +1,8 @@
 package ru.hse.android.easyenglish;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -11,6 +11,13 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ru.hse.android.easyenglish.adaptors.EditWordListAdapter;
+import ru.hse.android.easyenglish.controllers.MainController;
+import ru.hse.android.easyenglish.controllers.WordListController;
+import ru.hse.android.easyenglish.exceptions.WrongListNameException;
+import ru.hse.android.easyenglish.exceptions.WrongWordException;
+import ru.hse.android.easyenglish.words.Word;
 
 public class AddNewListActivity extends AppCompatActivity {
     @Override

@@ -1,6 +1,9 @@
-package ru.hse.android.easyenglish;
+package ru.hse.android.easyenglish.controllers;
 
 import android.content.Context;
+
+import ru.hse.android.easyenglish.words.Word;
+import ru.hse.android.easyenglish.words.WordFactory;
 
 public class GameController {
     GameController(Context context) {
