@@ -217,4 +217,10 @@ public class WordListController extends SQLiteOpenHelper {
             addNewWordIntoList(listName, word);
         }
     }
+
+    public void setWordListName(String name, String newName) {
+        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME +
+                " SET " + NAME_COLUMN + " = '" + newName.replace(' ', '_') + "' " +
+                "WHERE " + NAME_COLUMN + " = '" + name.replace(' ', '_') + "'");
+    }
 }
