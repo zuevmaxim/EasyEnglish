@@ -294,4 +294,12 @@ public class WordListController extends SQLiteOpenHelper {
         cursor.close();
         return result;
     }
+
+    public void deleteWordList(String name) throws WrongListNameException {
+        if (!containsWordList(name)) {
+            throw new WrongListNameException("No such word list.");
+        }
+        getWritableDatabase().execSQL("DROP TABLE " + getTableName(name));
+        getWritableDatabase().execSQL("DELETE FROM " + WORD_LISTS_TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordListId(name));
+    }
 }
