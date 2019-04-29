@@ -153,4 +153,38 @@ public class WordFactory extends SQLiteAssetHelper {
         cursor.close();
         return id;
     }
+
+    public int getWordId(Word word) throws WrongWordException {
+        int wordId;
+        String[] columns = {ID_COLUMN};
+        Cursor cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        columns,
+                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+
+        if (cursor.moveToNext()) {
+            wordId = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        } else {
+            throw new WrongWordException("No such word.");
+        }
+        cursor.close();
+        return wordId;
+    }
+
+    public boolean containsWord(Word word) {
+        boolean result = false;
+        String[] columns = {ID_COLUMN};
+        Cursor cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        columns,
+                        RUSSIAN_COLUMN + " = ? AND " + ENGLISH_COLUMN + " = ?",
+                        new String[]{word.getRussian(), word.getEnglish()}, null, null, null);
+
+        if (cursor.moveToNext()) {
+           result = true;
+        }
+        cursor.close();
+        return result;
+    }
 }

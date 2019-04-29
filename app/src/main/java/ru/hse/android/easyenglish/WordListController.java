@@ -198,9 +198,13 @@ public class WordListController extends SQLiteOpenHelper {
                         WORD_ID_COLUMN + " INTEGER)");
     }
 
-    private void addNewWordIntoList(String name, Word word) throws WrongWordException {
+    public void addNewWordIntoList(String name, Word word) throws WrongWordException, WrongListNameException {
         String wordListName = name.replace(' ', '_');
+        if (!containsWordList(name)) {
+            throw new WrongListNameException("No such word list.");
+        }
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        wordFactory.checkWordSpelling(word);
         int wordId = wordFactory.addNewWord(word);
         getWritableDatabase().execSQL(
                 "INSERT INTO " + getTableName(wordListName) +
@@ -222,5 +226,37 @@ public class WordListController extends SQLiteOpenHelper {
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME +
                 " SET " + NAME_COLUMN + " = '" + newName.replace(' ', '_') + "' " +
                 "WHERE " + NAME_COLUMN + " = '" + name.replace(' ', '_') + "'");
+    }
+
+    public void deleteWordFromList(String name, Word word) throws WrongListNameException {
+        String wordListName = name.replace(' ', '_');
+        if (!containsWordList(name)) {
+            throw new WrongListNameException("No such word list.");
+        }
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        if (!wordFactory.containsWord(word)) {
+            return;
+        }
+        int wordId = 0;
+        try {
+            wordId = wordFactory.getWordId(word);
+        } catch (WrongWordException ignored) { }
+        getWritableDatabase().execSQL(
+                "DELETE FROM " + getTableName(wordListName) +
+                        " WHERE " + WORD_ID_COLUMN + " = " + wordId);
+    }
+
+    public void setWordInList(String name, Word word, Word newWord) throws WrongListNameException, WrongWordException {
+        String wordListName = name.replace(' ', '_');
+        if (!containsWordList(name)) {
+            throw new WrongListNameException("No such word list.");
+        }
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        int wordId = wordFactory.getWordId(word);
+        int newWordId = wordFactory.addNewWord(newWord);
+        getWritableDatabase().execSQL(
+                "UPDATE " + getTableName(wordListName) +
+                        " SET " + WORD_ID_COLUMN + " = " + newWordId +
+                        " WHERE " + WORD_ID_COLUMN + " = " + wordId);
     }
 }
