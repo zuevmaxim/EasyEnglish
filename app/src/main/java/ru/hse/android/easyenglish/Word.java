@@ -38,4 +38,20 @@ public class Word {
     public void setTranscription(String transcription) {
         this.transcription = transcription;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Word) {
+            Word word = (Word) obj;
+            return russian.equals(word.russian)
+                    && english.equals(word.english)
+                    && transcription.equals(word.transcription);
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        return (int) (((long) 17 * russian.hashCode() + 23 * english.hashCode() + 29 * transcription.hashCode()) % Integer.MAX_VALUE);
+    }
 }

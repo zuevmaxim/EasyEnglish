@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class WordListController extends SQLiteOpenHelper {
     private static final int DATABASE_VERSION = 1;
@@ -203,6 +204,9 @@ public class WordListController extends SQLiteOpenHelper {
         if (!containsWordList(name)) {
             throw new WrongListNameException("No such word list.");
         }
+        if (containsWord(wordListName, word)) {
+            throw new WrongWordException("Such word already included into list.");
+        }
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         wordFactory.checkWordSpelling(word);
         int wordId = wordFactory.addNewWord(word);
@@ -213,6 +217,12 @@ public class WordListController extends SQLiteOpenHelper {
 
     public void addNewWordList(String listName, List<Word> wordList) throws WrongListNameException, WrongWordException {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
+
+        List<Word> listWithoutDuplicates = wordList.stream().distinct().collect(Collectors.toList());
+        if (!wordList.equals(listWithoutDuplicates)) {
+            throw new WrongWordException("Word duplicate.");
+        }
+
         for (Word word : wordList) {
             wordFactory.checkWordSpelling(word);
         }
@@ -251,6 +261,9 @@ public class WordListController extends SQLiteOpenHelper {
         if (!containsWordList(name)) {
             throw new WrongListNameException("No such word list.");
         }
+        if (containsWord(wordListName, newWord)) {
+            throw new WrongWordException("Such word already included into list.");
+        }
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         int wordId = wordFactory.getWordId(word);
         int newWordId = wordFactory.addNewWord(newWord);
@@ -258,5 +271,27 @@ public class WordListController extends SQLiteOpenHelper {
                 "UPDATE " + getTableName(wordListName) +
                         " SET " + WORD_ID_COLUMN + " = " + newWordId +
                         " WHERE " + WORD_ID_COLUMN + " = " + wordId);
+    }
+
+    private boolean containsWord(String listName, Word word) throws WrongListNameException {
+        if (!containsWordList(listName)) {
+            throw new WrongListNameException("No such word list.");
+        }
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        int wordId;
+        try {
+             wordId = wordFactory.getWordId(word);
+        } catch (WrongWordException e) {
+            return false;
+        }
+        String[] columns = {WORD_ID_COLUMN};
+        String tableName = getTableName(listName);
+        Cursor cursor = getReadableDatabase().query(tableName, columns, WORD_ID_COLUMN + " = ?", new String[]{Integer.toString(wordId)}, null, null, null);
+        boolean result = false;
+        if (cursor.moveToNext()) {
+            result = true;
+        }
+        cursor.close();
+        return result;
     }
 }
