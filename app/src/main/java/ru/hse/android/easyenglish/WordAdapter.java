@@ -11,14 +11,16 @@ import android.widget.BaseAdapter;
 import android.widget.EditText;
 
 import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 public class WordAdapter extends BaseAdapter {
     private final int layout;
     private final LayoutInflater layoutInflater;
-    private final List<Word> words;
+    private final List<Pair<Word, AUTOCHANGES>> words;
 
     @SuppressWarnings("SameParameterValue")
-    WordAdapter(Context context, int layout, List<Word> words) {
+    WordAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
         this.layout = layout;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -66,7 +68,9 @@ public class WordAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
 
-        Word word = words.get(position);
+        Word word = words.get(position).getKey();
+        Consumer<AUTOCHANGES> setAutochanges = (v) -> words.set(position, new Pair<>(word, v));
+        Supplier<AUTOCHANGES> getAutochanges = () -> words.get(position).getValue();
 
         viewHolder.russianWordText.setHint("Russian");
         viewHolder.russianWordText.addTextChangedListener(new TextWatcher() {
@@ -82,8 +86,35 @@ public class WordAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                word.setEnglish((TranslateController.translate(s.toString(), "ru-en")));
-                viewHolder.englishWordText.setHint(word.getEnglish());
+                switch (getAutochanges.get()) {
+                    case BOTH:
+                        if (!s.toString().isEmpty()) {
+                            setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                        } else {
+                            throw new AssertionError(); //TODO
+                        }
+                        break;
+                    case NONE:
+                        if (s.toString().isEmpty()) {
+                            setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                        }
+                        break;
+                    case ENGLISH:
+                        if (s.toString().isEmpty()) {
+                            word.setEnglish("");
+                            viewHolder.englishWordText.setText(word.getEnglish());
+                            setAutochanges.accept(AUTOCHANGES.BOTH);
+                        }
+                        break;
+                    case RUSSIAN:
+                        setAutochanges.accept(AUTOCHANGES.NONE);
+                        break;
+                }
+                if (getAutochanges.get() == AUTOCHANGES.ENGLISH) {
+                    word.setEnglish((TranslateController.translate(s.toString(), "ru-en")));
+                    viewHolder.englishWordText.setText(word.getEnglish());
+                    setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                }
                 setErrorIfWrongSpelling(viewHolder);
             }
         });
@@ -101,21 +132,43 @@ public class WordAdapter extends BaseAdapter {
 
             @Override
             public void afterTextChanged(Editable s) {
-                word.setRussian((TranslateController.translate(s.toString(), "en-ru")));
-                viewHolder.russianWordText.setHint(word.getRussian());
+                switch (getAutochanges.get()) {
+                    case BOTH:
+                        if (!s.toString().isEmpty()) {
+                            setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                        } else {
+                            throw new AssertionError(); //TODO
+                        }
+                        break;
+                    case NONE:
+                        if (s.toString().isEmpty()) {
+                            setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                        }
+                        break;
+                    case ENGLISH:
+                        setAutochanges.accept(AUTOCHANGES.NONE);
+                        break;
+                    case RUSSIAN:
+                        if (s.toString().isEmpty()) {
+                            word.setRussian("");
+                            viewHolder.russianWordText.setText(word.getRussian());
+                            setAutochanges.accept(AUTOCHANGES.BOTH);
+                        }
+                        break;
+                }
+                if (getAutochanges.get() == AUTOCHANGES.RUSSIAN) {
+                    word.setRussian((TranslateController.translate(s.toString(), "en-ru")));
+                    viewHolder.russianWordText.setText(word.getRussian());
+                    setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                }
                 setErrorIfWrongSpelling(viewHolder);
             }
         });
         return convertView;
     }
 
-    public void addRow(Word word){
-        words.add(0, word);
-        notifyDataSetChanged();
-    }
-
     public void addRow(){
-        words.add(0, new Word("", ""));
+        words.add(new Pair<>(new Word("", ""), AUTOCHANGES.BOTH));
         notifyDataSetChanged();
     }
 
@@ -130,5 +183,13 @@ public class WordAdapter extends BaseAdapter {
             russianWordLayout = view.findViewById(R.id.russian_word_layout);
             englishWordLayout = view.findViewById(R.id.english_word_layout);
         }
+    }
+    
+    
+    enum AUTOCHANGES {
+        RUSSIAN,
+        BOTH,
+        NONE,
+        ENGLISH
     }
 }

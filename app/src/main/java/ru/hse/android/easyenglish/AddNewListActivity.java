@@ -11,6 +11,8 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public class AddNewListActivity extends AppCompatActivity {
     @Override
@@ -19,7 +21,7 @@ public class AddNewListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_list);
 
         final ListView newWordView = findViewById(R.id.new_word_list);
-        List<Word> newWordList = new ArrayList<>();
+        List<Pair<Word, WordAdapter.AUTOCHANGES>> newWordList = new ArrayList<>();
         WordAdapter adapter = new WordAdapter(this, R.layout.word_item, newWordList);
         adapter.addRow();
         newWordView.setAdapter(adapter);
@@ -35,8 +37,9 @@ public class AddNewListActivity extends AppCompatActivity {
         saveNewListButton.setOnClickListener(v -> {
             boolean tryAgain = false;
             String newWordListName = newWordListNameText.getText().toString();
+            List<Word> wordList = newWordList.stream().map(Pair::getKey).collect(Collectors.toList());
             try {
-                controller.addNewWordList(newWordListName, newWordList);
+                controller.addNewWordList(newWordListName, wordList);
             } catch (WrongWordException | WrongListNameException e) {
                 tryAgain = true;
                 Toast.makeText(context, e.getMessage(), Toast.LENGTH_LONG).show();
