@@ -17,7 +17,7 @@
         <activity android:name=".ChooseDefinitionActivity" />
         <activity android:name=".WordListActivity" />
         <activity android:name=".GameActivity" />
-        <activity android:name=".MainActivity">
+        <activity android:name=".MainMenuActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -30,7 +30,6 @@
         <activity android:name=".LocalGamesMenuActivity" />
         <activity android:name=".ErrorActivity" />
         <activity android:name=".GamesMenuActivity" />
-        <activity android:name=".MainMenuActivity" />
     </application>
 
 </manifest>

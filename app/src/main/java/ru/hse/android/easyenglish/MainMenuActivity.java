@@ -12,6 +12,8 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        MainController.init(this);
+
         Button gamesButton = findViewById(R.id.games_button);
         gamesButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GamesMenuActivity.class);
