@@ -18,6 +18,7 @@ public class WordListController extends SQLiteOpenHelper {
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
     private static final String WORD_ID_COLUMN = "word_id";
+    private static final String TABLE = "table";
 
     private static final int RANDOM_WORD_LIST_LENGTH = 10;
 
@@ -25,19 +26,49 @@ public class WordListController extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
+    private int getWordListId(String name, SQLiteDatabase db) {
+        name = name.replace(' ', '_');
+        String[] columns = {ID_COLUMN};
+        Cursor cursor = db
+                .query(WORD_LISTS_TABLE_NAME,
+                        columns,
+                        NAME_COLUMN + " = ?",
+                        new String[]{name}, null, null, null);
+        int result = 0;
+        while(cursor.moveToNext()) {
+            result = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+        }
+        cursor.close();
+        return result;
+    }
+
+    private int getWordListId(String name) {
+        return getWordListId(name, getReadableDatabase());
+    }
+
+    private String getTableName(String wordListName, SQLiteDatabase db) {
+        return TABLE + getWordListId(wordListName, db);
+    }
+
+    private String getTableName(String wordListName) {
+        return getTableName(wordListName, getReadableDatabase());
+    }
+
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(
                 "CREATE TABLE " + WORD_LISTS_TABLE_NAME +
-                "(" + NAME_COLUMN + " VARCHAR PRIMARY KEY," +
+                "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                NAME_COLUMN + " VARCHAR," +
                 CURRENT_LIST_COLUMN + " INTEGER)");
         db.execSQL(
-                "CREATE TABLE " + RANDOM_WORD_LIST_TABLE_NAME +
+                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
+                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + RANDOM_WORD_LIST_TABLE_NAME + "', 1)");
+        db.execSQL(
+                "CREATE TABLE " + getTableName(RANDOM_WORD_LIST_TABLE_NAME, db) +
                         "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         WORD_ID_COLUMN + " INTEGER)");
-        db.execSQL(
-                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
-                "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + RANDOM_WORD_LIST_TABLE_NAME + "', 1)");
+        /*
         // TODO ADD EXTRA WORD LISTS. THIS IS TEMPORARY LIST
         final String TEMPORARY_WORD_LIST_TABLE_NAME = "temporary_word_list";
         db.execSQL(
@@ -50,18 +81,24 @@ public class WordListController extends SQLiteOpenHelper {
         db.execSQL(
                 "INSERT INTO " + TEMPORARY_WORD_LIST_TABLE_NAME +
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + 42 + "')");
+        */
         updateRandomWordList(db);
     }
 
     private void updateRandomWordList(SQLiteDatabase db) {
-        db.execSQL("DELETE FROM " + RANDOM_WORD_LIST_TABLE_NAME);
+        String tableName = getTableName(RANDOM_WORD_LIST_TABLE_NAME, db);
+        db.execSQL("DELETE FROM " + tableName);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
             int wordId = wordFactory.nextWordId();
             db.execSQL(
-                    "INSERT INTO " + RANDOM_WORD_LIST_TABLE_NAME +
+                    "INSERT INTO " + tableName +
                             "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
         }
+    }
+
+    private void updateRandomWordList() {
+        updateRandomWordList(getWritableDatabase());
     }
 
     @Override
@@ -82,11 +119,16 @@ public class WordListController extends SQLiteOpenHelper {
     }
 
     public List<Word> getCurrentListWords() {
+        return getListWords(getCurrentWordList());
+    }
+
+    public List<Word> getListWords(String wordListName) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> words = new ArrayList<>();
         String[] columns = {WORD_ID_COLUMN};
-        String currentListName = getCurrentWordList().replace(' ', '_');
-        Cursor cursor = getReadableDatabase().query(currentListName, columns, null, null, null, null, null);
+        String listName = wordListName.replace(' ', '_');
+        String tableName = getTableName(listName);
+        Cursor cursor = getReadableDatabase().query(tableName, columns, null, null, null, null, null);
         while(cursor.moveToNext()) {
             int wordId = cursor.getInt(cursor.getColumnIndexOrThrow(WORD_ID_COLUMN));
             words.add(wordFactory.getWordById(wordId));
@@ -148,12 +190,12 @@ public class WordListController extends SQLiteOpenHelper {
         checkNameSpelling(name);
         String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(
-                "CREATE TABLE " + wordListName +
-                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        WORD_ID_COLUMN + " INTEGER)");
-        getWritableDatabase().execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
+        getWritableDatabase().execSQL(
+                "CREATE TABLE " + getTableName(wordListName) +
+                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        WORD_ID_COLUMN + " INTEGER)");
     }
 
     private void addNewWordIntoList(String name, Word word) throws WrongWordException {
@@ -161,7 +203,7 @@ public class WordListController extends SQLiteOpenHelper {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         int wordId = wordFactory.addNewWord(word);
         getWritableDatabase().execSQL(
-                "INSERT INTO " + wordListName +
+                "INSERT INTO " + getTableName(wordListName) +
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
     }
 
