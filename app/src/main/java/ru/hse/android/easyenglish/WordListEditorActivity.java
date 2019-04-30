@@ -16,14 +16,7 @@ import ru.hse.android.easyenglish.controllers.WordListController;
 
 public class WordListEditorActivity extends AppCompatActivity {
     private static final int ADD_NEW_LIST_CODE = 37;
-
-    private void setUpListView() {
-        WordListController wordListController = MainController.getGameController().getWordListController();
-        List<String> wordListNames = wordListController.getWordLists();
-        final ListView wordLists = findViewById(R.id.current_word_lists);
-        ArrayAdapter<String> adapter = new WordListAdapter(this, R.layout.list_item, wordListNames);
-        wordLists.setAdapter(adapter);
-    }
+    private static final int EDIT_LIST_CODE = 38;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,25 +30,20 @@ public class WordListEditorActivity extends AppCompatActivity {
             Intent intent = new Intent(this, AddNewListActivity.class);
             startActivityForResult(intent, ADD_NEW_LIST_CODE);
         });
-
         setResult(RESULT_OK);
+    }
 
-        /*
-        expandableListView.setAdapter(getListAdapter(context));
-        Button updateRandomListButton = findViewById(R.id.update_random_list_button);
-        updateRandomListButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                MainController.getGameController().getWordListController(context).updateRandomWordList();
-                MainController.getGameController().getWordStorage().updateStorage(context);
-                expandableListView.setAdapter(getListAdapter(context));
-            }
-        });
-*/
+    private void setUpListView() {
+        WordListController wordListController = MainController.getGameController().getWordListController();
+        List<String> wordListNames = wordListController.getWordLists();
+        final ListView wordLists = findViewById(R.id.current_word_lists);
+        ArrayAdapter<String> adapter = new WordListAdapter(this, R.layout.list_item, wordListNames);
+        wordLists.setAdapter(adapter);
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_NEW_LIST_CODE) {
+        if (requestCode == ADD_NEW_LIST_CODE || requestCode == EDIT_LIST_CODE) {
             if (resultCode == RESULT_OK) {
                 setUpListView();
             }

@@ -171,6 +171,13 @@ public class EditWordListAdapter extends BaseAdapter {
                 setErrorIfWrongSpelling(viewHolder);
             }
         });
+
+        if (!word.getRussian().equals("")) {
+            viewHolder.russianWordText.setText(word.getRussian());
+        }
+        if (!word.getEnglish().equals("")) {
+            viewHolder.englishWordText.setText(word.getEnglish());
+        }
         return convertView;
     }
 

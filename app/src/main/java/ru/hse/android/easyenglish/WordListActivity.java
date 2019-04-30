@@ -17,6 +17,7 @@ public class WordListActivity extends AppCompatActivity {
     private static final int SET_LISTS_CODE = 23;
 
     private int currentListNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,7 +30,6 @@ public class WordListActivity extends AppCompatActivity {
             Intent intent = new Intent(this, WordListEditorActivity.class);
             startActivityForResult(intent, SET_LISTS_CODE);
         });
-
     }
 
     private void setUpListView() {

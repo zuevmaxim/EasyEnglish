@@ -1,7 +1,10 @@
 package ru.hse.android.easyenglish.adaptors;
 
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +15,14 @@ import android.widget.Toast;
 
 import java.util.List;
 
+import ru.hse.android.easyenglish.EditListActivity;
 import ru.hse.android.easyenglish.R;
+import ru.hse.android.easyenglish.WordListEditorActivity;
+
+import static android.support.v4.app.ActivityCompat.startActivityForResult;
 
 public class WordListAdapter extends ArrayAdapter<String> {
+    private static final int EDIT_LIST_CODE = 38;
     private final int layout;
     private final LayoutInflater layoutInflater;
     private final List<String> wordListNames;
@@ -42,16 +50,19 @@ public class WordListAdapter extends ArrayAdapter<String> {
 
         viewHolder.nameView.setText(listName);
 
-        viewHolder.setButton.setOnClickListener(v -> Toast.makeText(context, "set button", Toast.LENGTH_LONG).show()); //TODO
+        viewHolder.editButton.setOnClickListener(v -> {
+            Intent intent = new Intent(context, EditListActivity.class);
+            intent.putExtra("list name", listName);
+            ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
+        });
         return convertView;
-
     }
 
     private class ViewHolder {
-        private final Button setButton;
+        private final Button editButton;
         private final TextView nameView;
         private ViewHolder(View view){
-            setButton = view.findViewById(R.id.set_list_button);
+            editButton = view.findViewById(R.id.set_list_button);
             nameView = view.findViewById(R.id.list_name);
         }
     }
