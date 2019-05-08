@@ -31,8 +31,8 @@ public class AddNewListActivity extends AppCompatActivity {
         adapter.addRow();
         newWordView.setAdapter(adapter);
 
-        Button addNewListButton = findViewById(R.id.add_word_button);
-        addNewListButton.setOnClickListener(v -> adapter.addRow());
+        Button addNewWordButton = findViewById(R.id.add_word_button);
+        addNewWordButton.setOnClickListener(v -> adapter.addRow());
 
         WordListController controller = MainController.getGameController().getWordListController();
         EditText newWordListNameText = findViewById(R.id.new_list_name_text);

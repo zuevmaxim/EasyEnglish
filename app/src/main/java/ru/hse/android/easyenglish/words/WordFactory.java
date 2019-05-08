@@ -37,12 +37,6 @@ public class WordFactory extends SQLiteAssetHelper {
         return id;
     }
 
-// --Commented out by Inspection START (25.04.2019 3:19):
-//    public Word nextWord() {
-//        return getWordById(nextWordId());
-//    }
-// --Commented out by Inspection STOP (25.04.2019 3:19)
-
     public Word getWordById(int id) {
         String[] columns = {RUSSIAN_COLUMN, ENGLISH_COLUMN, TRANSCRIPTION_COLUMN};
         Cursor cursor = getReadableDatabase()
