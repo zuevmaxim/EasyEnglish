@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish.adaptors;
+package ru.hse.android.easyenglish.adapters;
 
 import android.content.Context;
 import android.support.design.widget.TextInputLayout;

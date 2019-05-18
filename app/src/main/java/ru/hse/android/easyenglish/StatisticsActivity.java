@@ -6,7 +6,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
-import ru.hse.android.easyenglish.adaptors.StatisticsAdapter;
+import ru.hse.android.easyenglish.adapters.StatisticsAdapter;
 import ru.hse.android.easyenglish.controllers.MainController;
 import ru.hse.android.easyenglish.controllers.WordListController;
 import ru.hse.android.easyenglish.words.Word;

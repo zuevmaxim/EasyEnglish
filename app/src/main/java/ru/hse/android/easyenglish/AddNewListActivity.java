@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ru.hse.android.easyenglish.adaptors.EditWordListAdapter;
+import ru.hse.android.easyenglish.adapters.EditWordListAdapter;
 import ru.hse.android.easyenglish.controllers.MainController;
 import ru.hse.android.easyenglish.controllers.WordListController;
 import ru.hse.android.easyenglish.exceptions.WrongListNameException;
