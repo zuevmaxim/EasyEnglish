@@ -117,60 +117,12 @@ public class TranslateController {
     private static class DicResult {
         public Definition[] def ;
 
-        public Definition[] getDef() {
-            return def;
-        }
-
-        public void setDef(Definition[] def) {
-            this.def = def;
-        }
-
         public static class Definition {
             public String text;
             public String pos;
             public String ts;
             public String gen;
             public Translation[] tr;
-
-            public String getGen() {
-                return gen;
-            }
-
-            public String getPos() {
-                return pos;
-            }
-
-            public String getText() {
-                return text;
-            }
-
-            public String getTs() {
-                return ts;
-            }
-
-            public Translation[] getTr() {
-                return tr;
-            }
-
-            public void setGen(String gen) {
-                this.gen = gen;
-            }
-
-            public void setPos(String pos) {
-                this.pos = pos;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public void setTr(Translation[] tr) {
-                this.tr = tr;
-            }
-
-            public void setTs(String ts) {
-                this.ts = ts;
-            }
         }
 
         public static class Translation {
@@ -180,117 +132,21 @@ public class TranslateController {
             public Synonym[] syn;
             public Meaning[] mean;
             public Example[] ex;
-
-            public String getGen() {
-                return gen;
-            }
-
-            public String getPos() {
-                return pos;
-            }
-
-            public String getText() {
-                return text;
-            }
-
-            public void setGen(String gen) {
-                this.gen = gen;
-            }
-
-            public void setPos(String pos) {
-                this.pos = pos;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public Example[] getEx() {
-                return ex;
-            }
-
-            public Meaning[] getMean() {
-                return mean;
-            }
-
-            public Synonym[] getSyn() {
-                return syn;
-            }
-
-            public void setEx(Example[] ex) {
-                this.ex = ex;
-            }
-
-            public void setMean(Meaning[] mean) {
-                this.mean = mean;
-            }
-
-            public void setSyn(Synonym[] syn) {
-                this.syn = syn;
-            }
         }
 
         public static class Synonym {
             public String text;
             public String pos;
             public String gen;
-
-            public String getGen() {
-                return gen;
-            }
-
-            public String getPos() {
-                return pos;
-            }
-
-            public String getText() {
-                return text;
-            }
-
-            public void setGen(String gen) {
-                this.gen = gen;
-            }
-
-            public void setPos(String pos) {
-                this.pos = pos;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
         }
 
         public static class Meaning {
             public String text;
-
-            public void setText(String text) {
-                this.text = text;
-            }
-
-            public String getText() {
-                return text;
-            }
         }
 
         public static class Example {
             public String text;
             public Translation[] tr;
-
-            public Translation[] getTr() {
-                return tr;
-            }
-
-            public String getText() {
-                return text;
-            }
-
-            public void setTr(Translation[] tr) {
-                this.tr = tr;
-            }
-
-            public void setText(String text) {
-                this.text = text;
-            }
         }
     }
 }

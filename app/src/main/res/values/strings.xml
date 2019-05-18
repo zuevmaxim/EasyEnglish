@@ -42,4 +42,7 @@
     <string name="right">Right</string>
     <string name="wrong">Wrong</string>
     <string name="reset">Reset</string>
+    <string name="opponent_answer">Opponent answer:</string>
+    <string name="your_answer">Your answer:</string>
+    <string name="send_answer">send answer</string>
 </resources>
