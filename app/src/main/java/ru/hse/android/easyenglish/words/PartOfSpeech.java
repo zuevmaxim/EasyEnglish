@@ -1,6 +1,6 @@
 package ru.hse.android.easyenglish.words;
 
-enum PartOfSpeech {
+public enum PartOfSpeech {
     NOUN,
     VERB,
     ADJECTIVE,
@@ -9,5 +9,6 @@ enum PartOfSpeech {
     PREPOSITION,
     CONJUCTION,
     INTERJECTION,
-    ARTICLE
+    ARTICLE,
+    DETERMINER
 }
