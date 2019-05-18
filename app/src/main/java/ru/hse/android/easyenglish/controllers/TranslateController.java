@@ -274,9 +274,9 @@ public class TranslateController {
 
         public static class Example {
             public String text;
-            public Translation tr;
+            public Translation[] tr;
 
-            public Translation getTr() {
+            public Translation[] getTr() {
                 return tr;
             }
 
@@ -284,7 +284,7 @@ public class TranslateController {
                 return text;
             }
 
-            public void setTr(Translation tr) {
+            public void setTr(Translation[] tr) {
                 this.tr = tr;
             }
 
