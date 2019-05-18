@@ -11,24 +11,85 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutionException;
+
+import ru.hse.android.easyenglish.words.ExtendedWord;
+import ru.hse.android.easyenglish.words.PartOfSpeech;
 
 public class TranslateController {
     public static String translate(String word, String languagePair) {
+        DicResult dicResult = translateTotal(word, languagePair);
+        String result = null;
+        if (dicResult != null
+                && dicResult.def != null
+                && dicResult.def.length > 0
+                && dicResult.def[0].tr != null
+                && dicResult.def[0].tr.length > 0) {
+            result = dicResult.def[0].tr[0].text;
+        }
+        return result;
+    }
+
+    public static DicResult translateTotal(String word, String languagePair) {
         DictionaryTask translatorTask = new DictionaryTask();
         translatorTask.execute(word, languagePair);
-        DicResult result = null;
         try {
-            result = translatorTask.get();
+            return translatorTask.get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 
+    private static PartOfSpeech convertFromString(String pos) {
+        if (pos == null) {
+            return null;
+        }
+        switch (pos) {
+            case "noun":
+                return PartOfSpeech.NOUN;
+            case "verb":
+                return PartOfSpeech.VERB;
+            case "conjunction":
+                return PartOfSpeech.CONJUCTION;
+            case "adverb":
+                return PartOfSpeech.ADVERB;
+            case "adjective":
+                return PartOfSpeech.ADJECTIVE;
+            case "determiner":
+                return PartOfSpeech.DETERMINER;
+            case "pronoun":
+                return PartOfSpeech.PRONOUN;
+        }
+        return null;
+    }
+
+    public static ExtendedWord wordInfo(String word) {
+        DicResult dicResult = translateTotal(word, "en-en");
+        String transcription = "";
+        List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
+        if (dicResult != null
+                && dicResult.def != null) {
+            if (dicResult.def.length > 0
+                    && dicResult.def[0] != null
+                    && dicResult.def[0].pos != null) {
+                transcription = dicResult.def[0].pos;
+            }
+            for (DicResult.Definition definition : dicResult.def) {
+                if (definition != null) {
+                    PartOfSpeech partOfSpeech = convertFromString(definition.pos);
+                    if (partOfSpeech != null) {
+                        partOfSpeechList.add(partOfSpeech);
+                    }
+                }
+            }
+        }
+        return new ExtendedWord(word, transcription, partOfSpeechList);
+    }
 
     static class TranslatorTask extends AsyncTask<String, Void, String> {
 
@@ -150,23 +211,3 @@ public class TranslateController {
         }
     }
 }
-
-/*
-{"head":{},
-        "def":[
-                {"text":"укроп",
-        "pos":"noun",
-        "gen":"м",
-        "anm":"неодуш",
-        "tr":[
-                {"text":"dill",
-        "pos":"noun",
-        "syn":[
-                {"text":"fennel","pos":"noun"}],
-        "mean":[
-                {"text":"фенхель"}],
-        "ex":[
-                {"text":"свежий укроп","tr":[{"text":"fresh dill"}]},{"text":"сладкий укроп","tr":[{"text":"sweet fennel"}]}]
-                }]}
-        ]}
-        */
