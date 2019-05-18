@@ -26,7 +26,7 @@ public class GamesMenuActivity extends AppCompatActivity {
 
         Button wordChainButton = findViewById(R.id.word_chain_button);
         wordChainButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, WordChainFindOpponentActivity.class);
+            Intent intent = new Intent(this, NetworkController.class);
             startActivity(intent);
         });
     }
