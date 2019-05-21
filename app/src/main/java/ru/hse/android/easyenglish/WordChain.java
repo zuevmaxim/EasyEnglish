@@ -2,20 +2,61 @@ package ru.hse.android.easyenglish;
 
 import android.util.Log;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.LinkedHashSet;
 
-public class Turn {
+import ru.hse.android.easyenglish.controllers.TranslateController;
 
-    public static final String TAG = "EBTurn";
+public class WordChain {
+
+    public static final String TAG = "WORD_CHAIN";
 
     public String data = "";
-    public int turnCounter;
+    public int turnCounter = 0;
 
-    public Turn() {
+    private static final String WORD_LABEL = "word";
+    private static final String STATUS_LABEL = "status";
+    private int turn = 0;
+    private LinkedHashSet<String> previousWords = new LinkedHashSet<>();
+    private String lastWord = "";
+
+    public LinkedHashSet<String> getPreviousWords() {
+        return previousWords;
+    }
+
+    public void changeTurn() {
+        turn = 1 - turn;
+    }
+
+    public void setTurn(boolean turn) {
+        this.turn = turn ? 1 : 0;
+    }
+
+    public boolean isMyTurn() {
+        return turn == 0;
+    }
+
+    public boolean isValidMove(String word) { //TODO should return error code
+        return !previousWords.contains(word) && TranslateController.wordInfo(word).isNoun()
+                && (lastWord.isEmpty() || lastWord.charAt(lastWord.length() - 1) == word.charAt(0));
+    }
+
+    public void makeMove(String word) {
+        previousWords.add(word);
+    }
+
+    public byte[] hash(String word) {
+        return word.getBytes(StandardCharsets.UTF_8);
+    }
+
+    public String unhash(@NotNull byte[] message) {
+        return new String(message, StandardCharsets.UTF_8);
     }
 
     // This is the byte array we will write out to the TBMP API.
@@ -38,11 +79,11 @@ public class Turn {
     }
 
     // Creates a new instance of SkeletonTurn.
-    static public Turn unpersist(byte[] byteArray) {
+    static public WordChain unpersist(byte[] byteArray) {
 
         if (byteArray == null) {
             Log.d(TAG, "Empty array---possible bug.");
-            return new Turn();
+            return new WordChain();
         }
 
         String st = null;
@@ -55,7 +96,7 @@ public class Turn {
 
         Log.d(TAG, "====UNPERSIST \n" + st);
 
-        Turn retVal = new Turn();
+        WordChain retVal = new WordChain();
 
         try {
             JSONObject obj = new JSONObject(st);

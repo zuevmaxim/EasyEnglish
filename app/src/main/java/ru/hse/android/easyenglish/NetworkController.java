@@ -2,7 +2,6 @@ package ru.hse.android.easyenglish;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,7 +22,6 @@ import com.google.android.gms.games.GamesCallbackStatusCodes;
 import com.google.android.gms.games.GamesClient;
 import com.google.android.gms.games.GamesClientStatusCodes;
 import com.google.android.gms.games.InvitationsClient;
-import com.google.android.gms.games.Player;
 import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationCallback;
@@ -32,16 +30,16 @@ import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchUpdateCallback;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class NetworkController extends AppCompatActivity {
 
-    public static final String TAG = "SkeletonActivity";
+    private static final String TAG = "WORD_CHAIN";
+    private static final int PLAYERS_NUMBER = 1;
 
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
@@ -53,8 +51,9 @@ public class NetworkController extends AppCompatActivity {
     private InvitationsClient mInvitationsClient = null;
 
     // Local convenience pointers
-    public TextView mDataView;
-    public TextView mTurnTextView;
+    private TextView mDataView;
+    private TextView mOpponentText;
+    private TextView mTurnTextView;
 
     private AlertDialog mAlertDialog;
 
@@ -72,7 +71,9 @@ public class NetworkController extends AppCompatActivity {
     // This is the current match data after being unpersisted.
     // Do not retain references to match data once you have
     // taken an action on the match, such as takeTurn()
-    public Turn mTurnData;
+    //public WordChain mWordChainData;
+    private String opponentWord;
+    private final HashMap<String, WordChain> wordChains = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +82,7 @@ public class NetworkController extends AppCompatActivity {
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
-        Button startGameButton = findViewById(R.id.button_quick_game);
+        Button startGameButton = findViewById(R.id.button_quick_game); //TODO : rename
         startGameButton.setOnClickListener(view -> {
             Log.d(TAG, "Quick game button clicked");
             onStartGame();
@@ -106,6 +107,7 @@ public class NetworkController extends AppCompatActivity {
         });
 
         mDataView = findViewById(R.id.data_view);
+        mOpponentText = findViewById(R.id.opponent_text);
         mTurnTextView = findViewById(R.id.turn_counter_view);
 
         Log.w(TAG, "Start game.");
@@ -165,7 +167,7 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    private String mDisplayName;
+    private String mDisplayName; // TODO show name
     private String mPlayerId;
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
@@ -177,12 +179,9 @@ public class NetworkController extends AppCompatActivity {
         Games.getPlayersClient(this, googleSignInAccount)
                 .getCurrentPlayer()
                 .addOnSuccessListener(
-                        new OnSuccessListener<Player>() {
-                            @Override
-                            public void onSuccess(Player player) {
-                                mDisplayName = player.getDisplayName();
-                                mPlayerId = player.getPlayerId();
-                            }
+                        player -> {
+                            mDisplayName = player.getDisplayName();
+                            mPlayerId = player.getPlayerId();
                         }
                 )
                 .addOnFailureListener(createFailureListener("There was a problem getting the player!"));
@@ -192,15 +191,12 @@ public class NetworkController extends AppCompatActivity {
         // Retrieve the TurnBasedMatch from the connectionHint
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
         gamesClient.getActivationHint()
-                .addOnSuccessListener(new OnSuccessListener<Bundle>() {
-                    @Override
-                    public void onSuccess(Bundle hint) {
-                        if (hint != null) {
-                            TurnBasedMatch match = hint.getParcelable(Multiplayer.EXTRA_TURN_BASED_MATCH);
+                .addOnSuccessListener(hint -> {
+                    if (hint != null) {
+                        TurnBasedMatch match = hint.getParcelable(Multiplayer.EXTRA_TURN_BASED_MATCH);
 
-                            if (match != null) {
-                                updateMatch(match);
-                            }
+                        if (match != null) {
+                            updateMatch(match);
                         }
                     }
                 })
@@ -231,37 +227,22 @@ public class NetworkController extends AppCompatActivity {
     }
 
     private OnFailureListener createFailureListener(final String string) {
-        return new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                handleException(e, string);
-            }
-        };
+        return e -> handleException(e, string);
     }
 
     // Displays your inbox. You will get back onActivityResult where
     // you will need to figure out what you clicked on.
     public void onCheckGamesClicked() {
         mTurnBasedMultiplayerClient.getInboxIntent()
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_LOOK_AT_MATCHES);
-                    }
-                })
+                .addOnSuccessListener(intent -> startActivityForResult(intent, RC_LOOK_AT_MATCHES))
                 .addOnFailureListener(createFailureListener(getString(R.string.error_get_inbox_intent)));
     }
 
     // Open the create-game UI. You will get back an onActivityResult
     // and figure out what to do.
     public void onStartMatchClicked() {
-        mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 7, true)
-                .addOnSuccessListener(new OnSuccessListener<Intent>() {
-                    @Override
-                    public void onSuccess(Intent intent) {
-                        startActivityForResult(intent, RC_SELECT_PLAYERS);
-                    }
-                })
+        mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 1, true)
+                .addOnSuccessListener(intent -> startActivityForResult(intent, RC_SELECT_PLAYERS))
                 .addOnFailureListener(createFailureListener(
                         getString(R.string.error_get_select_opponents)));
     }
@@ -269,7 +250,7 @@ public class NetworkController extends AppCompatActivity {
     // Create a one-on-one automatch game.
     public void onQuickMatchClicked() {
 
-        Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(1, 1, 0);
+        Bundle autoMatchCriteria = RoomConfig.createAutoMatchCriteria(PLAYERS_NUMBER, PLAYERS_NUMBER, 0);
 
         TurnBasedMatchConfig turnBasedMatchConfig = TurnBasedMatchConfig.builder()
                 .setAutoMatchCriteria(autoMatchCriteria).build();
@@ -278,12 +259,7 @@ public class NetworkController extends AppCompatActivity {
 
         // Start the match
         mTurnBasedMultiplayerClient.createMatch(turnBasedMatchConfig)
-                .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                    @Override
-                    public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                        onInitiateMatch(turnBasedMatch);
-                    }
-                })
+                .addOnSuccessListener(this::onInitiateMatch)
                 .addOnFailureListener(createFailureListener("There was a problem creating a match!"));
     }
 
@@ -293,12 +269,7 @@ public class NetworkController extends AppCompatActivity {
         showSpinner();
 
         mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
-                .addOnSuccessListener(new OnSuccessListener<String>() {
-                    @Override
-                    public void onSuccess(String matchId) {
-                        onCancelMatch(matchId);
-                    }
-                })
+                .addOnSuccessListener(this::onCancelMatch)
                 .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
 
         isDoingTurn = false;
@@ -311,12 +282,7 @@ public class NetworkController extends AppCompatActivity {
         String nextParticipantId = getNextParticipantId();
 
         mTurnBasedMultiplayerClient.leaveMatchDuringTurn(mMatch.getMatchId(), nextParticipantId)
-                .addOnSuccessListener(new OnSuccessListener<Void>() {
-                    @Override
-                    public void onSuccess(Void aVoid) {
-                        onLeaveMatch();
-                    }
-                })
+                .addOnSuccessListener(aVoid -> onLeaveMatch())
                 .addOnFailureListener(createFailureListener("There was a problem leaving the match!"));
     }
 
@@ -324,12 +290,7 @@ public class NetworkController extends AppCompatActivity {
     public void onFinishClicked() {
         showSpinner();
         mTurnBasedMultiplayerClient.finishMatch(mMatch.getMatchId())
-                .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                    @Override
-                    public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                        onUpdateMatch(turnBasedMatch);
-                    }
-                })
+                .addOnSuccessListener(this::onUpdateMatch)
                 .addOnFailureListener(createFailureListener("There was a problem finishing the match!"));
 
         isDoingTurn = false;
@@ -343,28 +304,34 @@ public class NetworkController extends AppCompatActivity {
 
         String nextParticipantId = getNextParticipantId();
         // Create the next turn
-        mTurnData.turnCounter += 1;
-        mTurnData.data = mDataView.getText().toString();
-
+        //mWordChainData.turnCounter += 1;
+        //mWordChainData.data = mDataView.getText().toString();
+        WordChain currentWordChain = wordChains.get(mMatch.getMatchId());
+        // TODO add turn checking
+        String word = mDataView.getText().toString();
+        if (!currentWordChain.isMyTurn() || !currentWordChain.isValidMove(word)) {
+            Toast.makeText(this, "Error move!", Toast.LENGTH_LONG).show();
+            return;
+        }
         mTurnBasedMultiplayerClient.takeTurn(mMatch.getMatchId(),
-                mTurnData.persist(), nextParticipantId)
-                .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                    @Override
-                    public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                        Log.d(TAG, "Send data.");
-                        onUpdateMatch(turnBasedMatch);
-                    }
+                currentWordChain.hash(word), nextParticipantId)
+                .addOnSuccessListener(turnBasedMatch -> {
+                    Log.d(TAG, "Send data.");
+                    currentWordChain.makeMove(word);
+                    currentWordChain.changeTurn();
+                    setGameplayUI();
+                    onUpdateMatch(turnBasedMatch);
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
 
-        mTurnData = null;
+        //mWordChainData = null;
     }
 
     // Switch to gameplay view.
     public void setGameplayUI() {
         isDoingTurn = true;
-        mDataView.setText(mTurnData.data);
-        mTurnTextView.setText(getString(R.string.turn_label, mTurnData.turnCounter));
+        mOpponentText.setText(opponentWord);
+        mTurnTextView.setText("Turn " + (wordChains.get(mMatch.getMatchId()).isMyTurn() ? "My" : "Opponent"));
     }
 
     public void showSpinner() {
@@ -384,12 +351,10 @@ public class NetworkController extends AppCompatActivity {
 
         // set dialog message
         alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
-                new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        // if this button is clicked, close
-                        // current activity
-                    }
+                (dialog, id) -> {
+                    // if this button is clicked, close
+                    // current activity
+                    //finish();
                 });
 
         // create alert dialog
@@ -408,17 +373,10 @@ public class NetworkController extends AppCompatActivity {
         alertDialogBuilder
                 .setCancelable(false)
                 .setPositiveButton("Sure, rematch!",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                                rematch();
-                            }
-                        })
+                        (dialog, id) -> rematch())
                 .setNegativeButton("No.",
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int id) {
-                            }
+                        (dialog, id) -> {
+                            //finish();
                         });
 
         alertDialogBuilder.show();
@@ -441,16 +399,13 @@ public class NetworkController extends AppCompatActivity {
         Log.d(TAG, "signInSilently()");
 
         mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
-                new OnCompleteListener<GoogleSignInAccount>() {
-                    @Override
-                    public void onComplete(@NonNull Task<GoogleSignInAccount> task) {
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInSilently(): success");
-                            onConnected(task.getResult());
-                        } else {
-                            Log.d(TAG, "signInSilently(): failure", task.getException());
-                            onDisconnected();
-                        }
+                task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInSilently(): success");
+                        onConnected(task.getResult());
+                    } else {
+                        Log.d(TAG, "signInSilently(): failure", task.getException());
+                        onDisconnected();
                     }
                 });
     }
@@ -459,18 +414,13 @@ public class NetworkController extends AppCompatActivity {
         Log.d(TAG, "signOut()");
 
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
-                new OnCompleteListener<Void>() {
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
-
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signOut(): success");
-                        } else {
-                            handleException(task.getException(), "signOut() failed!");
-                        }
-
-                        onDisconnected();
+                task -> {
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signOut(): success");
+                    } else {
+                        handleException(task.getException(), "signOut() failed!");
                     }
+                    onDisconnected();
                 });
     }
 
@@ -592,12 +542,9 @@ public class NetworkController extends AppCompatActivity {
 
             // Start the match
             mTurnBasedMultiplayerClient.createMatch(tbmc)
-                    .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                        @Override
-                        public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                            Log.d(TAG, "Match inited.");
-                            onInitiateMatch(turnBasedMatch);
-                        }
+                    .addOnSuccessListener(turnBasedMatch -> {
+                        Log.d(TAG, "Match inited.");
+                        onInitiateMatch(turnBasedMatch);
                     })
                     .addOnFailureListener(createFailureListener("There was a problem creating a match!"));
             showSpinner();
@@ -611,24 +558,22 @@ public class NetworkController extends AppCompatActivity {
     // callback to OnTurnBasedMatchUpdated(), which will show the game
     // UI.
     public void startMatch(TurnBasedMatch match) {
-        mTurnData = new Turn();
+        //mWordChainData = new WordChain();
         // Some basic turn data
-        mTurnData.data = "First turn";
-
+        //mWordChainData.data = "First turn";
+        WordChain wordChain = new WordChain();
+        wordChain.setTurn(match.getTurnStatus() != TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+        wordChains.put(match.getMatchId(), wordChain);
         mMatch = match;
 
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
 
         showSpinner();
 
+        wordChain.changeTurn();
         mTurnBasedMultiplayerClient.takeTurn(match.getMatchId(),
-                mTurnData.persist(), myParticipantId)
-                .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                    @Override
-                    public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                        updateMatch(turnBasedMatch);
-                    }
-                })
+                wordChain.hash(""), myParticipantId)
+                .addOnSuccessListener(this::updateMatch)
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
@@ -636,12 +581,7 @@ public class NetworkController extends AppCompatActivity {
     public void rematch() {
         showSpinner();
         mTurnBasedMultiplayerClient.rematch(mMatch.getMatchId())
-                .addOnSuccessListener(new OnSuccessListener<TurnBasedMatch>() {
-                    @Override
-                    public void onSuccess(TurnBasedMatch turnBasedMatch) {
-                        onInitiateMatch(turnBasedMatch);
-                    }
-                })
+                .addOnSuccessListener(this::onInitiateMatch)
                 .addOnFailureListener(createFailureListener("There was a problem starting a rematch!"));
         mMatch = null;
         isDoingTurn = false;
@@ -688,6 +628,10 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
+        if (!wordChains.containsKey(mMatch.getMatchId())) {
+            wordChains.put(mMatch.getMatchId(), new WordChain());
+            wordChains.get(mMatch.getMatchId()).setTurn(match.getTurnStatus() != TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+        }
 
         int status = match.getStatus();
         int turnStatus = match.getTurnStatus();
@@ -720,7 +664,10 @@ public class NetworkController extends AppCompatActivity {
         // OK, it's active. Check on turn status.
         switch (turnStatus) {
             case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-                mTurnData = Turn.unpersist(mMatch.getData());
+                //mWordChainData = WordChain.unpersist(mMatch.getData());
+                opponentWord = wordChains.get(mMatch.getMatchId()).unhash(mMatch.getData());
+                wordChains.get(mMatch.getMatchId()).makeMove(opponentWord);
+                wordChains.get(mMatch.getMatchId()).changeTurn();
                 Log.d(TAG, "Get data");
                 setGameplayUI();
                 return;
@@ -733,7 +680,7 @@ public class NetworkController extends AppCompatActivity {
                         "Still waiting for invitations.\n\nBe patient!");
         }
 
-        mTurnData = null;
+        //mWordChainData = null;
     }
 
     private void onCancelMatch(String matchId) {
