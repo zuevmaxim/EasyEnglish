@@ -72,5 +72,7 @@
     <string name="unexpected_status">Unexpected status</string>
     <string name="match_error_inactive_match">This match is inactive.</string>
     <string name='match_error_locally_modified'>This match has locally-modified data.  This operation cannot be performed until the match is sent to the server.</string>
+    <string name="quick_game">Quick game</string>
+    <string name="sign_in">Sign in</string>
 
 </resources>
