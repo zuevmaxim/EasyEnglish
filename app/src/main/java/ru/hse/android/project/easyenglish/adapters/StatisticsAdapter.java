@@ -8,16 +8,23 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.TextView;
-import java.util.List;
+import android.widget.Toast;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
+import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {
 
-    private final List<Word> words;
+    private List<Word> words;
     private final LayoutInflater layoutInflater;
 
     public StatisticsAdapter(Context context, List<Word> words) {
@@ -41,6 +48,11 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         int totalNumber = wordFactory.getWordTotalNumber(word);
         viewHolder.rightScore.setText(String.valueOf(totalNumber - errorNumber));
         viewHolder.wrongScore.setText(String.valueOf(errorNumber));
+        viewHolder.resetButton.setOnClickListener(v -> {
+            wordFactory.resetStatistics(word);
+            viewHolder.rightScore.setText(String.valueOf(0));
+            viewHolder.wrongScore.setText(String.valueOf(0));
+        });
     }
 
     @Override

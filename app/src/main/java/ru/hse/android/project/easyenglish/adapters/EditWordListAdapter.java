@@ -210,8 +210,7 @@ public class EditWordListAdapter extends ArrayAdapter<Pair<Word, EditWordListAda
             englishWordLayout = view.findViewById(R.id.english_word_layout);
         }
     }
-    
-    
+
     public enum AUTOCHANGES {
         RUSSIAN,
         BOTH,
