@@ -44,6 +44,7 @@ public class PhrasesController extends SQLiteAssetHelper {
 
     public void setCurrentTheme(String theme) {
         currentTheme = theme;
+        MainController.getGameController().getPhaseStorage().updateStorage();
     }
 
     public List<Phrase> getCurrentThemeList() {
