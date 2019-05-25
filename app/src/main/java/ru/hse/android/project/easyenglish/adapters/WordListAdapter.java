@@ -1,4 +1,4 @@
-package ru.hse.android.easyenglish.adapters;
+package ru.hse.android.project.easyenglish.adapters;
 
 
 import android.app.Activity;
@@ -8,17 +8,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.List;
 
-import ru.hse.android.easyenglish.EditListActivity;
-import ru.hse.android.easyenglish.R;
-import ru.hse.android.easyenglish.controllers.MainController;
-import ru.hse.android.easyenglish.words.Word;
-import ru.hse.android.easyenglish.words.WordFactory;
+import ru.hse.android.project.easyenglish.EditListActivity;
+import ru.hse.android.project.easyenglish.R;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
 
