@@ -10,15 +10,20 @@ public class GameController {
         wordFactory = new WordFactory(context);
         wordListController = new WordListController(context);
         wordStorage = new WordStorage();
+        phrasesController = new PhrasesController(context);
+        phaseStorage = new PhaseStorage();
     }
 
     void init() {
         wordStorage.updateStorage();
+        phaseStorage.updateStorage();
     }
 
     private final WordStorage wordStorage;
     private final WordFactory wordFactory;
     private final WordListController wordListController;
+    private final PhrasesController phrasesController;
+    private final PhaseStorage phaseStorage;
 
     public void saveWordResult(Word word, boolean result) {
         wordFactory.saveWordStatistic(word, result);
@@ -26,6 +31,14 @@ public class GameController {
 
     public void resetStatistics(Word word) {
         wordFactory.resetStatistics(word);
+    }
+
+    public PhaseStorage getPhaseStorage() {
+        return phaseStorage;
+    }
+
+    public PhrasesController getPhrasesController() {
+        return phrasesController;
     }
 
     public WordFactory getWordFactory() {
