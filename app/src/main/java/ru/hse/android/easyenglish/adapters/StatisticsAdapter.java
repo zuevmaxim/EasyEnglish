@@ -1,6 +1,7 @@
 package ru.hse.android.easyenglish.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,57 +15,24 @@ import ru.hse.android.easyenglish.R;
 import ru.hse.android.easyenglish.words.Word;
 import ru.hse.android.easyenglish.words.WordFactory;
 
-public class StatisticsAdapter extends BaseAdapter {
+public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {
 
-    private Context context;
     private final List<Word> words;
-    private final int layout;
     private final LayoutInflater layoutInflater;
 
-    public StatisticsAdapter(Context context, int layout, List<Word> words) {
-        this.layout = layout;
-        this.context = context;
+    public StatisticsAdapter(Context context, List<Word> words) {
         this.words = words;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
-    public int getViewTypeCount() {
-        return getCount();
-    }
-    @Override
-    public int getItemViewType(int position) {
-
-        return position;
+    public StatisticsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.statistics_item, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public int getCount() {
-        return words.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return words.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-
-        if (convertView == null){
-            convertView = layoutInflater.inflate(layout, null, true);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
-
+    public void onBindViewHolder(StatisticsAdapter.ViewHolder viewHolder, int position) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         Word word = words.get(position);
         viewHolder.russianWordText.setText(word.getRussian());
@@ -73,16 +41,26 @@ public class StatisticsAdapter extends BaseAdapter {
         int totalNumber = wordFactory.getWordTotalNumber(word);
         viewHolder.rightScore.setText(String.valueOf(totalNumber - errorNumber));
         viewHolder.wrongScore.setText(String.valueOf(errorNumber));
-        return convertView;
     }
 
-    private class ViewHolder {
+    @Override
+    public int getItemViewType(int position) {
+        return position;
+    }
+
+    @Override
+    public int getItemCount() {
+        return words.size();
+    }
+
+    public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView russianWordText;
         private final TextView englishWordText;
         private final TextView rightScore;
         private final TextView wrongScore;
         private final Button resetButton;
-        private ViewHolder(View view){
+        private ViewHolder(View view) {
+            super(view);
             russianWordText = view.findViewById(R.id.russian_word_column);
             englishWordText = view.findViewById(R.id.english_word_column);
             rightScore = view.findViewById(R.id.right_score_column);

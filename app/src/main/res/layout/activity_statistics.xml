@@ -8,92 +8,91 @@
 
     <TextView
         android:id="@+id/textView"
-        android:text="@string/app_name"
         style="@style/EasyEnglish"
+        android:text="@string/app_name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textView2"
-        android:text="@string/statistics"
         style="@style/GameTitle"
+        android:text="@string/statistics"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
     <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
-        android:orientation="horizontal"
+        style="@style/MainLinearLayout"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-        <TextView
-            android:id="@+id/russian_word_column"
-            android:layout_width="25dp"
-            android:layout_height="51dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/Russian"
-            android:textSize="14sp" />
+        <LinearLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/english_word_column"
-            android:layout_width="25dp"
-            android:layout_height="51dp"
-            android:layout_weight="2"
-            android:gravity="center"
-            android:text="@string/English"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/russian_word_column"
+                android:layout_width="25dp"
+                android:layout_height="51dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/Russian"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/right_score_column"
-            android:layout_width="2dp"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/right"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/english_word_column"
+                android:layout_width="25dp"
+                android:layout_height="51dp"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:text="@string/English"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/wrong_score_column"
-            android:layout_width="2dp"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/wrong"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/right_score_column"
+                android:layout_width="2dp"
+                android:layout_height="51dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/right"
+                android:textSize="14sp" />
 
-        <TextView
-            android:id="@+id/reset_column"
-            android:layout_width="5dp"
-            android:layout_height="51dp"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@string/reset"
-            android:textSize="14sp" />
+            <TextView
+                android:id="@+id/wrong_score_column"
+                android:layout_width="2dp"
+                android:layout_height="51dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/wrong"
+                android:textSize="14sp" />
 
+            <TextView
+                android:id="@+id/reset_column"
+                android:layout_width="5dp"
+                android:layout_height="51dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="@string/reset"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/word_list_statistics"
+            app:layoutManager="LinearLayoutManager"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
+            />
     </LinearLayout>
-
-    <ListView
-        android:id="@+id/word_list_statistics"
-        android:layout_width="395dp"
-        android:layout_height="463dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginEnd="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintVertical_bias="0.071" />
-
 
 </android.support.constraint.ConstraintLayout>

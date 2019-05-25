@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -36,8 +37,8 @@ public class WordListEditorActivity extends AppCompatActivity {
     private void setUpListView() {
         WordListController wordListController = MainController.getGameController().getWordListController();
         List<String> wordListNames = wordListController.getWordLists();
-        final ListView wordLists = findViewById(R.id.current_word_lists);
-        ArrayAdapter<String> adapter = new WordListAdapter(this, R.layout.list_item, wordListNames);
+        final RecyclerView wordLists = findViewById(R.id.current_word_lists);
+        WordListAdapter adapter = new WordListAdapter(this, wordListNames);
         wordLists.setAdapter(adapter);
     }
 

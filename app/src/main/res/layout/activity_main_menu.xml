@@ -21,44 +21,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/games_button"
-        android:text="@string/games"
-        style="@style/MainButton"
+    <LinearLayout
+        style="@style/MainLinearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <Button
-        android:id="@+id/dictionary_button"
-        android:text="@string/dictionary"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/games_button" />
+        <Button
+            android:id="@+id/games_button"
+            android:text="@string/games"
+            style="@style/MainButton" />
 
-    <Button
-        android:id="@+id/statistics_button"
-        android:text="@string/statistics"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/dictionary_button" />
+        <Button
+            android:id="@+id/dictionary_button"
+            android:text="@string/dictionary"
+            style="@style/MainButton" />
 
-    <Button
-        android:id="@+id/word_list_button"
-        android:text="@string/word_list"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/statistics_button" />
+        <Button
+            android:id="@+id/statistics_button"
+            android:text="@string/statistics"
+            style="@style/MainButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/learn_words_button"
-        style="@style/MainButton"
-        android:text="@string/learn_words"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/word_list_button" />
+        <Button
+            android:id="@+id/word_list_button"
+            android:text="@string/word_list"
+            style="@style/MainButton"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+
+        <Button
+            android:id="@+id/learn_words_button"
+            style="@style/MainButton"
+            android:text="@string/learn_words"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
