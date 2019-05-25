@@ -26,7 +26,7 @@ public class WordListController extends SQLiteOpenHelper {
     private static final String WORD_ID_COLUMN = "word_id";
     private static final String TABLE = "table";
 
-    private static final int RANDOM_WORD_LIST_LENGTH = 10;
+    private static final int RANDOM_WORD_LIST_LENGTH = 20;
 
     public WordListController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -151,6 +151,10 @@ public class WordListController extends SQLiteOpenHelper {
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
         MainController.getGameController().getWordStorage().updateStorage();
+    }
+
+    public void setCurrentRandomWordList() {
+        setCurrentWordList(RANDOM_WORD_LIST_TABLE_NAME);
     }
 
     private boolean containsWordList(String listName) {

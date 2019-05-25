@@ -11,10 +11,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.ImageView;
 
+import java.util.Random;
+
+import ru.hse.android.project.easyenglish.controllers.MainController;
+import ru.hse.android.project.easyenglish.controllers.WordListController;
+
 public class GameActivity extends AppCompatActivity {
     private int succeedTasks = 0;
     private int totalTasks = 0;
     private static final int GAME_RESULT_CODE = 42;
+    private static final Random RANDOM = new Random();
+    private WordListController wordListController = MainController.getGameController().getWordListController();
+    private String previousListName;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -61,19 +69,40 @@ public class GameActivity extends AppCompatActivity {
 
         String gameName = intent.getStringExtra("game name");
         final Class<?> gameClass = chooseGameByName(gameName);
+
+         Class<?>[] randomGames;
+         if (gameName.equals("10 Words")) {
+             previousListName = wordListController.getCurrentWordList();
+             wordListController.setCurrentRandomWordList();
+
+            randomGames = new Class<?>[]{
+                     LetterPuzzleActivity.class,
+                     ChooseDefinitionActivity.class
+                     // MatchingActivity.class, TODO
+                     // SynonymsActivity.class  TODO
+             };
+         } else {
+             randomGames = new Class<?>[]{gameClass};
+         }
+
+
         succeedTasks = 0;
         totalTasks = 0;
 
-        runGame(gameClass);
+        runGame(randomGame(randomGames));
 
         final Button toMenuButton = findViewById(R.id.to_menu_button);
         toMenuButton.setVisibility(View.INVISIBLE);
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
 
-        nextWordButton.setOnClickListener(v -> runGame(gameClass));
+        nextWordButton.setOnClickListener(v -> runGame(randomGame(randomGames)));
 
         finishGameButton.setOnClickListener(v -> endGame());
+    }
+
+    private Class<?> randomGame(Class<?>[] randomGames) {
+        return randomGames[RANDOM.nextInt(randomGames.length)];
     }
 
     private void runGame(Class<?> gameClass) {
@@ -109,5 +138,14 @@ public class GameActivity extends AppCompatActivity {
             case "Choose Definition" : return ChooseDefinitionActivity.class;
         }
         return null;
+    }
+
+    @Override
+    public void onStop() {
+        if (previousListName != null) {
+            wordListController.setCurrentWordList(previousListName);
+        }
+        super.onStop();
+
     }
 }
