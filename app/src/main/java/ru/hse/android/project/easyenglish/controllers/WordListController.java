@@ -3,8 +3,8 @@ package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+
+import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,9 +15,9 @@ import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
-public class WordListController extends SQLiteOpenHelper {
+public class WordListController extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;
-    private static final String DATABASE_NAME = "WordLists.db";
+    private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
     private static final String RANDOM_WORD_LIST_TABLE_NAME = "random_word_list";
     private static final String NAME_COLUMN = "name";
@@ -32,10 +32,10 @@ public class WordListController extends SQLiteOpenHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private int getWordListId(String name, SQLiteDatabase db) {
+    private int getWordListId(String name) {
         name = name.replace(' ', '_');
         String[] columns = {ID_COLUMN};
-        Cursor cursor = db
+        Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
                         columns,
                         NAME_COLUMN + " = ?",
@@ -48,54 +48,20 @@ public class WordListController extends SQLiteOpenHelper {
         return result;
     }
 
-    private int getWordListId(String name) {
-        return getWordListId(name, getReadableDatabase());
-    }
-
-    private String getTableName(String wordListName, SQLiteDatabase db) {
-        return TABLE + getWordListId(wordListName, db);
-    }
-
     private String getTableName(String wordListName) {
-        return getTableName(wordListName, getReadableDatabase());
-    }
-
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(
-                "CREATE TABLE " + WORD_LISTS_TABLE_NAME +
-                "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                NAME_COLUMN + " VARCHAR," +
-                CURRENT_LIST_COLUMN + " INTEGER)");
-        db.execSQL(
-                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
-                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + RANDOM_WORD_LIST_TABLE_NAME + "', 1)");
-        db.execSQL(
-                "CREATE TABLE " + getTableName(RANDOM_WORD_LIST_TABLE_NAME, db) +
-                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        WORD_ID_COLUMN + " INTEGER)");
-        updateRandomWordList(db);
-    }
-
-    private void updateRandomWordList(SQLiteDatabase db) {
-        String tableName = getTableName(RANDOM_WORD_LIST_TABLE_NAME, db);
-        db.execSQL("DELETE FROM " + tableName);
-        WordFactory wordFactory = MainController.getGameController().getWordFactory();
-        for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
-            int wordId = wordFactory.nextWordId(); //TODO get a list of ids
-            db.execSQL(
-                    "INSERT INTO " + tableName +
-                            "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
-        }
+        return TABLE + getWordListId(wordListName);
     }
 
     public void updateRandomWordList() {
-        updateRandomWordList(getWritableDatabase());
-    }
-
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-
+        String tableName = getTableName(RANDOM_WORD_LIST_TABLE_NAME);
+        getWritableDatabase().execSQL("DELETE FROM " + tableName);
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
+            int wordId = wordFactory.nextWordId(); //TODO get a list of ids
+            getWritableDatabase().execSQL(
+                    "INSERT INTO " + tableName +
+                            "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
+        }
     }
 
     public List<String> getWordLists() {

@@ -15,6 +15,7 @@ public class GameController {
     }
 
     void init() {
+        wordListController.updateRandomWordList();
         wordStorage.updateStorage();
         phaseStorage.updateStorage();
     }
