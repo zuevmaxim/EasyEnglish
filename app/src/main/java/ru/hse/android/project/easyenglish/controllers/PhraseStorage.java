@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public class PhaseStorage {
+public class PhraseStorage {
     private List<Phrase> phrases = new ArrayList<>();
     private int i = 0;
 

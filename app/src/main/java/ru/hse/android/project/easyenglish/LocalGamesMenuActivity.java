@@ -14,7 +14,7 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
 
         Button matchingButton = findViewById(R.id.matching_button);
         matchingButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ErrorActivity.class);
+            Intent intent = new Intent(this, MatchingActivity.class);
             startActivity(intent);
         });
 
@@ -27,7 +27,7 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
 
         Button wordPuzzleButton = findViewById(R.id.word_puzzle_button);
         wordPuzzleButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ErrorActivity.class);
+            Intent intent = new Intent(this, WordPuzzleActivity.class);
             startActivity(intent);
         });
 

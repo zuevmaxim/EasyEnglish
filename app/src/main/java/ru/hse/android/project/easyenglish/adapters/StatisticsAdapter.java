@@ -1,6 +1,7 @@
 package ru.hse.android.project.easyenglish.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,14 +33,15 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    @NonNull
     @Override
-    public StatisticsAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public StatisticsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = layoutInflater.inflate(R.layout.statistics_item, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(StatisticsAdapter.ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull StatisticsAdapter.ViewHolder viewHolder, int position) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         Word word = words.get(position);
         viewHolder.russianWordText.setText(word.getRussian());

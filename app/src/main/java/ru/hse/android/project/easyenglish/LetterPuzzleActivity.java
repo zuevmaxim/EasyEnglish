@@ -60,7 +60,6 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             finish();
         });
 
-
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
@@ -76,7 +75,5 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
             finish();
         });
-
-
     }
 }
