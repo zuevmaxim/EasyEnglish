@@ -16,7 +16,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
-import ru.hse.android.project.easyenglish.adapters.StatisticsAdapter;
 
 public class DragAndDropListView extends ListView {
 
@@ -38,6 +37,7 @@ public class DragAndDropListView extends ListView {
         super(context, attrs);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
+    private int OFFSET;
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
@@ -46,6 +46,7 @@ public class DragAndDropListView extends ListView {
             //запоминаем координаты пальца
             int x = (int)ev.getX();
             int y = (int)ev.getY();
+            OFFSET = (int)ev.getX();
 
             // переводим их в точки на экране, и проверяем не вылезли ли мы за пределы
             dragSrcPosition = dragPosition = pointToPosition(x, y);
@@ -77,6 +78,7 @@ public class DragAndDropListView extends ListView {
      */
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
+        OFFSET = (int)ev.getX();
         if(dragImageView != null && dragPosition != INVALID_POSITION){
             int action = ev.getAction();
             switch(action){
@@ -108,7 +110,7 @@ public class DragAndDropListView extends ListView {
         //из кода меняем позици елемента который мы схватили на координаты которые мы получили в onInterceptTouchEvent()
         windowParams = new WindowManager.LayoutParams();
         windowParams.gravity = Gravity.TOP;
-        windowParams.x = 0;
+        windowParams.x = OFFSET + getWidth() / 2;
         windowParams.y = y - dragPoint + dragOffset;
         windowParams.width = WindowManager.LayoutParams.WRAP_CONTENT;
         windowParams.height = WindowManager.LayoutParams.WRAP_CONTENT;
@@ -147,7 +149,7 @@ public class DragAndDropListView extends ListView {
             windowParams.y = y - dragPoint + dragOffset;
             windowManager.updateViewLayout(dragImageView, windowParams);
         }
-        int tempPosition = pointToPosition(0, y);
+        int tempPosition = pointToPosition(OFFSET, y);
         if(tempPosition!=INVALID_POSITION){
             dragPosition = tempPosition;
         }
@@ -173,18 +175,18 @@ public class DragAndDropListView extends ListView {
         //здесь мы замещаем айтем который на данный момент находится
         // на своей позиции вниз что бы вставить тот что тащили и удаляем тот что был вместо него
         // и ставим его ниже
-        int tempPosition = pointToPosition(0, y);
+        int tempPosition = pointToPosition(OFFSET, y);
         if (tempPosition != INVALID_POSITION){
             dragPosition = tempPosition;
         }
         if (y < getChildAt(1).getTop()){
-            dragPosition = 1;
+            dragPosition = 0;
         } else if(y > getChildAt(getChildCount() - 1).getBottom()){
             dragPosition = getAdapter().getCount() - 1;
         }
 
         //
-        if (dragPosition > 0 && dragPosition < getAdapter().getCount()){
+        if (dragPosition >= 0 && dragPosition < getAdapter().getCount()){
             DragAndDropAdapter adapter = (DragAndDropAdapter)getAdapter();
             String dragItem = adapter.getItem(dragSrcPosition);
             adapter.remove(dragItem);
