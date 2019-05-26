@@ -23,18 +23,14 @@ public class MatchingActivity extends AppCompatActivity {
         for(int i=1; i<4; i++){
             list.add("Item " + i);
         }
-        //инициализируем лист вью
+
+
         ListView listView = findViewById(R.id.matching_list);
-        //заполняем адаптер
         DragAndDropAdapter adapter = new DragAndDropAdapter(this, list);
-        // присваиваем адаптер списку
         listView.setAdapter(adapter);
 
-        //инициализируем лист вью
         DragAndDropListView dragListView = findViewById(R.id.matching_drag_and_drop_list);
-        //заполняем адаптер
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, list);
-        //выводим в листвью
         dragListView.setAdapter(dragListAdapter);
     }
 }
