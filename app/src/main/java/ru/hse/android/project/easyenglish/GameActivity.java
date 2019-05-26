@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        Log.e("TAG", "onActivityResult");
         if (requestCode == GAME_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
                 assert data != null;
@@ -77,14 +79,14 @@ public class GameActivity extends AppCompatActivity {
 
             randomGames = new Class<?>[]{
                      LetterPuzzleActivity.class,
-                     ChooseDefinitionActivity.class
-                     // MatchingActivity.class, TODO
+                     ChooseDefinitionActivity.class,
+                     MatchingActivity.class,
+                     WordPuzzleActivity.class
                      // SynonymsActivity.class  TODO
              };
          } else {
              randomGames = new Class<?>[]{gameClass};
          }
-
 
         succeedTasks = 0;
         totalTasks = 0;
@@ -136,6 +138,8 @@ public class GameActivity extends AppCompatActivity {
         switch (gameName) {
             case "Letter Puzzle" : return LetterPuzzleActivity.class;
             case "Choose Definition" : return ChooseDefinitionActivity.class;
+            case "Word Puzzle" : return WordPuzzleActivity.class;
+            case "Matching" : return MatchingActivity.class;
         }
         return null;
     }
@@ -146,6 +150,5 @@ public class GameActivity extends AppCompatActivity {
             wordListController.setCurrentWordList(previousListName);
         }
         super.onStop();
-
     }
 }

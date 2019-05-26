@@ -25,55 +25,49 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_definition);
 
-        final RadioButton[] answerRadioButtons = new RadioButton[4];
+        final WordStorage wordStorage = MainController.getGameController().getWordStorage();
+        final List<Word> words = wordStorage.getSetOfWords(3);
+        Collections.shuffle(words);
 
-        answerRadioButtons[0] = findViewById(R.id.answer_radio_button_0);
-        answerRadioButtons[1] = findViewById(R.id.answer_radio_button_1);
-        answerRadioButtons[2] = findViewById(R.id.answer_radio_button_2);
-        answerRadioButtons[3] = findViewById(R.id.answer_radio_button_3);
+        int size = words.size();
+
+        RadioGroup radioGroup = findViewById(R.id.answers_radio_group);
+        final RadioButton[] radioButtons = new RadioButton[size];
+
+        for (int i = 0; i < size; i++) {
+            radioButtons[i]  = new RadioButton(this);
+            radioButtons[i].setText(words.get(i).getRussian());
+            radioButtons[i].setId(i);
+            radioGroup.addView(radioButtons[i]);
+        }
 
         final TextView taskWordText = findViewById(R.id.word_task_text);
 
-        final List<Word> answerList = new ArrayList<>();
-        final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        for (int i = 0; i < 4; i++) {
-            answerList.add(wordStorage.nextWord());
-        }
-        Collections.shuffle(answerList);
+        final int answerNumber = random.nextInt(size);
+        final Word answer = words.get(answerNumber);
+        final int wrongAnswerNumber = setHint(size, answerNumber);
 
-        final int answerNumber = random.nextInt(4);
-        int newWrongAnswerNumber = random.nextInt(4);
-        while (newWrongAnswerNumber == answerNumber) {
-            newWrongAnswerNumber = random.nextInt(4);
-        }
-        final int wrongAnswerNumber = newWrongAnswerNumber;
-
-        final Word answer = answerList.get(answerNumber);
-        for (int i = 0; i < 4; ++i) {
-            answerRadioButtons[i].setText(answerList.get(i).getRussian());
-        }
         taskWordText.setText(answer.getEnglish());
 
-        RadioGroup answersRadioGroup = findViewById(R.id.answers_radio_group);
-        answersRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
-                case R.id.answer_radio_button_0:
+                case 0:
                     checkAnswer(0, answerNumber, answer);
                     break;
-                case R.id.answer_radio_button_1:
+                case 1:
                     checkAnswer(1, answerNumber, answer);
                     break;
-                case R.id.answer_radio_button_2:
+                case 2:
                     checkAnswer(2, answerNumber, answer);
                     break;
-                case R.id.answer_radio_button_3:
+                case 3:
                     checkAnswer(3, answerNumber, answer);
                     break;
             }
         });
 
-        Button showRulesButton = findViewById(R.id.show_rules_choose_definition_button);
-        showRulesButton.setOnClickListener(v -> {
+        Button rulesButton = findViewById(R.id.rules_button);
+        rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("game", "Choose definition rules:");
@@ -82,23 +76,31 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             rules.show(getSupportFragmentManager(), "rules");
         });
 
-        Button showHintsButton = findViewById(R.id.show_hints_choose_definition_button);
-        showHintsButton.setOnClickListener(v -> {
+        Button hintsButton = findViewById(R.id.hints_button);
+        hintsButton.setOnClickListener(v -> {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Choose definition hints:");
-            args.putString("message", answerList.get(wrongAnswerNumber).getRussian() + " is a wrong answer");
+            args.putString("message", words.get(wrongAnswerNumber).getRussian() + " is a wrong answer");
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });
 
-        Button endGameButton = findViewById(R.id.end_choose_definition_game_button);
+        Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("end game", true);
             setResult(RESULT_OK, intent);
             finish();
         });
+    }
+
+    private int setHint(int size, int answerNumber) {
+        int newWrongAnswerNumber = random.nextInt(size);
+        while (newWrongAnswerNumber == answerNumber) {
+            newWrongAnswerNumber = random.nextInt(size);
+        }
+        return newWrongAnswerNumber;
     }
 
     private void checkAnswer(int givenAnswer, int modelAnswer, Word answer) {
