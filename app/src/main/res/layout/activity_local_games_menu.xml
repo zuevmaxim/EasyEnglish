@@ -22,44 +22,38 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/matching_button"
-        android:text="@string/matching"
-        style="@style/MainButton"
+    <LinearLayout
+        style="@style/MainLinearLayout"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <Button
-        android:id="@+id/letter_puzzle_button"
-        style="@style/MainButton"
-        android:text="@string/letter_puzzle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/matching_button" />
+        <Button
+            android:id="@+id/matching_button"
+            android:text="@string/matching"
+            style="@style/MainButton" />
 
-    <Button
-        android:id="@+id/word_puzzle_button"
-        style="@style/MainButton"
-        android:text="@string/word_puzzle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/letter_puzzle_button" />
+        <Button
+            android:id="@+id/letter_puzzle_button"
+            style="@style/MainButton"
+            android:text="@string/letter_puzzle"/>
 
-    <Button
-        android:id="@+id/definitions_button"
-        android:text="@string/definitions"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/word_puzzle_button" />
+        <Button
+            android:id="@+id/word_puzzle_button"
+            style="@style/MainButton"
+            android:text="@string/word_puzzle" />
 
-    <Button
-        android:id="@+id/synonyms_button"
-        android:text="@string/synonyms"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/definitions_button" />
+        <Button
+            android:id="@+id/definitions_button"
+            android:text="@string/definitions"
+            style="@style/MainButton" />
+
+        <Button
+            android:id="@+id/synonyms_button"
+            android:text="@string/synonyms"
+            style="@style/MainButton" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
