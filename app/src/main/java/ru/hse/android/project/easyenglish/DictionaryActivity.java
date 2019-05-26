@@ -1,7 +1,9 @@
 package ru.hse.android.project.easyenglish;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.method.ScrollingMovementMethod;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -39,9 +41,52 @@ public class DictionaryActivity extends AppCompatActivity {
             } else {
                 languagePair = "en-ru";
             }
-            String translation = TranslateController.translate(word, languagePair);
-            translateResultText.setText(translation);
-            yandexText.setText("translated by Yandex.translate\n http://translate.yandex.ru/");
+            TranslateController.DicResult result = TranslateController.translateTotal(word, languagePair);
+            if (result == null) {
+                new AlertDialog.Builder(this)
+                        .setMessage("Check your internet connection.")
+                        .setNeutralButton(android.R.string.ok, null)
+                        .show();
+            } else {
+                StringBuilder builder = new StringBuilder();
+                if (result.def != null) {
+                    for (TranslateController.DicResult.Definition definition : result.def) {
+                        if (definition != null && definition.text != null) {
+                            builder.append(definition.text);
+                            if (definition.ts != null) {
+                                builder.append("[").append(definition.ts).append("]");
+                            }
+                            if (definition.pos != null) {
+                                builder.append("(").append(definition.pos).append(")");
+                            }
+                            builder.append("\n");
+                            if (definition.tr != null) {
+                                for (TranslateController.DicResult.Translation translation : definition.tr) {
+                                    if (translation != null && translation.text != null) {
+                                        builder.append("  -").append(translation.text);
+                                        if (translation.pos != null) {
+                                            builder.append("  ").append("(").append(translation.pos).append(")");
+                                        }
+                                        if (translation.mean != null) {
+                                            builder.append("\n");
+                                            for (TranslateController.DicResult.Meaning meaning : translation.mean) {
+                                                if (meaning != null && meaning.text != null) {
+                                                    builder.append("    -").append(meaning.text);
+                                                    builder.append("\n");
+                                                }
+                                            }
+                                        }
+                                        builder.append("\n");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                translateResultText.setMovementMethod(new ScrollingMovementMethod());
+                translateResultText.setText(builder.toString());
+                yandexText.setText("«Реализовано с помощью сервиса «Яндекс.Словарь»\n https://tech.yandex.ru/dictionary/");
+            }
         });
     }
 }

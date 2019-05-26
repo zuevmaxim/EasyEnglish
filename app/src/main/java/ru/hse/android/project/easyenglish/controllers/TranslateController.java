@@ -95,8 +95,8 @@ public class TranslateController {
                 && dicResult.def != null) {
             if (dicResult.def.length > 0
                     && dicResult.def[0] != null
-                    && dicResult.def[0].pos != null) {
-                transcription = dicResult.def[0].pos;
+                    && dicResult.def[0].ts != null) {
+                transcription = dicResult.def[0].ts;
             }
             for (DicResult.Definition definition : dicResult.def) {
                 if (definition != null) {
@@ -150,7 +150,7 @@ public class TranslateController {
         }
     }
 
-    private static class DicResult {
+    public static class DicResult {
         public Definition[] def ;
 
         public static class Definition {
