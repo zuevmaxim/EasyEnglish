@@ -3,11 +3,13 @@ package ru.hse.android.project.easyenglish.controllers;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class WordStorage {
+    private static final Random RANDOM = new Random();
     WordStorage() {
     }
 
@@ -21,13 +23,18 @@ public class WordStorage {
     }
 
     public Word nextWord() {
-        Word word = words.get(i);
-        i++;
-        if (i == words.size()) {
-            Collections.shuffle(words);
-            i = 0;
+        Word word1 = words.get(i);
+        Word word2 = getMinimal();
+        if (word1 == word2 || RANDOM.nextBoolean()) {
+            i++;
+            if (i == words.size()) {
+                Collections.shuffle(words);
+                i = 0;
+            }
+            return word1;
+        } else {
+            return word2;
         }
-        return word;
     }
 
     /**
@@ -37,8 +44,12 @@ public class WordStorage {
      * @return list of words
      */
     public List<Word> getSetOfWords(int number) {
+        Word min = nextWord();
         if (number >= words.size()) {
-            return new ArrayList<>(words);
+            List<Word> result = new ArrayList<>(words);
+            result.remove(min);
+            result.add(0, min);
+            return result;
         }
         List<Word> wordList = new ArrayList<>(number);
         for (int j = 0; j < number; j++) {
@@ -48,10 +59,16 @@ public class WordStorage {
                 i = 0;
             }
         }
+        if (!wordList.contains(min)) {
+            wordList.set(0, min);
+        } else {
+            wordList.remove(min);
+            wordList.add(0, min);
+        }
         return wordList;
     }
 
-    public Word getMinimal() {
+    private Word getMinimal() {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         return words.stream().min((a, b) -> {
             int totalA = wordFactory.getWordTotalNumber(a);
