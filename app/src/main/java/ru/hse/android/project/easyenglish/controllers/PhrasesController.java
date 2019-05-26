@@ -43,6 +43,8 @@ public class PhrasesController extends SQLiteAssetHelper {
     }
 
     public void setCurrentTheme(String theme) {
+        getWritableDatabase().execSQL("UPDATE " + THEMES_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentTheme + "'");
+        getWritableDatabase().execSQL("UPDATE " + THEMES_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + theme + "'");
         currentTheme = theme;
         MainController.getGameController().getPhraseStorage().updateStorage();
     }

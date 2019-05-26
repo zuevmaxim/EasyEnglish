@@ -28,8 +28,7 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
 
         Button wordPuzzleButton = findViewById(R.id.word_puzzle_button);
         wordPuzzleButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("game name", "Word Puzzle");
+            Intent intent = new Intent(this, ChoosePhraseListActivity.class);
             startActivity(intent);
         });
 
