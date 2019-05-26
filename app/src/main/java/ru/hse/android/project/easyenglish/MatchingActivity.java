@@ -39,7 +39,9 @@ public class MatchingActivity extends AppCompatActivity {
         }
 
         final List<String> shufflesRussiaWords = new ArrayList<>(russianWords);
-        Collections.shuffle(shufflesRussiaWords);
+        while (russianWords.equals(shufflesRussiaWords)) {
+            Collections.shuffle(shufflesRussiaWords);
+        }
 
         ListView listView = findViewById(R.id.matching_list);
         DragAndDropAdapter adapter = new DragAndDropAdapter(this, englishWords);

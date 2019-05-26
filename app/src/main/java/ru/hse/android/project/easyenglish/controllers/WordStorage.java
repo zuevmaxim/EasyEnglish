@@ -69,8 +69,10 @@ public class WordStorage {
     }
 
     private Word getMinimal() {
+        List<Word> shuffled = new ArrayList<>(words);
+        Collections.shuffle(shuffled);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
-        return words.stream().min((a, b) -> {
+        return shuffled.stream().min((a, b) -> {
             int totalA = wordFactory.getWordTotalNumber(a);
             int totalB = wordFactory.getWordTotalNumber(b);
             double errorA = wordFactory.getWordErrorNumber(a);
