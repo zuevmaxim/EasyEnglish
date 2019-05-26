@@ -167,5 +167,6 @@
     <string name="action_settings">Settings</string>
     <string name="wrong_answers">-</string>
     <string name="right_answers">+</string>
+    <string name="word">word</string>
 
 </resources>

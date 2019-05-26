@@ -38,9 +38,8 @@
             android:id="@+id/drag_and_drop_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_marginStart="5dp"
+            android:layout_marginTop="25dp"
             android:layout_weight="1" />
-
 
         <Button
             android:id="@+id/check_answer"

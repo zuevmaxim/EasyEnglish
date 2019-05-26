@@ -36,6 +36,5 @@ public class MatchingActivity extends AppCompatActivity {
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, list);
         //выводим в листвью
         dragListView.setAdapter(dragListAdapter);
-
     }
 }

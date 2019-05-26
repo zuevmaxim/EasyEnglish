@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -18,9 +19,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
 
     private boolean result;
 
-    private List<String> shuffleWords(Phrase phrase) {
-        String englishPhrase = phrase.getEnglish();
-        List<String> words = Arrays.asList(englishPhrase.split(" "));
+    private List<String> shuffleWords(List<String> words) {
         List<String> shuffledWordResult = new ArrayList<>(words);
         while (words.equals(shuffledWordResult)) {
             Collections.shuffle(shuffledWordResult);
@@ -35,27 +34,49 @@ public class WordPuzzleActivity extends AppCompatActivity {
 
         PhraseStorage storage = MainController.getGameController().getPhraseStorage();
         Phrase phrase = storage.nextPhrase();
-        List<String> words = shuffleWords(phrase);
-        for (String word : words) {
-            System.out.println(word);
-        }
-
+        List<String> words = Arrays.asList(phrase.getEnglish().split(" "));
+        List<String> shuffleWords = shuffleWords(words);
         DragAndDropListView dragListView = findViewById(R.id.drag_and_drop_list);
-        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, words);
+        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords);
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.check_answer);
-
         checkAnswerButton.setOnClickListener(v -> {
-            for (String word : words) {
-                System.out.println(word);
-                /*
-                Intent intent = new Intent();
-                intent.putExtra("end game", true);
-                setResult(RESULT_OK, intent);
-                finish();
-                */
-            }
+            v.setEnabled(false);
+            result = words.equals(shuffleWords);
+            Intent intent = new Intent();
+            intent.putExtra("game result", result);
+            intent.putExtra("word", phrase.getEnglish());
+            setResult(RESULT_OK, intent);
+            finish();
+        });
+
+        Button showHintsButton = findViewById(R.id.show_hints);
+        showHintsButton.setOnClickListener(v -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("title", "Word puzzle");
+            args.putString("message", phrase.getRussian());
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "message");
+        });
+
+        Button showRulesButton = findViewById(R.id.show_rules);
+        showRulesButton.setOnClickListener(v -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("title", "Word puzzle");
+            args.putString("message", "You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.");
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "message");
+        });
+
+        Button endGameButton = findViewById(R.id.end_game);
+        endGameButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra("end game", true);
+            setResult(RESULT_OK, intent);
+            finish();
         });
     }
 }
