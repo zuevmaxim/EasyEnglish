@@ -60,4 +60,17 @@ public class PhrasesController extends SQLiteAssetHelper {
         cursor.close();
         return result;
     }
+
+    public List<String> getThemesList() {
+        List<String> result = new ArrayList<>();
+        String[] columns = {NAME_COLUMN};
+        Cursor cursor = getReadableDatabase()
+                .query(THEMES_TABLE_NAME, columns, null, null, null, null, null);
+        while (cursor.moveToNext()) {
+            String name = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
+            result.add(name);
+        }
+        cursor.close();
+        return result;
+    }
 }
