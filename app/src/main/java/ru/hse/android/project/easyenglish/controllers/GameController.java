@@ -8,8 +8,8 @@ import ru.hse.android.project.easyenglish.words.WordFactory;
 public class GameController {
     GameController(Context context) {
         wordFactory = new WordFactory(context);
-        wordListController = new WordListController(context);
         wordStorage = new WordStorage();
+        wordListController = new WordListController(context);
         phrasesController = new PhrasesController(context);
         phaseStorage = new PhraseStorage();
     }

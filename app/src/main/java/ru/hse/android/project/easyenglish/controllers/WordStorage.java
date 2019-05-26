@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.words.Word;
+import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class WordStorage {
     WordStorage() {
@@ -48,5 +49,23 @@ public class WordStorage {
             }
         }
         return wordList;
+    }
+
+    public Word getMinimal() {
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        return words.stream().min((a, b) -> {
+            int totalA = wordFactory.getWordTotalNumber(a);
+            int totalB = wordFactory.getWordTotalNumber(b);
+            double errorA = wordFactory.getWordErrorNumber(a);
+            double errorB = wordFactory.getWordErrorNumber(b);
+            if (totalA == 0) {
+                return -1;
+            }
+            if (totalB == 0) {
+                return 1;
+            }
+            double result = errorA / totalA - errorB / totalB;
+            return result == 0 ? 0 : (result < 0 ? -1 : 1);
+        }).orElse(new Word("ошибка", "error"));
     }
 }
