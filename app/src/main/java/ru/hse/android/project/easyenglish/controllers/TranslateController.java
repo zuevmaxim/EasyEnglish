@@ -35,8 +35,11 @@ public class TranslateController {
 
     public static List<String> getSynonims(String word) {
         DicResult dicResult = translateTotal(word, "en-en");
+        if (dicResult == null) {
+            return null;
+        }
         List<String> result = new LinkedList<>();
-        if (dicResult != null && dicResult.def != null) {
+        if (dicResult.def != null) {
             for (DicResult.Definition definition : dicResult.def) {
                 if (definition != null && definition.pos != null && definition.tr != null) {
                     String pos = definition.pos;
