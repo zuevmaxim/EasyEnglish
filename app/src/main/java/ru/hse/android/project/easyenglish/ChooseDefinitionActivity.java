@@ -26,7 +26,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_definition);
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(3);
+        final List<Word> words = wordStorage.getSetOfWords(4);
         Collections.shuffle(words);
 
         int size = words.size();

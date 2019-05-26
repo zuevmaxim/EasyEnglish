@@ -26,26 +26,26 @@
         style="@style/MainLinearLayout"
         android:gravity="center"
         android:orientation="vertical"
+        android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
+
             android:orientation="horizontal">
 
             <TextView
-                style="@style/GameTitle"
+                style="@style/Title"
                 android:layout_marginEnd="50dp"
                 android:text="@string/English" />
 
             <TextView
-                style="@style/GameTitle"
+                style="@style/Title"
                 android:layout_marginStart="50dp"
                 android:text="@string/Russian" />
         </LinearLayout>
@@ -57,12 +57,14 @@
 
             <ListView
                 android:id="@+id/matching_list"
+                android:layout_marginTop="25dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_marginEnd="5dp"
                 android:layout_weight="1" />
 
             <ru.hse.android.project.easyenglish.DragAndDropListView
+                android:layout_marginTop="25dp"
                 android:id="@+id/matching_drag_and_drop_list"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
@@ -70,6 +72,39 @@
                 android:layout_weight="1" />
         </LinearLayout>
 
+        <Button
+            android:id="@+id/check_answer"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:text="@string/check_answer" />
+
+        <LinearLayout
+            style="@style/MainLinearLayout"
+            android:gravity="center"
+            android:layout_weight="0.2"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/end_game"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_game"/>
+
+            <Button
+                android:id="@+id/show_rules"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rules" />
+
+            <Button
+                android:id="@+id/show_hints"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hints" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
