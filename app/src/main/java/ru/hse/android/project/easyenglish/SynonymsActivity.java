@@ -52,7 +52,7 @@ public class SynonymsActivity extends AppCompatActivity {
         int synonymsCounter = random.nextInt(3) + 1;
         while (synonyms.size() > 0 && synonymsCounter > 0) {
             int nextSynonym = random.nextInt(synonyms.size());
-            String synonym = notSynonyms.remove(nextSynonym);
+            String synonym = synonyms.remove(nextSynonym);
             boxedSynonyms.add(synonym);
             boxedWords.add(synonym);
             synonymsCounter--;

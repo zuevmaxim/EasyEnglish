@@ -140,6 +140,7 @@ public class GameActivity extends AppCompatActivity {
             case "Choose Definition" : return ChooseDefinitionActivity.class;
             case "Word Puzzle" : return WordPuzzleActivity.class;
             case "Matching" : return MatchingActivity.class;
+            case "Synonyms" : return SynonymsActivity.class;
         }
         return null;
     }
