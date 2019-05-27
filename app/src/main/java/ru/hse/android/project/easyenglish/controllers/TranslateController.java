@@ -33,7 +33,7 @@ public class TranslateController {
         return result;
     }
 
-    public static List<String> getSynonims(String word) {
+    public static List<String> getSynonyms(String word) {
         DicResult dicResult = translateTotal(word, "en-en");
         if (dicResult == null) {
             return null;

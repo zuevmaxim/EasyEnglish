@@ -11,7 +11,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ChoosePhraseListActivity"></activity>
+        <activity android:name=".SynonymsActivity"></activity>
+        <activity android:name=".ChoosePhraseListActivity" />
         <activity android:name=".WordPuzzleActivity" />
         <activity android:name=".MatchingActivity" />
         <activity android:name=".WordChainFindOpponentActivity" />

@@ -41,7 +41,8 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
 
         Button synonymsButton = findViewById(R.id.synonyms_button);
         synonymsButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, ErrorActivity.class);
+            Intent intent = new Intent(this, GameActivity.class);
+            intent.putExtra("game name", "Synonyms");
             startActivity(intent);
         });
     }
