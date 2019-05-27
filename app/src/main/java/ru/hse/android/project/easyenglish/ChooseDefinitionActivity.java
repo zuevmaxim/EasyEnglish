@@ -71,8 +71,8 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", "Choose definition rules:");
-            args.putString("message", "You are given a word in English. Your task is to choose right Russian definition for it.");
+            args.putString("game", this.getString(R.string.rules_choose_definitions));
+            args.putString("message", this.getString(R.string.rules_text_choose_definitions));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "rules");
         });
@@ -81,8 +81,8 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         hintsButton.setOnClickListener(v -> {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Choose definition hints:");
-            args.putString("message", words.get(wrongAnswerNumber).getRussian() + " is a wrong answer");
+            args.putString("title", this.getString(R.string.hints_choose_definitions));
+            args.putString("message", words.get(wrongAnswerNumber).getRussian() + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });

@@ -44,7 +44,7 @@ public class DictionaryActivity extends AppCompatActivity {
             TranslateController.DicResult result = TranslateController.translateTotal(word, languagePair);
             if (result == null) {
                 new AlertDialog.Builder(this)
-                        .setMessage("Check your internet connection.")
+                        .setMessage(this.getString(R.string.check_internet_connect))
                         .setNeutralButton(android.R.string.ok, null)
                         .show();
             } else {
@@ -85,7 +85,7 @@ public class DictionaryActivity extends AppCompatActivity {
                 }
                 translateResultText.setMovementMethod(new ScrollingMovementMethod());
                 translateResultText.setText(builder.toString());
-                yandexText.setText("«Реализовано с помощью сервиса «Яндекс.Словарь»\n https://tech.yandex.ru/dictionary/");
+                yandexText.setText("«Реализовано с помощью сервиса «Яндекс.Словарь»\nhttps://tech.yandex.ru/dictionary/");
             }
         });
     }

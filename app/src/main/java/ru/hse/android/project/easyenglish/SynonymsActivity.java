@@ -2,13 +2,11 @@ package ru.hse.android.project.easyenglish;
 
 import android.content.Intent;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -23,10 +21,9 @@ import ru.hse.android.project.easyenglish.controllers.WordStorage;
 import ru.hse.android.project.easyenglish.words.Word;
 
 public class SynonymsActivity extends AppCompatActivity {
-
-
     private boolean result = true;
     private final Random random = new Random();
+    private static final int SIZE = 5;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +31,7 @@ public class SynonymsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_synonims);
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(5);
+        final List<Word> words = wordStorage.getSetOfWords(SIZE);
         Word mainWord = words.remove(0);
         final List<String> synonyms = TranslateController.getSynonyms(mainWord.getEnglish());
         final List<String> notSynonyms = new ArrayList<>();
@@ -61,12 +58,13 @@ public class SynonymsActivity extends AppCompatActivity {
             synonymsCounter--;
         }
 
-        int notSynonymsCounter = 5 - boxedWords.size();
+        int notSynonymsCounter = SIZE - boxedWords.size();
         while (notSynonyms.size() > 0 && notSynonymsCounter > 0) {
             int nextNotSynonym = random.nextInt(notSynonyms.size());
             boxedWords.add(notSynonyms.remove(nextNotSynonym));
             notSynonymsCounter--;
         }
+        String wrongAnswer = boxedWords.get(boxedWords.size() - 1);
 
         boxedSynonyms.forEach(System.out::println);
 
@@ -94,6 +92,7 @@ public class SynonymsActivity extends AppCompatActivity {
                     result = false;
                 }
             }
+            MainController.getGameController().saveWordResult(mainWord, result);
             Intent intent = new Intent();
             intent.putExtra("game result", result);
             String answer;
@@ -111,8 +110,8 @@ public class SynonymsActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", "Choose definition rules:");
-            args.putString("message", "You are given a word in English. Your task is to choose right Russian definition for it.");
+            args.putString("game", this.getString(R.string.rules_synonyms));
+            args.putString("message", this.getString(R.string.rules_synonyms_text));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "rules");
         });
@@ -121,8 +120,8 @@ public class SynonymsActivity extends AppCompatActivity {
         hintsButton.setOnClickListener(v -> {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Choose definition hints:");
-            args.putString("message", " is a wrong answer");
+            args.putString("title", this.getString(R.string.synonyms));
+            args.putString("message", wrongAnswer + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });
@@ -134,23 +133,5 @@ public class SynonymsActivity extends AppCompatActivity {
             setResult(RESULT_OK, intent);
             finish();
         });
-    }
-
-    private int setHint(int size, int answerNumber) {
-        int newWrongAnswerNumber = random.nextInt(size);
-        while (newWrongAnswerNumber == answerNumber) {
-            newWrongAnswerNumber = random.nextInt(size);
-        }
-        return newWrongAnswerNumber;
-    }
-
-    private void checkAnswer(int givenAnswer, int modelAnswer, Word answer) {
-        boolean result = (givenAnswer == modelAnswer);
-        MainController.getGameController().saveWordResult(answer, result);
-        Intent intent = new Intent();
-        intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian() + "-" + answer.getEnglish() + " " + answer.getTranscription());
-        setResult(RESULT_OK, intent);
-        finish();
     }
 }

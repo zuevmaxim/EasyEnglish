@@ -34,18 +34,24 @@ public class TranslateController {
     }
 
     public static List<String> getSynonyms(String word) {
-        DicResult dicResult = translateTotal(word, "en-en");
+        String translation = translate(word, "en-ru");
+        return findSynonymsInTranslation(translation, word);
+    }
+
+    private static List<String> findSynonymsInTranslation(String russian, String english) {
+        DicResult dicResult = translateTotal(russian, "ru-en");
         if (dicResult == null) {
             return null;
         }
         List<String> result = new LinkedList<>();
         if (dicResult.def != null) {
             for (DicResult.Definition definition : dicResult.def) {
-                if (definition != null && definition.pos != null && definition.tr != null) {
-                    String pos = definition.pos;
+                if (definition != null && definition.tr != null) {
                     for (DicResult.Translation translation : definition.tr) {
-                        if (translation != null && pos.equals(translation.pos)) {
-                            result.add(translation.text);
+                        if (translation != null && english.equals(translation.text) && translation.syn != null) {
+                            for (DicResult.Synonym synonym : translation.syn) {
+                                result.add(synonym.text);
+                            }
                         }
                     }
                 }

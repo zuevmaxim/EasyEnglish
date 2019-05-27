@@ -81,5 +81,20 @@
     <string name="word">word</string>
     <string name="end_game">End game</string>
     <string name="choose_theme">Choose theme</string>
+    <string name="error_empty_word">Пустое слово!</string>
+    <string name="wrong_word_symbol">Letters and spaces only</string>
+    <string name="rules_choose_definitions">Choose definition rules:</string>
+    <string name="rules_text_choose_definitions">You are given a word in English. Your task is to choose right Russian definition for it.</string>
+    <string name="hints_choose_definitions">Choose definition hints:</string>
+    <string name="is_wrong_answer"> is a wrong answer</string>
+    <string name="check_internet_connect">Check your internet connection.</string>
+    <string name="rules_letter_puzzle">Letter puzzle rules</string>
+    <string name="rules_letter_puzzle_text">You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.</string>
+    <string name="rules_word_puzzle">Word puzzle rules</string>
+    <string name="rules_word_puzzle_text">You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.</string>
+    <string name="rules_synonyms">Synonyms rules</string>
+    <string name="rules_synonyms_text">Your task is to choose all the synonyms of the word from the list.</string>
+   <string name="rules_matching">Matching rules</string>
+    <string name="rules_matching_text">Match words with their translations.</string>
 
 </resources>
