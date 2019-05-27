@@ -44,7 +44,6 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="@string/Russian"
-                android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
             <TextView
@@ -54,7 +53,6 @@
                 android:layout_weight="2"
                 android:gravity="center"
                 android:text="@string/English"
-                android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
             <TextView
@@ -64,7 +62,6 @@
                 android:layout_weight="0.7"
                 android:gravity="center"
                 android:text="@string/right_answers"
-                android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
             <TextView
@@ -74,7 +71,6 @@
                 android:layout_weight="0.7"
                 android:gravity="center"
                 android:text="@string/wrong_answers"
-                android:textColor="@android:color/black"
                 android:textSize="14sp" />
 
             <TextView
@@ -84,21 +80,19 @@
                 android:layout_weight="1.3"
                 android:gravity="center"
                 android:text="@string/reset"
-
-                android:textColor="@android:color/black"
                 android:textSize="14sp" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
+            android:id="@+id/word_list_statistics"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:id="@+id/word_list_statistics"
             app:layoutManager="LinearLayoutManager"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-            />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

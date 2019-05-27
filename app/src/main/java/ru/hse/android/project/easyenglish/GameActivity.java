@@ -35,11 +35,10 @@ public class GameActivity extends AppCompatActivity {
                 if (endOfGame) {
                     endGame();
                 } else {
-                    final TextView wordAnswerText = findViewById(R.id.word_answer);
+                    final TextView wordAnswerText = findViewById(R.id.game_result_text);
                     wordAnswerText.setVisibility(View.VISIBLE);
                     String word = data.getStringExtra("word");
                     wordAnswerText.setText(word);
-
                     boolean result = data.getBooleanExtra("game result", false);
                     Drawable drawable;
                     ImageView imageView = findViewById(R.id.result);
@@ -115,8 +114,6 @@ public class GameActivity extends AppCompatActivity {
         final Button nextWordButton = findViewById(R.id.next_word_button);
         final Button finishGameButton = findViewById(R.id.finish_game_button);
         final TextView gameResult = findViewById(R.id.game_result);
-        final TextView wordAnswerText = findViewById(R.id.word_answer);
-        wordAnswerText.setVisibility(View.INVISIBLE);
         gameResult.setVisibility(View.GONE);
         ImageView imageView = findViewById(R.id.result);
         imageView.setVisibility(View.GONE);

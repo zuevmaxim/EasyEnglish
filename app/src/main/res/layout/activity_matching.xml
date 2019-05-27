@@ -53,6 +53,7 @@
         <LinearLayout
             style="@style/MainLinearLayout"
             android:gravity="center"
+            android:layout_weight="0.8"
             android:orientation="horizontal">
 
             <ListView
@@ -73,10 +74,10 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/check_answer"
+            android:id="@+id/check_answer_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="0.1"
+            android:layout_weight="0.01"
             android:text="@string/check_answer" />
 
         <LinearLayout
@@ -87,19 +88,19 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/end_game"
+                android:id="@+id/end_game_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end_game"/>
 
             <Button
-                android:id="@+id/show_rules"
+                android:id="@+id/rules_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rules" />
 
             <Button
-                android:id="@+id/show_hints"
+                android:id="@+id/hints_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hints" />

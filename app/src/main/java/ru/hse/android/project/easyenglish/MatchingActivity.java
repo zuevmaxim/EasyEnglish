@@ -52,7 +52,7 @@ public class MatchingActivity extends AppCompatActivity {
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shufflesRussiaWords);
         dragListView.setAdapter(dragListAdapter);
 
-        Button checkAnswerButton = findViewById(R.id.check_answer);
+        Button checkAnswerButton = findViewById(R.id.check_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             v.setEnabled(false);
             result = russianWords.equals(shufflesRussiaWords);
@@ -69,7 +69,7 @@ public class MatchingActivity extends AppCompatActivity {
 
         int wrongAnswerNumber = random.nextInt(size);
 
-        Button showHintsButton = findViewById(R.id.show_hints);
+        Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
@@ -79,7 +79,7 @@ public class MatchingActivity extends AppCompatActivity {
             rules.show(getSupportFragmentManager(), "message");
         });
 
-        Button showRulesButton = findViewById(R.id.show_rules);
+        Button showRulesButton = findViewById(R.id.rules_button);
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
@@ -89,7 +89,7 @@ public class MatchingActivity extends AppCompatActivity {
             rules.show(getSupportFragmentManager(), "message");
         });
 
-        Button endGameButton = findViewById(R.id.end_game);
+        Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("end game", true);
