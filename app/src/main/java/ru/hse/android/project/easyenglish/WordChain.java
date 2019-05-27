@@ -14,6 +14,7 @@ import java.util.LinkedHashSet;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 public class WordChain {
+    public class WordChainException extends Exception {}
 
     public static final String TAG = "WORD_CHAIN";
 
@@ -25,6 +26,13 @@ public class WordChain {
     private int turn = 0;
     private LinkedHashSet<String> previousWords = new LinkedHashSet<>();
     private String lastWord = "";
+
+    public static final int RESULT_OK = 0;
+    public static final int RESULT_REPETITION = 1;
+    public static final int RESULT_NOT_A_NOUN = 2;
+    public static final int RESULT_EMPTY = 3;
+    public static final int RESULT_WRONG_FIRST_LETTER = 4;
+
 
     public LinkedHashSet<String> getPreviousWords() {
         return previousWords;
@@ -39,12 +47,21 @@ public class WordChain {
     }
 
     public boolean isMyTurn() {
-        return turn == 0;
+        return turn == 1;
     }
 
-    public boolean isValidMove(String word) { //TODO should return error code
-        return !previousWords.contains(word) && TranslateController.wordInfo(word).isNoun()
-                && (lastWord.isEmpty() || lastWord.charAt(lastWord.length() - 1) == word.charAt(0));
+    public int isValidMove(String word) { //TODO should return error code
+        if (previousWords.contains(word)) {
+            return RESULT_REPETITION;
+        } else if (!TranslateController.wordInfo(word).isNoun()) {
+            return RESULT_NOT_A_NOUN;
+        } else if (word.isEmpty()) {
+            return RESULT_EMPTY;
+        } else if (!lastWord.isEmpty() && lastWord.charAt(lastWord.length() - 1) != word.charAt(0)) {
+            return RESULT_WRONG_FIRST_LETTER;
+        } else {
+            return RESULT_OK;
+        }
     }
 
     public void makeMove(String word) {

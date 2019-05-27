@@ -34,7 +34,6 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 public class NetworkController extends AppCompatActivity {
 
@@ -73,7 +72,8 @@ public class NetworkController extends AppCompatActivity {
     // taken an action on the match, such as takeTurn()
     //public WordChain mWordChainData;
     private String opponentWord;
-    private final HashMap<String, WordChain> wordChains = new HashMap<>();
+    //private final HashMap<String, WordChain> wordChains = new HashMap<>();
+    private WordChain wordChain;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,7 @@ public class NetworkController extends AppCompatActivity {
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 //.requestScopes(new Scope(Scopes.PLUS_LOGIN))
                 //.requestScopes(new Scope(Scopes.PLUS_ME))
-                .requestEmail()
+                //.requestEmail()
                 .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
@@ -315,19 +315,38 @@ public class NetworkController extends AppCompatActivity {
         // Create the next turn
         //mWordChainData.turnCounter += 1;
         //mWordChainData.data = mDataView.getText().toString();
-        WordChain currentWordChain = wordChains.get(mMatch.getMatchId());
         // TODO add turn checking
         String word = mDataView.getText().toString();
-        if (!currentWordChain.isMyTurn() || !currentWordChain.isValidMove(word)) {
-            Toast.makeText(this, "Error move!", Toast.LENGTH_LONG).show();
+        if (!wordChain.isMyTurn()) {
+            Toast.makeText(this, "Not your turn!", Toast.LENGTH_LONG).show();
+            return;
+        }
+        int code = wordChain.isValidMove(word);
+        if (code != WordChain.RESULT_OK) {
+            String message = "Error.";
+            switch (code) {
+                case WordChain.RESULT_REPETITION:
+                    message = "Such word had been used.";
+                    break;
+                case WordChain.RESULT_NOT_A_NOUN:
+                    message = "Word is not a noun.";
+                    break;
+                case WordChain.RESULT_EMPTY:
+                    message = "Word is empty";
+                    break;
+                case WordChain.RESULT_WRONG_FIRST_LETTER:
+                    message = "Wrong first letter.";
+                    break;
+            }
+            Toast.makeText(this, message, Toast.LENGTH_LONG).show();
             return;
         }
         mTurnBasedMultiplayerClient.takeTurn(mMatch.getMatchId(),
-                currentWordChain.hash(word), nextParticipantId)
+                wordChain.hash(word), nextParticipantId)
                 .addOnSuccessListener(turnBasedMatch -> {
                     Log.d(TAG, "Send data.");
-                    currentWordChain.makeMove(word);
-                    currentWordChain.changeTurn();
+                    wordChain.makeMove(word);
+                    wordChain.changeTurn();
                     setGameplayUI();
                     onUpdateMatch(turnBasedMatch);
                 })
@@ -340,7 +359,7 @@ public class NetworkController extends AppCompatActivity {
     public void setGameplayUI() {
         isDoingTurn = true;
         mOpponentText.setText(opponentWord);
-        mTurnTextView.setText("Turn " + (wordChains.get(mMatch.getMatchId()).isMyTurn() ? "My" : "Opponent"));
+        mTurnTextView.setText("Turn " + (wordChain.isMyTurn() ? "My" : "Opponent"));
     }
 
     public void showSpinner() {
@@ -570,19 +589,23 @@ public class NetworkController extends AppCompatActivity {
         //mWordChainData = new WordChain();
         // Some basic turn data
         //mWordChainData.data = "First turn";
-        WordChain wordChain = new WordChain();
-        wordChain.setTurn(match.getTurnStatus() != TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
-        wordChains.put(match.getMatchId(), wordChain);
+        wordChain = new WordChain();
+        wordChain.setTurn(true);
         mMatch = match;
+        setGameplayUI();
 
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
 
         showSpinner();
 
-        wordChain.changeTurn();
+
         mTurnBasedMultiplayerClient.takeTurn(match.getMatchId(),
-                wordChain.hash(""), myParticipantId)
-                .addOnSuccessListener(this::updateMatch)
+                wordChain.hash("test"), myParticipantId)
+                .addOnSuccessListener(match1 -> {
+                    updateMatch(match1);
+                    wordChain.changeTurn();
+                    setGameplayUI();
+                })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
@@ -637,9 +660,9 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
-        if (!wordChains.containsKey(mMatch.getMatchId())) {
-            wordChains.put(mMatch.getMatchId(), new WordChain());
-            wordChains.get(mMatch.getMatchId()).setTurn(match.getTurnStatus() != TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
+        if (wordChain == null) {
+            wordChain = new WordChain();
+            wordChain.setTurn(false);
         }
 
         int status = match.getStatus();
@@ -674,9 +697,10 @@ public class NetworkController extends AppCompatActivity {
         switch (turnStatus) {
             case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
                 //mWordChainData = WordChain.unpersist(mMatch.getData());
-                opponentWord = wordChains.get(mMatch.getMatchId()).unhash(mMatch.getData());
-                wordChains.get(mMatch.getMatchId()).makeMove(opponentWord);
-                wordChains.get(mMatch.getMatchId()).changeTurn();
+                opponentWord = wordChain.unhash(mMatch.getData());
+                mDataView.setText("");
+                wordChain.makeMove(opponentWord);
+                wordChain.changeTurn();
                 Log.d(TAG, "Get data");
                 setGameplayUI();
                 return;

@@ -97,7 +97,7 @@ public class TranslateController {
     }
 
     public static ExtendedWord wordInfo(String word) {
-        DicResult dicResult = translateTotal(word, "en-en");
+        DicResult dicResult = translateTotal(word, "en-ru");
         String transcription = "";
         List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
         if (dicResult != null
