@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -34,7 +35,7 @@ public class EditListActivity extends AppCompatActivity {
         String listName = intent.getStringExtra("list name");
         List<Word> words = controller.getListWords(listName);
 
-        final ListView newWordView = findViewById(R.id.new_word_list);
+        final RecyclerView newWordView = findViewById(R.id.new_word_list);
         List<Pair<Word, EditWordListAdapter.AUTOCHANGES>> wordPairList = new ArrayList<>();
 
         for (Word word : words) {
@@ -42,12 +43,16 @@ public class EditListActivity extends AppCompatActivity {
         }
 
 
-        EditWordListAdapter adapter = new EditWordListAdapter(this, R.layout.editable_word_item, wordPairList);
+        EditWordListAdapter adapter = new EditWordListAdapter(this, wordPairList);
 
         newWordView.setAdapter(adapter);
 
         Button addNewListButton = findViewById(R.id.add_word_button);
-        addNewListButton.setOnClickListener(v -> adapter.addRow());
+        addNewListButton.setOnClickListener(v -> {
+            wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTOCHANGES.BOTH));
+            adapter.notifyItemInserted(wordPairList.size() - 1);
+            newWordView.scrollToPosition(wordPairList.size() - 1);
+        });
 
         EditText wordListNameText = findViewById(R.id.new_list_name_text);
         wordListNameText.setText(listName);
@@ -69,5 +74,6 @@ public class EditListActivity extends AppCompatActivity {
                 finish();
             }
         });
+
     }
 }

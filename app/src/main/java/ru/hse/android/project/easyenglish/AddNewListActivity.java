@@ -3,6 +3,7 @@ package ru.hse.android.project.easyenglish;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -25,14 +26,18 @@ public class AddNewListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_new_list);
 
-        final ListView newWordView = findViewById(R.id.new_word_list);
+        final RecyclerView newWordView = findViewById(R.id.new_word_list);
         List<Pair<Word, EditWordListAdapter.AUTOCHANGES>> newWordList = new ArrayList<>();
-        EditWordListAdapter adapter = new EditWordListAdapter(this, R.layout.editable_word_item, newWordList);
-        adapter.addRow();
+        EditWordListAdapter adapter = new EditWordListAdapter(this, newWordList);
+        newWordList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTOCHANGES.BOTH));
         newWordView.setAdapter(adapter);
 
         Button addNewWordButton = findViewById(R.id.add_word_button);
-        addNewWordButton.setOnClickListener(v -> adapter.addRow());
+        addNewWordButton.setOnClickListener(v -> {
+            newWordList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTOCHANGES.BOTH));
+            adapter.notifyItemInserted(newWordList.size() - 1);
+            newWordView.scrollToPosition(newWordList.size() - 1);
+        });
 
         WordListController controller = MainController.getGameController().getWordListController();
         EditText newWordListNameText = findViewById(R.id.new_list_name_text);

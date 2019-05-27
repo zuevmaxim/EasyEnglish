@@ -1,7 +1,9 @@
 package ru.hse.android.project.easyenglish.adapters;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
@@ -22,63 +24,26 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 
-public class EditWordListAdapter extends ArrayAdapter<Pair<Word, EditWordListAdapter.AUTOCHANGES>> {
-    private final int layout;
+public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapter.ViewHolder> {
     private final LayoutInflater layoutInflater;
     private final List<Pair<Word, AUTOCHANGES>> words;
+    private final AtomicInteger pos = new AtomicInteger();
 
     @SuppressWarnings("SameParameterValue")
-    public EditWordListAdapter(Context context, int layout, List<Pair<Word, AUTOCHANGES>> words) {
-        super(context, layout, words);
+    public EditWordListAdapter(Context context, List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
-        this.layout = layout;
         layoutInflater = LayoutInflater.from(context);
     }
 
+    @NonNull
     @Override
-    public int getCount() {
-        return words.size();
+    public EditWordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = layoutInflater.inflate(R.layout.editable_word_item, parent, false);
+        return new EditWordListAdapter.ViewHolder(view);
     }
 
     @Override
-    public Pair<Word, AUTOCHANGES> getItem(int position) {
-        return words.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return 0;
-    }
-
-    private void setErrorIfWrongSpelling(ViewHolder viewHolder) {
-        try {
-            viewHolder.russianWordLayout.setError(null);
-            MainController.getGameController().getWordFactory().checkRussianSpelling(viewHolder.russianWordText.getText().toString());
-        } catch (WrongWordException e) {
-            viewHolder.russianWordLayout.setError(e.getMessage());
-        }
-        try {
-            viewHolder.englishWordLayout.setError(null);
-            MainController.getGameController().getWordFactory().checkEnglishSpelling(viewHolder.englishWordText.getText().toString());
-        } catch (WrongWordException e) {
-            viewHolder.englishWordLayout.setError(e.getMessage());
-        }
-    }
-
-    private final AtomicInteger pos = new AtomicInteger();
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final ViewHolder viewHolder;
-       pos.set(position);
-
-        if (convertView == null){
-            convertView = layoutInflater.inflate(layout, null, false);
-            viewHolder = new ViewHolder(convertView);
-            convertView.setTag(viewHolder);
-        } else {
-            viewHolder = (ViewHolder) convertView.getTag();
-        }
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         final Word word = words.get(position).getKey();
         Consumer<AUTOCHANGES> setAutochanges = (v) -> words.set(pos.get(), new Pair<>(word, v));
         Supplier<AUTOCHANGES> getAutochanges = () -> words.get(pos.get()).getValue();
@@ -189,21 +154,35 @@ public class EditWordListAdapter extends ArrayAdapter<Pair<Word, EditWordListAda
         viewHolder.russianWordText.setText(word.getRussian());
         viewHolder.englishWordText.setText(word.getEnglish());
         setAutochanges.accept(type);
-
-        return convertView;
     }
 
-    public void addRow(){
-        words.add(new Pair<>(new Word("", ""), AUTOCHANGES.BOTH));
-        notifyDataSetChanged();
+    private void setErrorIfWrongSpelling(ViewHolder viewHolder) {
+        try {
+            viewHolder.russianWordLayout.setError(null);
+            MainController.getGameController().getWordFactory().checkRussianSpelling(viewHolder.russianWordText.getText().toString());
+        } catch (WrongWordException e) {
+            viewHolder.russianWordLayout.setError(e.getMessage());
+        }
+        try {
+            viewHolder.englishWordLayout.setError(null);
+            MainController.getGameController().getWordFactory().checkEnglishSpelling(viewHolder.englishWordText.getText().toString());
+        } catch (WrongWordException e) {
+            viewHolder.englishWordLayout.setError(e.getMessage());
+        }
     }
 
-    private class ViewHolder {
+    @Override
+    public int getItemCount() {
+        return words.size();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final EditText russianWordText;
         private final EditText englishWordText;
         private final TextInputLayout russianWordLayout;
         private final TextInputLayout englishWordLayout;
         private ViewHolder(View view){
+            super(view);
             russianWordText = view.findViewById(R.id.russian_word_text);
             englishWordText = view.findViewById(R.id.english_word_text);
             russianWordLayout = view.findViewById(R.id.russian_word_layout);
