@@ -22,101 +22,75 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/end_game_letter_puzzle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/end_letter_puzzle_game"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_answer_letter_puzzle_button"
-        app:layout_constraintVertical_bias="0.885" />
-
-    <Button
-        android:id="@+id/show_rules_letter_puzzle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/rules"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.361"
-        app:layout_constraintStart_toEndOf="@+id/end_game_letter_puzzle_button"
-        app:layout_constraintTop_toBottomOf="@+id/check_answer_letter_puzzle_button"
-        app:layout_constraintVertical_bias="0.885" />
-
-    <Button
-        android:id="@+id/show_hints_letter_puzzle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/hints"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/end_game_letter_puzzle_button"
-        app:layout_constraintHorizontal_bias="0.782"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/check_answer_letter_puzzle_button"
-        app:layout_constraintVertical_bias="0.89" />
-
-    <Button
-        android:id="@+id/check_answer_letter_puzzle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/check_answer"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/answer_letter_puzzle_text"
-        app:layout_constraintVertical_bias="0.166" />
-
-    <TextView
-        android:id="@+id/shuffled_word_text"
-        android:layout_width="393dp"
-        android:layout_height="54dp"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
+    <LinearLayout
+        style="@style/MainLinearLayout"
         android:gravity="center"
-        android:textColor="@android:color/black"
-        android:textSize="24sp"
-        android:textStyle="normal"
+        android:orientation="vertical"
+        android:layout_marginTop="25dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.274" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <EditText
-        android:id="@+id/answer_letter_puzzle_text"
-        android:layout_width="wrap_content"
-        android:layout_height="52dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:ems="10"
-        android:hint="@string/enter_word"
-        android:inputType="textPersonName|text"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/shuffled_word_text"
-        app:layout_constraintVertical_bias="0.082" />
+        <TextView
+            android:id="@+id/word_task_text"
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.39"
+            android:gravity="center"
+            android:textSize="24sp" />
+
+        <EditText
+            android:id="@+id/answer_text"
+            android:layout_width="match_parent"
+            android:layout_marginTop="50dp"
+            android:layout_marginBottom="50dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            android:layout_height="0dp"
+            android:layout_weight="0.39"
+            android:gravity="center"
+            android:textSize="24sp"
+            android:hint="@string/enter_word" />
+
+        <Button
+            android:id="@+id/check_answer_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.01"
+            android:text="@string/check_answer" />
+
+
+        <LinearLayout
+            style="@style/MainLinearLayout"
+            android:gravity="center"
+            android:layout_weight="0.2"
+            android:layout_height="0dp"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/end_game_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_game"/>
+
+            <Button
+                android:id="@+id/rules_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/rules" />
+
+            <Button
+                android:id="@+id/hints_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hints" />
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 
 </android.support.constraint.ConstraintLayout>

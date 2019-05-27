@@ -35,20 +35,17 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_letter_puzzle);
 
-        Button checkAnswerButton = findViewById(R.id.check_answer_letter_puzzle_button);
-        Button endGameButton = findViewById(R.id.end_game_letter_puzzle_button);
-        Button showRulesButton = findViewById(R.id.show_rules_letter_puzzle_button);
-
         final Word word = MainController.getGameController().getWordStorage().nextWord();
         final String english = word.getEnglish();
         final String russian = word.getRussian();
         final String shuffledEnglish = shuffleLetters(english);
 
-        final TextView shuffledWordText = findViewById(R.id.shuffled_word_text);
+        final TextView shuffledWordText = findViewById(R.id.word_task_text);
         shuffledWordText.setText((shuffledEnglish + " - " + russian));
 
+        Button checkAnswerButton = findViewById(R.id.check_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
-            final EditText answerText = findViewById(R.id.answer_letter_puzzle_text);
+            final EditText answerText = findViewById(R.id.answer_text);
             String answer = answerText.getText().toString();
             v.setEnabled(false);
             result = answer.equals(english);
@@ -60,6 +57,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             finish();
         });
 
+        Button showRulesButton = findViewById(R.id.rules_button);
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
@@ -69,6 +67,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             rules.show(getSupportFragmentManager(), "rule");
         });
 
+        Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
             intent.putExtra("end game", true);

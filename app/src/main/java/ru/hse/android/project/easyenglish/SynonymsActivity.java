@@ -84,7 +84,7 @@ public class SynonymsActivity extends AppCompatActivity {
         final TextView taskWordText = findViewById(R.id.word_task_text);
         taskWordText.setText(mainWord.getEnglish());
 
-        Button checkAnswerButton = findViewById(R.id.check_answer);
+        Button checkAnswerButton = findViewById(R.id.check_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             v.setEnabled(false);
             for (CheckBox checkBox : checkBoxes) {
