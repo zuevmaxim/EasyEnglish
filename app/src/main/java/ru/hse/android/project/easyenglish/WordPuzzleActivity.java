@@ -65,8 +65,8 @@ public class WordPuzzleActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Word puzzle");
-            args.putString("message", "You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.");
+            args.putString("title", getString(R.string.rules_word_puzzle));
+            args.putString("message", getString(R.string.rules_word_puzzle_text));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
         });

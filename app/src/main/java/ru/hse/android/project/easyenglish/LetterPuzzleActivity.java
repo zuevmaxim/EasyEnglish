@@ -63,8 +63,8 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", "Letter puzzle");
-            args.putString("rule", "You are given a word in English with shuffled letters and its translation. Your task is to put letters in right order and write down the result.");
+            args.putString("game", this.getString(R.string.rules_letter_puzzle));
+            args.putString("rule", this.getString(R.string.rules_letter_puzzle_text));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "rule");
         });

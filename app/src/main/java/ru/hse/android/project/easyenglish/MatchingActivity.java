@@ -20,6 +20,7 @@ public class MatchingActivity extends AppCompatActivity {
 
     private final Random random = new Random();
     private boolean result;
+    private static final int SIZE = 4;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,7 +29,7 @@ public class MatchingActivity extends AppCompatActivity {
 
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(4);
+        final List<Word> words = wordStorage.getSetOfWords(SIZE);
         final List<String> englishWords = new ArrayList<>();
         final List<String> russianWords = new ArrayList<>();
         int size = words.size();
@@ -72,7 +73,7 @@ public class MatchingActivity extends AppCompatActivity {
         showHintsButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Word puzzle");
+            args.putString("title", "Matching");
             args.putString("message", englishWords.get(wrongAnswerNumber) + " - " + russianWords.get(wrongAnswerNumber));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
@@ -82,8 +83,8 @@ public class MatchingActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Word puzzle");
-            args.putString("message", "You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.");
+            args.putString("title", getString(R.string.rules_matching));
+            args.putString("message", getString(R.string.rules_matching_text));
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
         });

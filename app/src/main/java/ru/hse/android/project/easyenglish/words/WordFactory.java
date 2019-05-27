@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 
 public class WordFactory extends SQLiteAssetHelper {
@@ -17,10 +18,12 @@ public class WordFactory extends SQLiteAssetHelper {
     //private static final String DATE_COLUMN = "date";
     private static final String ERRORS_NUMBER_COLUMN = "errors";
     private static final String TOTAL_NUMBER_COLUMN = "total";
+    private final Context context;
 
 
     public WordFactory(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
     }
 
     public int nextWordId() {
@@ -111,18 +114,18 @@ public class WordFactory extends SQLiteAssetHelper {
 
     public void checkRussianSpelling(String russianWord) throws WrongWordException {
         if (russianWord.isEmpty()) {
-            throw new WrongWordException("Empty word");
+            throw new WrongWordException(context.getString(R.string.error_empty_word));
         } else if (!russianWord.matches("[А-Яа-я\\-\\s]+")) {
-            throw new WrongWordException("Letters and spaces only");
+            throw new WrongWordException(context.getString(R.string.wrong_word_symbol));
         }
     }
 
     public void checkEnglishSpelling(String englishWord) throws WrongWordException {
         if (englishWord.isEmpty()) {
-            throw new WrongWordException("Empty word");
+            throw new WrongWordException(context.getString(R.string.error_empty_word));
         }
         if (!englishWord.matches("[A-Za-z\\-\\s]+")) {
-            throw new WrongWordException("Letters and spaces only");
+            throw new WrongWordException(context.getString(R.string.wrong_word_symbol));
         }
     }
 
