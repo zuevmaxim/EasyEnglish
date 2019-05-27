@@ -81,7 +81,6 @@ public class GameActivity extends AppCompatActivity {
                      LetterPuzzleActivity.class,
                      ChooseDefinitionActivity.class,
                      MatchingActivity.class,
-                     WordPuzzleActivity.class,
                      SynonymsActivity.class
              };
          } else {

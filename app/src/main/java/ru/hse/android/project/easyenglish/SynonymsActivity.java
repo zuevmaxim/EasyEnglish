@@ -1,6 +1,7 @@
 package ru.hse.android.project.easyenglish;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -24,7 +25,7 @@ import ru.hse.android.project.easyenglish.words.Word;
 public class SynonymsActivity extends AppCompatActivity {
 
 
-    private boolean result;
+    private boolean result = true;
     private final Random random = new Random();
 
     @Override
@@ -37,9 +38,11 @@ public class SynonymsActivity extends AppCompatActivity {
         Word mainWord = words.remove(0);
         final List<String> synonyms = TranslateController.getSynonyms(mainWord.getEnglish());
         final List<String> notSynonyms = new ArrayList<>();
+
         if (synonyms == null) {
             return;
         }
+
         for (Word word : words) {
             if (!synonyms.contains(word.getEnglish())) {
                 notSynonyms.add(word.getEnglish());
@@ -65,7 +68,7 @@ public class SynonymsActivity extends AppCompatActivity {
             notSynonymsCounter--;
         }
 
-        synonyms.stream().forEach(System.out::println);
+        boxedSynonyms.forEach(System.out::println);
 
         Collections.shuffle(boxedWords);
 
@@ -75,7 +78,8 @@ public class SynonymsActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             checkBoxes[i]  = new CheckBox(this);
             checkBoxes[i].setText(boxedWords.get(i));
-            checkBoxes[i].setId(i);
+            checkBoxes[i].setTextSize(24);
+            checkBoxes[i].setTextColor(Color.parseColor("#CB000000"));
             checkBoxesLayout.addView(checkBoxes[i]);
         }
 
