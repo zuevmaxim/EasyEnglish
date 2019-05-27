@@ -1,10 +1,8 @@
 package ru.hse.android.project.easyenglish;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.Adapter;
-import android.widget.ArrayAdapter;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -41,7 +39,9 @@ public class MatchingActivity extends AppCompatActivity {
         }
 
         final List<String> shufflesRussiaWords = new ArrayList<>(russianWords);
-        Collections.shuffle(shufflesRussiaWords);
+        while (russianWords.equals(shufflesRussiaWords)) {
+            Collections.shuffle(shufflesRussiaWords);
+        }
 
         ListView listView = findViewById(R.id.matching_list);
         DragAndDropAdapter adapter = new DragAndDropAdapter(this, englishWords);

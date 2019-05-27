@@ -52,6 +52,16 @@ public class WordListController extends SQLiteAssetHelper {
         return TABLE + getWordListId(wordListName);
     }
 
+    public boolean needsInit() {
+        String[] columns = {WORD_ID_COLUMN};
+        Cursor cursor = getReadableDatabase().query(getTableName(RANDOM_WORD_LIST_TABLE_NAME), columns, null, null, null, null, null);
+        if (cursor.moveToNext()) {
+            return false;
+        }
+        cursor.close();
+        return true;
+    }
+
     public void updateRandomWordList() {
         String tableName = getTableName(RANDOM_WORD_LIST_TABLE_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);

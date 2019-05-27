@@ -1,21 +1,20 @@
 package ru.hse.android.project.easyenglish;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 import ru.hse.android.project.easyenglish.controllers.MainController;
-import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.controllers.WordStorage;
+import ru.hse.android.project.easyenglish.words.Word;
 
 public class ChooseDefinitionActivity extends AppCompatActivity {
     private final Random random = new Random();
@@ -27,6 +26,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
         final List<Word> words = wordStorage.getSetOfWords(4);
+        Word min = words.get(0);
         Collections.shuffle(words);
 
         int size = words.size();
@@ -37,17 +37,18 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             radioButtons[i]  = new RadioButton(this);
             radioButtons[i].setText(words.get(i).getRussian());
+            radioButtons[i].setTextSize(24);
             radioButtons[i].setId(i);
             radioGroup.addView(radioButtons[i]);
         }
 
         final TextView taskWordText = findViewById(R.id.word_task_text);
 
-        final int answerNumber = random.nextInt(size);
+        final int answerNumber = words.indexOf(min);
         final Word answer = words.get(answerNumber);
         final int wrongAnswerNumber = setHint(size, answerNumber);
 
-        taskWordText.setText(answer.getEnglish());
+        taskWordText.setText(String.format("%s%s", answer.getEnglish(), answer.getTranscription()));
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
