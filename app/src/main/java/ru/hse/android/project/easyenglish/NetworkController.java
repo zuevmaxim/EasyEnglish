@@ -62,6 +62,8 @@ public class NetworkController extends AppCompatActivity {
     // Should I be showing the turn API?
     public boolean isDoingTurn = false;
 
+    private boolean isGame = false;
+
     // This is the current match we're in; null if not loaded
     private TurnBasedMatch mMatch;
 
@@ -71,7 +73,8 @@ public class NetworkController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_word_chain_menu);
+        changeLayout();
+
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -159,13 +162,16 @@ public class NetworkController extends AppCompatActivity {
 
         if (!isSignedIn) {
             setContentView(R.layout.activity_sign_in);
+            initSingInLayout();
             return;
         }
 
-        if (isDoingTurn) {
-            setContentView(R.layout.activity_word_chain_menu);
-        } else {
+        if (isGame) {
             setContentView(R.layout.activity_word_chain);
+            initGameLayout();
+        } else {
+            setContentView(R.layout.activity_word_chain_menu);
+            initMenuLayout();
         }
     }
 
@@ -210,6 +216,7 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener("There was a problem getting the player!"));
 
         Log.d(TAG, "onConnected(): Connection successful");
+        changeLayout();
 
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
         gamesClient.getActivationHint()
@@ -233,6 +240,7 @@ public class NetworkController extends AppCompatActivity {
 
         mTurnBasedMultiplayerClient = null;
         mInvitationsClient = null;
+        changeLayout();
     }
 
     private OnFailureListener createFailureListener(final String string) {
@@ -467,12 +475,16 @@ public class NetworkController extends AppCompatActivity {
     }
 
     public void guestCreateMatch(TurnBasedMatch match) {
+        isGame = true;
+        changeLayout();
         wordChain = new WordChain();
         wordChain.setTurn(false);
         updateMatch(match);
     }
 
     public void startMatch(TurnBasedMatch match) {
+        isGame = true;
+        changeLayout();
         wordChain = new WordChain();
         wordChain.setTurn(true);
         mMatch = match;

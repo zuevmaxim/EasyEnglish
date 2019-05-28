@@ -58,10 +58,10 @@
         <Button
             android:id="@+id/history_button"
             style="@style/GroupedButton"
-            android:layout_marginTop="0dp"
-            android:layout_weight="0.01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            android:layout_weight="0.01"
             android:text="@string/history" />
 
         <TextView
