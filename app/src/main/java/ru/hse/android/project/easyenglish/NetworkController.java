@@ -74,7 +74,13 @@ public class NetworkController extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_chain_find_opponent);
 
-        mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
+        GoogleSignInOptions gso = new GoogleSignInOptions
+                .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestScopes(Games.SCOPE_GAMES_LITE)
+                .requestEmail()
+                .build();
+
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
 
         Button startGameButton = findViewById(R.id.button_quick_game); //TODO : rename
@@ -281,7 +287,7 @@ public class NetworkController extends AppCompatActivity {
     public void setGameplayUI() {
         isDoingTurn = true;
         mOpponentText.setText(opponentWord);
-        mTurnTextView.setText("Turn " + (wordChain.isMyTurn() ? "My" : "Opponent"));
+        mTurnTextView.setText(String.format("Turn %s", wordChain.isMyTurn() ? "My" : "Opponent"));
     }
 
 
@@ -578,16 +584,13 @@ public class NetworkController extends AppCompatActivity {
         }
 
         // OK, it's active. Check on turn status.
-        switch (turnStatus) {
-            case TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN:
-                //mWordChainData = WordChain.unpersist(mMatch.getData());
-                opponentWord = wordChain.unhash(mMatch.getData());
-                mDataView.setText("");
-                wordChain.makeMove(opponentWord);
-                wordChain.changeTurn();
-                Log.d(TAG, "Get data");
-                setGameplayUI();
-                return;
+        if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
+            opponentWord = wordChain.unhash(mMatch.getData());
+            mDataView.setText("");
+            wordChain.makeMove(opponentWord);
+            wordChain.changeTurn();
+            Log.d(TAG, "Get data");
+            setGameplayUI();
         }
     }
 
@@ -621,7 +624,6 @@ public class NetworkController extends AppCompatActivity {
 
         if (isDoingTurn) {
             updateMatch(match);
-            return;
         }
     }
 

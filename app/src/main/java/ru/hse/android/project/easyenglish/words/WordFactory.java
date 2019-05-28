@@ -115,7 +115,7 @@ public class WordFactory extends SQLiteAssetHelper {
     public void checkRussianSpelling(String russianWord) throws WrongWordException {
         if (russianWord.isEmpty()) {
             throw new WrongWordException(context.getString(R.string.error_empty_word));
-        } else if (!russianWord.matches("[А-Яа-я\\-\\s]+")) {
+        } else if (!russianWord.matches("[А-Яа-я,.!?\\-\\s]+")) {
             throw new WrongWordException(context.getString(R.string.wrong_word_symbol));
         }
     }
@@ -124,7 +124,7 @@ public class WordFactory extends SQLiteAssetHelper {
         if (englishWord.isEmpty()) {
             throw new WrongWordException(context.getString(R.string.error_empty_word));
         }
-        if (!englishWord.matches("[A-Za-z\\-\\s]+")) {
+        if (!englishWord.matches("[A-Za-z,.!?\\-\\s]+")) {
             throw new WrongWordException(context.getString(R.string.wrong_word_symbol));
         }
     }
