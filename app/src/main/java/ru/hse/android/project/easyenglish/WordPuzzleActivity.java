@@ -40,7 +40,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords);
         dragListView.setAdapter(dragListAdapter);
 
-        Button checkAnswerButton = findViewById(R.id.check_answer_button);
+        Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             v.setEnabled(false);
             result = words.equals(shuffleWords);

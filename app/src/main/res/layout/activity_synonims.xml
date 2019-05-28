@@ -52,7 +52,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/check_answer_button"
+            android:id="@+id/send_answer_button"
             style="@style/GroupedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

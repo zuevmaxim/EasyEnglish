@@ -43,7 +43,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         final TextView shuffledWordText = findViewById(R.id.word_task_text);
         shuffledWordText.setText((shuffledEnglish + " - " + russian));
 
-        Button checkAnswerButton = findViewById(R.id.check_answer_button);
+        Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             final EditText answerText = findViewById(R.id.answer_text);
             String answer = answerText.getText().toString();

@@ -124,7 +124,7 @@
                 android:textSize="50sp" />
 
             <EditText
-                android:id="@+id/answer_word_chain_text"
+                android:id="@+id/answer_word_text"
                 style="@style/EditableText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -136,7 +136,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/check_answer_button"
+            android:id="@+id/send_answer_button"
             style="@style/GroupedButton"
             android:layout_weight="0.01"
             android:layout_width="wrap_content"

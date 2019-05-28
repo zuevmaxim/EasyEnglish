@@ -77,7 +77,7 @@ public class NetworkController extends AppCompatActivity {
         mGoogleSignInClient = GoogleSignIn.getClient(this, GoogleSignInOptions.DEFAULT_GAMES_SIGN_IN);
 
 
-        Button startGameButton = findViewById(R.id.button_quick_game); //TODO : rename
+        Button startGameButton = findViewById(R.id.start_game_button); //TODO : rename
         startGameButton.setOnClickListener(view -> {
             Log.d(TAG, "Start game button clicked");
             mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 1, false)
@@ -86,7 +86,7 @@ public class NetworkController extends AppCompatActivity {
                             getString(R.string.error_get_select_opponents)));
         });
 
-        Button checkGamesButton = findViewById(R.id.checkGamesButton);
+        Button checkGamesButton = findViewById(R.id.check_games_button);
         checkGamesButton.setOnClickListener(view -> {
             Log.d(TAG, "CheckGamesButton clicked");
             mTurnBasedMultiplayerClient.getInboxIntent()
@@ -94,25 +94,25 @@ public class NetworkController extends AppCompatActivity {
                     .addOnFailureListener(createFailureListener(getString(R.string.error_get_inbox_intent)));
         });
 
-        SignInButton signInButton = findViewById(R.id.button_sign_in);
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
         signInButton.setOnClickListener(view -> {
             Log.d(TAG, "Sign-in button clicked");
             startSignInIntent();
         });
 
-        Button signOutButton = findViewById(R.id.button_sign_out);
+        Button signOutButton = findViewById(R.id.sign_out_button);
         signOutButton.setOnClickListener(view -> {
             Log.d(TAG, "Sign-out button clicked");
             signOut();
         });
 
-        Button doneButton = findViewById(R.id.doneButton);
+        Button doneButton = findViewById(R.id.send_answer_button);
         doneButton.setOnClickListener(view -> {
             Log.d(TAG, "doneButton clicked");
             onDoneClicked();
         });
 
-        Button cancelButton = findViewById(R.id.cancelButton);
+        Button cancelButton = findViewById(R.id.end_game_button);
         cancelButton.setOnClickListener(view -> {
             Log.d(TAG, "cancelButton clicked");
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
@@ -122,7 +122,7 @@ public class NetworkController extends AppCompatActivity {
             isDoingTurn = false;
         });
 
-        Button leaveButton = findViewById(R.id.leaveButton);
+        Button leaveButton = findViewById(R.id.end_game_button);
         leaveButton.setOnClickListener(view -> {
             Log.d(TAG, "leaveButton clicked");
             String nextParticipantId = getNextParticipantId();
@@ -132,7 +132,7 @@ public class NetworkController extends AppCompatActivity {
                     .addOnFailureListener(createFailureListener("There was a problem leaving the match!"));
         });
 
-        Button finishButton = findViewById(R.id.finishButton);
+        Button finishButton = findViewById(R.id.end_game_button);
         finishButton.setOnClickListener(view -> {
             Log.d(TAG, "finishButton clicked");
             mTurnBasedMultiplayerClient.finishMatch(mMatch.getMatchId())
@@ -142,9 +142,13 @@ public class NetworkController extends AppCompatActivity {
             isDoingTurn = false;
         });
 
-        mDataView = findViewById(R.id.data_view);
-        mOpponentText = findViewById(R.id.opponent_text);
-        mTurnTextView = findViewById(R.id.turn_counter_view);
+        mDataView = findViewById(R.id.answer_word_text);
+        mOpponentText = findViewById(R.id.opponent_word);
+        mTurnTextView = findViewById(R.id.turn_status_text);
+    }
+
+    private void changeLayout() {
+
     }
 
 
