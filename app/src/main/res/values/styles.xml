@@ -18,7 +18,7 @@
         <item name="android:textStyle">bold|italic</item>
         <item name="android:typeface">sans</item>
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">40sp</item>
+        <item name="android:textSize">32sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
     </style>
@@ -41,7 +41,7 @@
 
     <style name="GameTitle">
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">30sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textColor">@color/colorPrimary</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -65,6 +65,26 @@
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="InnerLinearLayout">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="EditableText">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:ems">10</item>
+        <item name="android:inputType">textPersonName|text</item>
+        <item name="android:gravity">center</item>
     </style>
 
     <style name="MainText">
@@ -115,6 +135,7 @@
     <style name="GroupedButton" parent="Theme.AppCompat.Light">
         <item name="android:layout_weight">1</item>
         <item name="android:layout_width">70dp</item>
+        <item name="android:textSize">14sp</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:layout_height">40dp</item>
         <item name="android:layout_marginTop">5dp</item>

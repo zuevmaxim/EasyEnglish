@@ -54,7 +54,7 @@
         <LinearLayout
             style="@style/MainLinearLayout"
             android:gravity="center"
-            android:layout_weight="0.74"
+            android:layout_weight="0.84"
             android:orientation="horizontal">
 
             <ListView
@@ -84,9 +84,8 @@
             android:text="@string/check_answer" />
 
         <LinearLayout
-            style="@style/MainLinearLayout"
-            android:layout_weight="0.2"
-            android:layout_height="0dp"
+            style="@style/InnerLinearLayout"
+            android:layout_weight="0.1"
             android:orientation="horizontal">
 
             <Button

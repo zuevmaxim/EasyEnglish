@@ -4,43 +4,45 @@
     android:id="@+id/word_text"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_horizontal">
+    android:baselineAligned="false">
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/russian_word_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         app:errorEnabled="true">
 
         <EditText
             android:id="@+id/russian_word_text"
+            style="@style/EditableText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:autofillHints=""
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:labelFor="@id/russian_word_text"
+            android:textSize="14sp"
             tools:targetApi="o" />
     </android.support.design.widget.TextInputLayout>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/english_word_layout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="5dp"
-        android:layout_marginEnd="5dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
         app:errorEnabled="true">
 
         <EditText
             android:id="@+id/english_word_text"
+            style="@style/EditableText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:autofillHints=""
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
             android:labelFor="@id/english_word_text"
+            android:textSize="14sp"
             tools:targetApi="o" />
+
     </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -113,6 +114,7 @@ public class NetworkController extends AppCompatActivity {
         signOutButton.setOnClickListener(view -> {
             Log.d(TAG, "Sign-out button clicked");
             signOut();
+            //TODO setViewVisibility();
         });
 
         mDataView = findViewById(R.id.data_view);
@@ -121,6 +123,37 @@ public class NetworkController extends AppCompatActivity {
 
         Log.w(TAG, "Start game.");
     }
+
+    //TODO
+    /*
+    public void setViewVisibility() {
+        boolean isSignedIn = mTurnBasedMultiplayerClient != null;
+
+        if (!isSignedIn) {
+            findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+
+            if (mAlertDialog != null) {
+                mAlertDialog.dismiss();
+            }
+            return;
+        }
+
+
+        ((TextView) findViewById(R.id.name_field)).setText(mDisplayName);
+        findViewById(R.id.login_layout).setVisibility(View.GONE);
+
+        if (isDoingTurn) {
+            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+        }
+    }
+    */
 
     private void onStartGame() {
 
@@ -191,6 +224,7 @@ public class NetworkController extends AppCompatActivity {
                         player -> {
                             mDisplayName = player.getDisplayName();
                             mPlayerId = player.getPlayerId();
+                            //TODO setViewVisibility();
                         }
                 )
                 .addOnFailureListener(createFailureListener("There was a problem getting the player!"));
@@ -212,6 +246,7 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener(
                         "There was a problem getting the activation hint!"));
 
+        //TODO setViewVisibility();
 
         // As a demonstration, we are registering this activity as a handler for
         // invitation and match events.
@@ -233,6 +268,7 @@ public class NetworkController extends AppCompatActivity {
 
         mTurnBasedMultiplayerClient = null;
         mInvitationsClient = null;
+        //TODO setViewVisibility();
     }
 
     private OnFailureListener createFailureListener(final String string) {
@@ -250,7 +286,7 @@ public class NetworkController extends AppCompatActivity {
     // Open the create-game UI. You will get back an onActivityResult
     // and figure out what to do.
     public void onStartMatchClicked() {
-        mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 1, true)
+        mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 1, false)
                 .addOnSuccessListener(intent -> startActivityForResult(intent, RC_SELECT_PLAYERS))
                 .addOnFailureListener(createFailureListener(
                         getString(R.string.error_get_select_opponents)));
@@ -282,6 +318,7 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
 
         isDoingTurn = false;
+        //TODO setViewVisibility();
     }
 
     // Leave the game during your turn. Note that there is a separate
@@ -293,6 +330,7 @@ public class NetworkController extends AppCompatActivity {
         mTurnBasedMultiplayerClient.leaveMatchDuringTurn(mMatch.getMatchId(), nextParticipantId)
                 .addOnSuccessListener(aVoid -> onLeaveMatch())
                 .addOnFailureListener(createFailureListener("There was a problem leaving the match!"));
+        //TODO setViewVisibility();
     }
 
     // Finish the game. Sometimes, this is your only choice.
@@ -303,6 +341,7 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener("There was a problem finishing the match!"));
 
         isDoingTurn = false;
+        //TODO setViewVisibility();
     }
 
 
@@ -312,10 +351,6 @@ public class NetworkController extends AppCompatActivity {
         showSpinner();
 
         String nextParticipantId = getNextParticipantId();
-        // Create the next turn
-        //mWordChainData.turnCounter += 1;
-        //mWordChainData.data = mDataView.getText().toString();
-        // TODO add turn checking
         String word = mDataView.getText().toString();
         if (!wordChain.isMyTurn()) {
             Toast.makeText(this, "Not your turn!", Toast.LENGTH_LONG).show();
@@ -358,6 +393,7 @@ public class NetworkController extends AppCompatActivity {
     // Switch to gameplay view.
     public void setGameplayUI() {
         isDoingTurn = true;
+        //TODO setViewVisibility();
         mOpponentText.setText(opponentWord);
         mTurnTextView.setText("Turn " + (wordChain.isMyTurn() ? "My" : "Opponent"));
     }
@@ -489,7 +525,7 @@ public class NetworkController extends AppCompatActivity {
 
 
     private void logBadActivityResult(int requestCode, int resultCode, String message) {
-        Log.i(TAG, "Bad activity result(" + resultCode + ") for request (" + requestCode + "): "
+        Log.e(TAG, "Bad activity result(" + resultCode + ") for request (" + requestCode + "): "
                 + message);
     }
 
@@ -499,7 +535,10 @@ public class NetworkController extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 
         if (requestCode == RC_SIGN_IN) {
-
+            if (resultCode != Activity.RESULT_OK) {
+                logBadActivityResult(requestCode, resultCode,
+                        "User cancelled returning from the 'Select Match' dialog.");
+            }
             Task<GoogleSignInAccount> task =
                     GoogleSignIn.getSignedInAccountFromIntent(intent);
 
@@ -533,7 +572,7 @@ public class NetworkController extends AppCompatActivity {
                     .getParcelableExtra(Multiplayer.EXTRA_TURN_BASED_MATCH);
 
             if (match != null) {
-                updateMatch(match);
+                updateMatch(match); // TODO add a method
             }
 
             Log.d(TAG, "Match = " + match);
@@ -691,6 +730,7 @@ public class NetworkController extends AppCompatActivity {
                 // so we allow this to continue.
                 showWarning("Complete!",
                         "This game is over; someone finished it!  You can only finish it now.");
+                //TODO setViewVisibility();
         }
 
         // OK, it's active. Check on turn status.
@@ -758,6 +798,7 @@ public class NetworkController extends AppCompatActivity {
             updateMatch(match);
             return;
         }
+        //TODO setViewVisibility();
     }
 
     private InvitationCallback mInvitationCallback = new InvitationCallback() {

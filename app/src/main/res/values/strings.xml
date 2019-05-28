@@ -98,5 +98,6 @@
     <string name="rules_matching_text">Match words with their translations.</string>
     <string name="Transcription">Transcription</string>
     <string name="A">A</string>
+    <string name="history">History</string>
 
 </resources>

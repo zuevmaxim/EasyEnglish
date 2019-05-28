@@ -39,7 +39,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             radioButtons[i]  = new RadioButton(this);
             radioButtons[i].setText(words.get(i).getRussian());
-            radioButtons[i].setTextSize(24);
+            radioButtons[i].setTextSize(18);
             radioButtons[i].setId(i);
             radioGroup.addView(radioButtons[i]);
         }
@@ -50,7 +50,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         final Word answer = words.get(answerNumber);
         final int wrongAnswerNumber = setHint(size, answerNumber);
 
-        taskWordText.setText(String.format("%s%s", answer.getEnglish(), answer.getTranscription()));
+        taskWordText.setText(String.format("%s\t\t%s", answer.getEnglish(), answer.getTranscription()));
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {

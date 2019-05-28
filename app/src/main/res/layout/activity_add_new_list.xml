@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".AddNewListActivity">
 
 
@@ -34,21 +36,23 @@
 
         <EditText
             android:id="@+id/new_list_name_text"
+            style="@style/EditableText"
+            android:inputType="textPersonName|text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:layout_weight="0.01"
-            android:hint="@string/enter_list_name"/>
+            android:hint="@string/enter_list_name"
+            tools:targetApi="o"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/new_word_list"
             style="@style/RecyclerList"
-            android:layout_weight="0.79"
+            android:layout_weight="0.94"
             app:layoutManager="LinearLayoutManager" />
 
         <LinearLayout
-            style="@style/MainLinearLayout"
-            android:layout_weight="0.2"
+            style="@style/InnerLinearLayout"
+            android:layout_weight="0.05"
             android:orientation="horizontal">
 
             <Button

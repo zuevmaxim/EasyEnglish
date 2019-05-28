@@ -50,10 +50,9 @@
             android:text="@string/menu" />
 
         <LinearLayout
-            style="@style/MainLinearLayout"
+            style="@style/InnerLinearLayout"
             android:gravity="center"
             android:layout_weight="0.2"
-            android:layout_height="0dp"
             android:orientation="horizontal">
 
             <Button
