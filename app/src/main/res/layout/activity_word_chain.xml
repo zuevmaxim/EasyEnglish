@@ -157,11 +157,32 @@
                 android:text="@string/rules" />
 
             <Button
+                android:id="@+id/leave_game_button"
+                style="@style/GroupedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/leave_game"/>
+
+            <Button
                 android:id="@+id/end_game_button"
                 style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end_game"/>
+
+            <Button
+                android:id="@+id/cancel_button"
+                style="@style/GroupedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cancel"/>
+
+            <Button
+                android:id="@+id/finish_game_button"
+                style="@style/GroupedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/finish_game"/>
 
             <Button
                 android:id="@+id/hints_button_button"

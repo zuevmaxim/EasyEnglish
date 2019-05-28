@@ -99,5 +99,7 @@
     <string name="Transcription">Transcription</string>
     <string name="A">A</string>
     <string name="history">History</string>
+    <string name="finish_game">finish game</string>
+    <string name="leave_game">leave game</string>
 
 </resources>

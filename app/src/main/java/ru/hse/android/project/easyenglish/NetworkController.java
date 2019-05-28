@@ -118,7 +118,7 @@ public class NetworkController extends AppCompatActivity {
             onDoneClicked();
         });
 
-        Button cancelButton = findViewById(R.id.end_game_button);
+        Button cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(view -> {
             Log.d(TAG, "cancelButton clicked");
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
@@ -128,7 +128,7 @@ public class NetworkController extends AppCompatActivity {
             isDoingTurn = false;
         });
 
-        Button leaveButton = findViewById(R.id.end_game_button);
+        Button leaveButton = findViewById(R.id.leave_game_button);
         leaveButton.setOnClickListener(view -> {
             Log.d(TAG, "leaveButton clicked");
             String nextParticipantId = getNextParticipantId();
@@ -138,13 +138,12 @@ public class NetworkController extends AppCompatActivity {
                     .addOnFailureListener(createFailureListener("There was a problem leaving the match!"));
         });
 
-        Button finishButton = findViewById(R.id.end_game_button);
+        Button finishButton = findViewById(R.id.finish_game_button);
         finishButton.setOnClickListener(view -> {
             Log.d(TAG, "finishButton clicked");
             mTurnBasedMultiplayerClient.finishMatch(mMatch.getMatchId())
                     .addOnSuccessListener(this::onUpdateMatch)
                     .addOnFailureListener(createFailureListener("There was a problem finishing the match!"));
-
             isDoingTurn = false;
         });
 
