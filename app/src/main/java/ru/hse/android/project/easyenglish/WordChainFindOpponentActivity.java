@@ -8,7 +8,7 @@ public class WordChainFindOpponentActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_word_chain_find_opponent);
+        setContentView(R.layout.activity_word_chain_menu);
     }
 
     //find opponent

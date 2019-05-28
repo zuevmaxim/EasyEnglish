@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -72,17 +71,25 @@ public class NetworkController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_word_chain_find_opponent);
+        setContentView(R.layout.activity_word_chain_menu);
 
         GoogleSignInOptions gso = new GoogleSignInOptions
                 .Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestScopes(Games.SCOPE_GAMES_LITE)
                 .requestEmail()
                 .build();
-
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+    }
 
+    private void initSingInLayout() {
+        SignInButton signInButton = findViewById(R.id.sign_in_button);
+        signInButton.setOnClickListener(view -> {
+            Log.d(TAG, "Sign-in button clicked");
+            startSignInIntent();
+        });
+    }
 
+    private void initMenuLayout() {
         Button startGameButton = findViewById(R.id.start_game_button); //TODO : rename
         startGameButton.setOnClickListener(view -> {
             Log.d(TAG, "Start game button clicked");
@@ -94,16 +101,10 @@ public class NetworkController extends AppCompatActivity {
 
         Button checkGamesButton = findViewById(R.id.check_games_button);
         checkGamesButton.setOnClickListener(view -> {
-            Log.d(TAG, "CheckGamesButton clicked");
+            Log.d(TAG, "Check games button clicked");
             mTurnBasedMultiplayerClient.getInboxIntent()
                     .addOnSuccessListener(intent -> startActivityForResult(intent, RC_LOOK_AT_MATCHES))
                     .addOnFailureListener(createFailureListener(getString(R.string.error_get_inbox_intent)));
-        });
-
-        SignInButton signInButton = findViewById(R.id.sign_in_button);
-        signInButton.setOnClickListener(view -> {
-            Log.d(TAG, "Sign-in button clicked");
-            startSignInIntent();
         });
 
         Button signOutButton = findViewById(R.id.sign_out_button);
@@ -111,16 +112,18 @@ public class NetworkController extends AppCompatActivity {
             Log.d(TAG, "Sign-out button clicked");
             signOut();
         });
+    }
 
-        Button doneButton = findViewById(R.id.send_answer_button);
-        doneButton.setOnClickListener(view -> {
-            Log.d(TAG, "doneButton clicked");
+    private void initGameLayout() {
+        Button sendAnswerButton = findViewById(R.id.send_answer_button);
+        sendAnswerButton.setOnClickListener(view -> {
+            Log.d(TAG, "send answer button clicked");
             onDoneClicked();
         });
 
         Button cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(view -> {
-            Log.d(TAG, "cancelButton clicked");
+            Log.d(TAG, "cancel button clicked");
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
                     .addOnSuccessListener(this::onCancelMatch)
                     .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
@@ -130,7 +133,7 @@ public class NetworkController extends AppCompatActivity {
 
         Button leaveButton = findViewById(R.id.leave_game_button);
         leaveButton.setOnClickListener(view -> {
-            Log.d(TAG, "leaveButton clicked");
+            Log.d(TAG, "leave button clicked");
             String nextParticipantId = getNextParticipantId();
 
             mTurnBasedMultiplayerClient.leaveMatchDuringTurn(mMatch.getMatchId(), nextParticipantId)
@@ -140,47 +143,31 @@ public class NetworkController extends AppCompatActivity {
 
         Button finishButton = findViewById(R.id.finish_game_button);
         finishButton.setOnClickListener(view -> {
-            Log.d(TAG, "finishButton clicked");
+            Log.d(TAG, "finish button clicked");
             mTurnBasedMultiplayerClient.finishMatch(mMatch.getMatchId())
                     .addOnSuccessListener(this::onUpdateMatch)
                     .addOnFailureListener(createFailureListener("There was a problem finishing the match!"));
             isDoingTurn = false;
         });
-
         mDataView = findViewById(R.id.answer_word_text);
         mOpponentText = findViewById(R.id.opponent_word);
         mTurnTextView = findViewById(R.id.turn_status_text);
     }
 
-    /*
     private void changeLayout() {
         boolean isSignedIn = mTurnBasedMultiplayerClient != null;
 
         if (!isSignedIn) {
-            findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
-            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
-            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
-
-            if (mAlertDialog != null) {
-                mAlertDialog.dismiss();
-            }
+            setContentView(R.layout.activity_sign_in);
             return;
         }
 
-
-        ((TextView) findViewById(R.id.name_field)).setText(mDisplayName);
-        findViewById(R.id.login_layout).setVisibility(View.GONE);
-
         if (isDoingTurn) {
-            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
-            findViewById(R.id.gameplay_layout).setVisibility(View.VISIBLE);
+            setContentView(R.layout.activity_word_chain_menu);
         } else {
-            findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
-            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+            setContentView(R.layout.activity_word_chain);
         }
     }
-    */
 
     @Override
     protected void onResume() {
@@ -251,8 +238,6 @@ public class NetworkController extends AppCompatActivity {
     private OnFailureListener createFailureListener(final String string) {
         return e -> handleException(e, string);
     }
-
-
 
     // Upload your new gamestate, then take a turn, and pass it on to the next
     // player.
