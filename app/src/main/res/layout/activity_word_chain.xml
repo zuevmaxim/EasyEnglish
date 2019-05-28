@@ -26,11 +26,20 @@
     <LinearLayout
         style="@style/MainLinearLayout"
         android:gravity="center"
+        android:layout_marginTop="15dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2">
+
+        <TextView
+            android:id="@+id/players_name_text"
+            style="@style/MainText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.1"
+            android:textAlignment="textEnd" />
 
         <LinearLayout
             style="@style/MainLinearLayout"
@@ -46,28 +55,22 @@
                 android:layout_weight="1"
                 android:textAlignment="textEnd" />
 
-            <TextView
-                android:id="@+id/players_name_text"
-                style="@style/MainText"
+            <Button
+                android:id="@+id/history_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd" />
-        </LinearLayout>
+                android:layout_marginTop="0dp"
+                android:layout_weight="0.01"
+                android:text="@string/history" />
 
-        <Button
-            android:id="@+id/history_button"
-            style="@style/GroupedButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="0dp"
-            android:layout_weight="0.01"
-            android:text="@string/history" />
+        </LinearLayout>
 
         <LinearLayout
             style="@style/MainLinearLayout"
-            android:layout_weight="0.2"
             android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:gravity="start"
             android:orientation="horizontal">
 
             <TextView
@@ -75,6 +78,7 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:text="@string/opponent"
                 android:textAlignment="viewStart" />
 
@@ -83,7 +87,6 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.7"
                 android:textAlignment="textEnd" />
 
             <TextView
@@ -91,7 +94,6 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
                 android:text="@string/A"
                 android:textAlignment="textStart"
                 android:textColor="@color/colorAccent"
@@ -101,8 +103,9 @@
 
         <LinearLayout
             style="@style/InnerLinearLayout"
-            android:layout_weight="0.2"
             android:layout_height="wrap_content"
+            android:layout_weight="0.2"
+            android:gravity="left"
             android:orientation="horizontal">
 
             <TextView
@@ -110,7 +113,7 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.1"
+                android:layout_marginEnd="5dp"
                 android:text="@string/your"
                 android:textAlignment="viewStart" />
 
@@ -119,7 +122,6 @@
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.2"
                 android:text="@string/A"
                 android:textAlignment="textEnd"
                 android:textColor="@color/colorAccent"
@@ -128,13 +130,12 @@
             <EditText
                 android:id="@+id/answer_word_text"
                 style="@style/EditableText"
-                android:textSize="18dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="0.8"
                 android:autofillHints=""
                 android:hint="@string/enter_word"
-                android:textAlignment="textStart" />
+                android:textAlignment="textStart"
+                android:textSize="18sp" />
 
         </LinearLayout>
 
@@ -160,13 +161,6 @@
                 android:text="@string/rules" />
 
             <Button
-                android:id="@+id/leave_game_button"
-                style="@style/GroupedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/leave_game"/>
-
-            <Button
                 android:id="@+id/end_game_button"
                 style="@style/GroupedButton"
                 android:layout_width="wrap_content"
@@ -174,21 +168,7 @@
                 android:text="@string/end_game"/>
 
             <Button
-                android:id="@+id/cancel_button"
-                style="@style/GroupedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/cancel"/>
-
-            <Button
-                android:id="@+id/finish_game_button"
-                style="@style/GroupedButton"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/finish_game"/>
-
-            <Button
-                android:id="@+id/hints_button_button"
+                android:id="@+id/hints_button"
                 style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
