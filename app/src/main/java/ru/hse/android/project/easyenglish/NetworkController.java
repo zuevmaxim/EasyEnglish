@@ -127,6 +127,7 @@ public class NetworkController extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(view -> {
             Log.d(TAG, "cancel button clicked");
+            endGame();
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
                     .addOnSuccessListener(this::onCancelMatch)
                     .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
@@ -538,7 +539,15 @@ public class NetworkController extends AppCompatActivity {
 
         switch (status) {
             case TurnBasedMatch.MATCH_STATUS_CANCELED:
-                showWarning("Canceled!", "This game was canceled!");
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+                alertDialogBuilder.setTitle("End game!").setMessage("You win!");
+
+                alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
+                        (dialog, id) -> {
+                            endGame();
+                        });
+                AlertDialog mAlertDialog = alertDialogBuilder.create();
+                mAlertDialog.show();
                 return;
             case TurnBasedMatch.MATCH_STATUS_EXPIRED:
                 showWarning("Expired!", "This game is expired.  So sad!");
@@ -656,5 +665,13 @@ public class NetworkController extends AppCompatActivity {
         }
 
         return false;
+    }
+
+    public void endGame() {
+        isGame = false;
+        isDoingTurn = false;
+        wordChain = null;
+        opponentWord = "";
+        changeLayout();
     }
 }

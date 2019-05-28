@@ -1,13 +1,7 @@
 package ru.hse.android.project.easyenglish;
 
-import android.util.Log;
-
 import org.jetbrains.annotations.NotNull;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
 
@@ -61,6 +55,9 @@ public class WordChain {
 
     public void makeMove(String word) {
         previousWords.add(word);
+        if (!isMyTurn()) {
+            lastWord = word;
+        }
     }
 
     public byte[] hash(String word) {
