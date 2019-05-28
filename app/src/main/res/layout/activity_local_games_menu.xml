@@ -10,6 +10,7 @@
         android:id="@+id/textView"
         android:text="@string/app_name"
         style="@style/EasyEnglish"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,6 +19,7 @@
         android:id="@+id/textView2"
         android:text="@string/local_games"
         style="@style/GameTitle"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />

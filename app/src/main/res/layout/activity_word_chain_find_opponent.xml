@@ -6,153 +6,48 @@
     android:layout_height="match_parent"
     tools:context=".WordChainFindOpponentActivity">
 
-    <Button
-        android:id="@+id/button_quick_game"
-        android:layout_width="58dp"
-        android:layout_height="39dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="19dp"
-        android:text="@string/quick_game"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toStartOf="@+id/checkGamesButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <com.google.android.gms.common.SignInButton
-        android:id="@+id/button_sign_in"
-        android:layout_width="67dp"
-        android:layout_height="47dp"
-        android:layout_marginStart="17dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="16dp"
-        android:text="@string/sign_in"
-        app:layout_constraintEnd_toStartOf="@+id/button_sign_out"
-        app:layout_constraintStart_toEndOf="@+id/checkGamesButton"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/button_sign_out"
-        android:layout_width="73dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="7dp"
-        android:layout_marginTop="11dp"
-        android:layout_marginEnd="7dp"
-        android:text="Sign out"
-        android:textSize="8sp"
+    <TextView
+        android:id="@+id/textView"
+        android:text="@string/app_name"
+        style="@style/EasyEnglish"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/button_sign_in"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/turn_counter_view"
-        android:layout_width="107dp"
-        android:layout_height="44dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="188dp"
-        android:text="Turn"
+        android:id="@+id/textView2"
+        android:text="@string/word_chain"
+        style="@style/GameTitle"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_quick_game" />
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/doneButton"
-        android:layout_width="170dp"
+    <LinearLayout
+        style="@style/MainLinearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="33dp"
-        android:layout_marginEnd="8dp"
-        android:text="@string/done"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.453"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/opponent_text"
-        tools:ignore="ButtonStyle" />
-
-    <Button
-        android:id="@+id/cancelButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="449dp"
-        android:layout_marginEnd="17dp"
-        android:text="@string/cancel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/leaveButton"
-        app:layout_constraintTop_toBottomOf="@+id/data_view"
-        tools:ignore="ButtonStyle" />
-
-    <Button
-        android:id="@+id/leaveButton"
-        android:layout_width="86dp"
-        android:layout_height="59dp"
-        android:layout_marginStart="14dp"
-        android:layout_marginTop="352dp"
-        android:layout_marginEnd="14dp"
-        android:layout_marginBottom="37dp"
-        android:text="@string/leave"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/cancelButton"
-        app:layout_constraintStart_toEndOf="@+id/finishButton"
-        app:layout_constraintTop_toBottomOf="@+id/doneButton"
-        tools:ignore="ButtonStyle" />
-
-    <Button
-        android:id="@+id/finishButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="364dp"
-        android:layout_marginEnd="14dp"
-        android:text="finish"
-        app:layout_constraintEnd_toStartOf="@+id/leaveButton"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/doneButton"
-        tools:ignore="ButtonStyle" />
-
-    <Button
-        android:id="@+id/checkGamesButton"
-        android:layout_width="53dp"
-        android:layout_height="40dp"
-        android:layout_marginStart="19dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="26dp"
-        android:text="@string/check_games"
-        android:textSize="8sp"
-        app:layout_constraintEnd_toStartOf="@+id/button_sign_in"
-        app:layout_constraintStart_toEndOf="@+id/button_quick_game"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ButtonStyle" />
-
-    <TextView
-        android:id="@+id/opponent_text"
-        android:layout_width="183dp"
-        android:layout_height="52dp"
-        android:layout_marginStart="5dp"
-        android:layout_marginTop="36dp"
-        android:layout_marginEnd="9dp"
-        android:gravity="center"
-        android:text="TextView"
-        android:textAlignment="gravity"
-        android:textSize="18sp"
-        app:layout_constraintEnd_toStartOf="@+id/data_view"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/turn_counter_view" />
-
-    <EditText
-        android:id="@+id/data_view"
-        android:layout_width="208dp"
-        android:layout_height="49dp"
-        android:layout_marginStart="9dp"
-        android:layout_marginTop="93dp"
-        android:layout_marginEnd="6dp"
-        android:ems="10"
-        android:inputType="textPersonName"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/opponent_text"
-        app:layout_constraintTop_toBottomOf="@+id/button_sign_in" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
+        <Button
+            android:id="@+id/start_game_button"
+            android:text="@string/start_game"
+            style="@style/MainButton" />
+
+        <Button
+            android:id="@+id/check_games_button"
+            android:text="@string/check_games"
+            style="@style/MainButton" />
+
+        <Button
+            android:id="@+id/sign_out_button"
+            android:text="@string/statistics"
+            style="@style/MainButton" />
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
