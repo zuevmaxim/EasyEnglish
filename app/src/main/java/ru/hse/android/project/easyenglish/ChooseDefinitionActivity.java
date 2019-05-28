@@ -111,7 +111,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         MainController.getGameController().saveWordResult(answer, result);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian() + "-" + answer.getEnglish() + " " + answer.getTranscription());
+        intent.putExtra("word", answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();
     }
