@@ -65,7 +65,6 @@ public class NetworkController extends AppCompatActivity {
     // This is the current match we're in; null if not loaded
     private TurnBasedMatch mMatch;
 
-
     private String opponentWord;
     private WordChain wordChain;
 
@@ -86,7 +85,7 @@ public class NetworkController extends AppCompatActivity {
         Button startGameButton = findViewById(R.id.button_quick_game); //TODO : rename
         startGameButton.setOnClickListener(view -> {
             Log.d(TAG, "Start game button clicked");
-            mTurnBasedMultiplayerClient.getSelectOpponentsIntent(1, 1, false)
+            mTurnBasedMultiplayerClient.getSelectOpponentsIntent(PLAYERS_NUMBER, PLAYERS_NUMBER, false)
                     .addOnSuccessListener(intent -> startActivityForResult(intent, RC_SELECT_PLAYERS))
                     .addOnFailureListener(createFailureListener(
                             getString(R.string.error_get_select_opponents)));
@@ -153,7 +152,6 @@ public class NetworkController extends AppCompatActivity {
         mTurnTextView = findViewById(R.id.turn_counter_view);
     }
 
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -196,7 +194,6 @@ public class NetworkController extends AppCompatActivity {
 
         Log.d(TAG, "onConnected(): Connection successful");
 
-        // Retrieve the TurnBasedMatch from the connectionHint
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
         gamesClient.getActivationHint()
                 .addOnSuccessListener(hint -> {
@@ -210,23 +207,11 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener(
                         "There was a problem getting the activation hint!"));
 
-
-        // As a demonstration, we are registering this activity as a handler for
-        // invitation and match events.
-
-        // This is *NOT* required; if you do not register a handler for
-        // invitation events, you will get standard notifications instead.
-        // Standard notifications may be preferable behavior in many cases.
         mInvitationsClient.registerInvitationCallback(mInvitationCallback);
-
-        // Likewise, we are registering the optional MatchUpdateListener, which
-        // will replace notifications you would get otherwise. You do *NOT* have
-        // to register a MatchUpdateListener.
         mTurnBasedMultiplayerClient.registerTurnBasedMatchUpdateCallback(mMatchUpdateCallback);
     }
 
     private void onDisconnected() {
-
         Log.d(TAG, "onDisconnected()");
 
         mTurnBasedMultiplayerClient = null;
@@ -242,7 +227,6 @@ public class NetworkController extends AppCompatActivity {
     // Upload your new gamestate, then take a turn, and pass it on to the next
     // player.
     public void onDoneClicked() {
-
         String nextParticipantId = getNextParticipantId();
         String word = mDataView.getText().toString();
         if (!wordChain.isMyTurn()) {
@@ -279,8 +263,6 @@ public class NetworkController extends AppCompatActivity {
                     onUpdateMatch(turnBasedMatch);
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
-
-        //mWordChainData = null;
     }
 
     // Switch to gameplay view.
@@ -301,9 +283,6 @@ public class NetworkController extends AppCompatActivity {
         // set dialog message
         alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
                 (dialog, id) -> {
-                    // if this button is clicked, close
-                    // current activity
-                    //finish();
                 });
 
         // create alert dialog
@@ -362,10 +341,7 @@ public class NetworkController extends AppCompatActivity {
             TurnBasedMultiplayerClient.MatchOutOfDateApiException matchOutOfDateApiException =
                     (TurnBasedMultiplayerClient.MatchOutOfDateApiException) exception;
 
-            new AlertDialog.Builder(this)
-                    .setMessage("Match was out of date, updating with latest match data...")
-                    .setNeutralButton(android.R.string.ok, null)
-                    .show();
+            Log.e(TAG, "Match was out of date, updating with latest match data...");
 
             TurnBasedMatch match = matchOutOfDateApiException.getMatch();
             updateMatch(match);
@@ -383,16 +359,16 @@ public class NetworkController extends AppCompatActivity {
         }
 
         String message = getString(R.string.status_exception_error, details, status, exception);
-
+        Log.e(TAG, message);
         new AlertDialog.Builder(this)
-                .setMessage(message)
-                .setNeutralButton(android.R.string.ok, null)
+                .setMessage("Game error. Sorry.")
+                .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
                 .show();
     }
 
 
     private void logBadActivityResult(int requestCode, int resultCode, String message) {
-        Log.i(TAG, "Bad activity result(" + resultCode + ") for request (" + requestCode + "): "
+        Log.e(TAG, "Bad activity result(" + resultCode + ") for request (" + requestCode + "): "
                 + message);
     }
 
@@ -417,15 +393,10 @@ public class NetworkController extends AppCompatActivity {
                 }
 
                 onDisconnected();
-
-                new AlertDialog.Builder(this)
-                        .setMessage(message)
-                        .setNeutralButton(android.R.string.ok, null)
-                        .show();
+                handleException(apiException, message);
             }
         } else if (requestCode == RC_LOOK_AT_MATCHES) {
             // Returning from the 'Select Match' dialog
-
             if (resultCode != Activity.RESULT_OK) {
                 logBadActivityResult(requestCode, resultCode,
                         "User cancelled returning from the 'Select Match' dialog.");
@@ -442,7 +413,6 @@ public class NetworkController extends AppCompatActivity {
             Log.d(TAG, "Match = " + match);
         } else if (requestCode == RC_SELECT_PLAYERS) {
             // Returning from 'Select players to Invite' dialog
-
             if (resultCode != Activity.RESULT_OK) {
                 // user canceled
                 logBadActivityResult(requestCode, resultCode,
@@ -487,64 +457,41 @@ public class NetworkController extends AppCompatActivity {
         updateMatch(match);
     }
 
-    // startMatch() happens in response to the createTurnBasedMatch()
-    // above. This is only called on success, so we should have a
-    // valid match object. We're taking this opportunity to setup the
-    // game, saving our initial state. Calling takeTurn() will
-    // callback to OnTurnBasedMatchUpdated(), which will show the game
-    // UI.
     public void startMatch(TurnBasedMatch match) {
         wordChain = new WordChain();
         wordChain.setTurn(true);
         mMatch = match;
+        opponentWord = "";
         setGameplayUI();
 
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
 
-
         mTurnBasedMultiplayerClient.takeTurn(match.getMatchId(),
                 wordChain.hash("test"), myParticipantId)
                 .addOnSuccessListener(match1 -> {
-                    updateMatch(match1);
                     wordChain.changeTurn();
+                    updateMatch(match1);
                     setGameplayUI();
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
 
-    /**
-     * Get the next participant. In this function, we assume that we are
-     * round-robin, with all known players going before all automatch players.
-     * This is not a requirement; players can go in any order. However, you can
-     * take turns in any order.
-     *
-     * @return participantId of next player, or null if automatching
-     */
     public String getNextParticipantId() {
-
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
-
         ArrayList<String> participantIds = mMatch.getParticipantIds();
-
-        int desiredIndex = -1;
-
+        int desiredIndex = - 1;
         for (int i = 0; i < participantIds.size(); i++) {
             if (participantIds.get(i).equals(myParticipantId)) {
                 desiredIndex = i + 1;
             }
         }
-
         if (desiredIndex < participantIds.size()) {
             return participantIds.get(desiredIndex);
         }
-
         if (mMatch.getAvailableAutoMatchSlots() <= 0) {
-            // You've run out of automatch slots, so we start over.
             return participantIds.get(0);
         } else {
-            // You have not yet fully automatched, so null will find a new
-            // person to play against.
             return null;
         }
     }
@@ -554,6 +501,10 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
+        if (wordChain == null) {
+            Log.e(TAG, "Error : wordChain == null unexpectedly.");
+            guestCreateMatch(match);
+        }
 
         int status = match.getStatus();
         int turnStatus = match.getTurnStatus();
@@ -604,7 +555,6 @@ public class NetworkController extends AppCompatActivity {
 
     private void onInitiateMatch(TurnBasedMatch match) {
         if (match.getData() != null) {
-            // This is a game that has already started, so I'll just start
             updateMatch(match);
             return;
         }
@@ -617,9 +567,7 @@ public class NetworkController extends AppCompatActivity {
         showWarning("Left", "You've left this match.");
     }
 
-
     public void onUpdateMatch(TurnBasedMatch match) {
-
         isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 
         if (isDoingTurn) {
@@ -628,21 +576,11 @@ public class NetworkController extends AppCompatActivity {
     }
 
     private InvitationCallback mInvitationCallback = new InvitationCallback() {
-        // Handle notification events.
         @Override
-        public void onInvitationReceived(@NonNull Invitation invitation) {
-            Toast.makeText(
-                    NetworkController.this,
-                    "An invitation has arrived from "
-                            + invitation.getInviter().getDisplayName(), Toast.LENGTH_SHORT)
-                    .show();
-        }
+        public void onInvitationReceived(@NonNull Invitation invitation) { }
 
         @Override
-        public void onInvitationRemoved(@NonNull String invitationId) {
-            Toast.makeText(NetworkController.this, "An invitation was removed.", Toast.LENGTH_SHORT)
-                    .show();
-        }
+        public void onInvitationRemoved(@NonNull String invitationId) { }
     };
 
     private TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
@@ -651,21 +589,16 @@ public class NetworkController extends AppCompatActivity {
             if (turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
                 updateMatch(turnBasedMatch);
             }
-            Toast.makeText(NetworkController.this, "A match was updated.", Toast.LENGTH_LONG).show();
         }
 
         @Override
-        public void onTurnBasedMatchRemoved(@NonNull String matchId) {
-            Toast.makeText(NetworkController.this, "A match was removed.", Toast.LENGTH_SHORT).show();
-        }
+        public void onTurnBasedMatchRemoved(@NonNull String matchId) { }
     };
 
     public void showErrorMessage(int stringId) {
-        showWarning("Warning", getResources().getString(stringId));
+        Log.e(TAG, getResources().getString(stringId));
     }
 
-    // Returns false if something went wrong, probably. This should handle
-    // more cases, and probably report more accurate results.
     private boolean checkStatusCode(int statusCode) {
         switch (statusCode) {
             case GamesCallbackStatusCodes.OK:
