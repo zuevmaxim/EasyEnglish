@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -152,8 +153,35 @@ public class NetworkController extends AppCompatActivity {
         mTurnTextView = findViewById(R.id.turn_status_text);
     }
 
+    /*
     private void changeLayout() {
+        boolean isSignedIn = mTurnBasedMultiplayerClient != null;
+
+        if (!isSignedIn) {
+            findViewById(R.id.login_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.sign_in_button).setVisibility(View.VISIBLE);
+            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+
+            if (mAlertDialog != null) {
+                mAlertDialog.dismiss();
+            }
+            return;
+        }
+
+
+        ((TextView) findViewById(R.id.name_field)).setText(mDisplayName);
+        findViewById(R.id.login_layout).setVisibility(View.GONE);
+
+        if (isDoingTurn) {
+            findViewById(R.id.matchup_layout).setVisibility(View.GONE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.VISIBLE);
+        } else {
+            findViewById(R.id.matchup_layout).setVisibility(View.VISIBLE);
+            findViewById(R.id.gameplay_layout).setVisibility(View.GONE);
+        }
     }
+    */
 
     @Override
     protected void onResume() {
