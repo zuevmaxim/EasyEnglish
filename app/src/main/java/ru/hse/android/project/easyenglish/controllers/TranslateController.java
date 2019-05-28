@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.TimeoutException;
 
 import ru.hse.android.project.easyenglish.words.ExtendedWord;
 import ru.hse.android.project.easyenglish.words.PartOfSpeech;
@@ -192,6 +194,61 @@ public class TranslateController {
         public static class Example {
             public String text;
             public Translation[] tr;
+        }
+    }
+
+    public static String fastTranslate(String word, String languagePair) {
+        TranslatorTask translatorTask = new TranslatorTask();
+        translatorTask.execute(word, languagePair);
+        String result = null;
+        try {
+            result = translatorTask.get(1000, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+    static class TranslatorTask extends AsyncTask<String, Void, String> {
+        @Override
+        protected String doInBackground(String... params) {
+            String textToBeTranslated = params[0];
+            String languagePair = params[1];
+            if (textToBeTranslated.isEmpty()) {
+                return "";
+            }
+            String yandexKey = "trnsl.1.1.20190312T113058Z.7f00768b72b9448a.44608f0910349bb5b3217137b8e605101fa2e17d";
+            String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate"
+                    + "?key=" + yandexKey
+                    + "&text=" + textToBeTranslated
+                    + "&lang=" + languagePair;
+            StringBuilder stringBuilder = new StringBuilder();
+            try {
+                URL yandexTranslateURL = new URL(yandexUrl);
+                HttpURLConnection httpJsonConnection = (HttpURLConnection) yandexTranslateURL.openConnection();
+                try (InputStream inputStream = httpJsonConnection.getInputStream();
+                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+                    String jsonString;
+                    while ((jsonString = bufferedReader.readLine()) != null) {
+                        stringBuilder.append(jsonString).append("\n");
+                    }
+                }
+                httpJsonConnection.disconnect();
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            String resultString = stringBuilder.toString().trim();
+            resultString = resultString.substring(resultString.indexOf('[') + 1);
+            resultString = resultString.substring(0, resultString.indexOf("]"));
+            resultString = resultString.substring(resultString.indexOf("\"") + 1);
+            resultString = resultString.substring(0, resultString.indexOf("\""));
+            return resultString;
         }
     }
 }
