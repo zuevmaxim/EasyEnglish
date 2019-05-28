@@ -127,32 +127,21 @@ public class NetworkController extends AppCompatActivity {
         Button cancelButton = findViewById(R.id.cancel_button);
         cancelButton.setOnClickListener(view -> {
             Log.d(TAG, "cancel button clicked");
-            endGame();
-            mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
-                    .addOnSuccessListener(this::onCancelMatch)
-                    .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
 
-            isDoingTurn = false;
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            adb.setTitle("End game");
+            adb.setMessage("Press ok to finish the game.");
+            adb.setIcon(android.R.drawable.ic_dialog_alert);
+            adb.setPositiveButton("OK", (dialog, which) -> {
+                mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
+                        .addOnSuccessListener(s -> endGame())
+                        .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
+            });
+            adb.setNegativeButton("Cancel", (dialog, which) -> {});
+            adb.show();
+
         });
 
-        Button leaveButton = findViewById(R.id.leave_game_button);
-        leaveButton.setOnClickListener(view -> {
-            Log.d(TAG, "leave button clicked");
-            String nextParticipantId = getNextParticipantId();
-
-            mTurnBasedMultiplayerClient.leaveMatchDuringTurn(mMatch.getMatchId(), nextParticipantId)
-                    .addOnSuccessListener(aVoid -> onLeaveMatch())
-                    .addOnFailureListener(createFailureListener("There was a problem leaving the match!"));
-        });
-
-        Button finishButton = findViewById(R.id.finish_game_button);
-        finishButton.setOnClickListener(view -> {
-            Log.d(TAG, "finish button clicked");
-            mTurnBasedMultiplayerClient.finishMatch(mMatch.getMatchId())
-                    .addOnSuccessListener(this::onUpdateMatch)
-                    .addOnFailureListener(createFailureListener("There was a problem finishing the match!"));
-            isDoingTurn = false;
-        });
         mDataView = findViewById(R.id.answer_word_text);
         mOpponentText = findViewById(R.id.opponent_word);
         mTurnTextView = findViewById(R.id.turn_status_text);
@@ -217,7 +206,9 @@ public class NetworkController extends AppCompatActivity {
                 .addOnFailureListener(createFailureListener("There was a problem getting the player!"));
 
         Log.d(TAG, "onConnected(): Connection successful");
-        changeLayout();
+        if (!isGame) {
+            changeLayout();
+        }
 
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
         gamesClient.getActivationHint()
@@ -296,25 +287,6 @@ public class NetworkController extends AppCompatActivity {
         mTurnTextView.setText(String.format("Turn %s", wordChain.isMyTurn() ? "My" : "Opponent"));
     }
 
-
-    // Generic warning/info dialog
-    public void showWarning(String title, String message) {
-        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-
-        // set title
-        alertDialogBuilder.setTitle(title).setMessage(message);
-
-        // set dialog message
-        alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
-                (dialog, id) -> {
-                });
-
-        // create alert dialog
-        AlertDialog mAlertDialog = alertDialogBuilder.create();
-
-        // show it
-        mAlertDialog.show();
-    }
 
     /**
      * Start a sign in activity.  To properly handle the result, call tryHandleSignInResult from
@@ -537,37 +509,15 @@ public class NetworkController extends AppCompatActivity {
         int status = match.getStatus();
         int turnStatus = match.getTurnStatus();
 
-        switch (status) {
-            case TurnBasedMatch.MATCH_STATUS_CANCELED:
-                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-                alertDialogBuilder.setTitle("End game!").setMessage("You win!");
+        if (status == TurnBasedMatch.MATCH_STATUS_CANCELED) {
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setTitle("End game!").setMessage("You win!");
 
-                alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
-                        (dialog, id) -> {
-                            endGame();
-                        });
-                AlertDialog mAlertDialog = alertDialogBuilder.create();
-                mAlertDialog.show();
-                return;
-            case TurnBasedMatch.MATCH_STATUS_EXPIRED:
-                showWarning("Expired!", "This game is expired.  So sad!");
-                return;
-            case TurnBasedMatch.MATCH_STATUS_AUTO_MATCHING:
-                showWarning("Waiting for auto-match...",
-                        "We're still waiting for an automatch partner.");
-                return;
-            case TurnBasedMatch.MATCH_STATUS_COMPLETE:
-                if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_COMPLETE) {
-                    showWarning("Complete!",
-                            "This game is over; someone finished it, and so did you!  " +
-                                    "There is nothing to be done.");
-                    break;
-                }
-
-                // Note that in this state, you must still call "Finish" yourself,
-                // so we allow this to continue.
-                showWarning("Complete!",
-                        "This game is over; someone finished it!  You can only finish it now.");
+            alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
+                    (dialog, id) -> endGame());
+            AlertDialog mAlertDialog = alertDialogBuilder.create();
+            mAlertDialog.show();
+            return;
         }
 
         // OK, it's active. Check on turn status.
@@ -581,26 +531,12 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    private void onCancelMatch(String matchId) {
-
-        isDoingTurn = false;
-
-        showWarning("Match", "This match (" + matchId + ") was canceled.  " +
-                "All other players will have their game ended.");
-    }
-
     private void onInitiateMatch(TurnBasedMatch match) {
         if (match.getData() != null) {
             updateMatch(match);
             return;
         }
-
         startMatch(match);
-    }
-
-    private void onLeaveMatch() {
-        isDoingTurn = false;
-        showWarning("Left", "You've left this match.");
     }
 
     public void onUpdateMatch(TurnBasedMatch match) {
