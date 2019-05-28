@@ -37,8 +37,10 @@ public class GameActivity extends AppCompatActivity {
                 } else {
                     final TextView wordAnswerText = findViewById(R.id.game_result_text);
                     wordAnswerText.setVisibility(View.VISIBLE);
+
                     String word = data.getStringExtra("word");
                     wordAnswerText.setText(word);
+
                     boolean result = data.getBooleanExtra("game result", false);
                     Drawable drawable;
                     ImageView imageView = findViewById(R.id.result);
@@ -54,6 +56,7 @@ public class GameActivity extends AppCompatActivity {
                         drawable = getResources().getDrawable(R.drawable.wrong, null);
                         imageView.setImageDrawable(drawable);
                     }
+
                     succeedTasks += result ? 1 : 0;
                     totalTasks++;
                 }
@@ -93,11 +96,11 @@ public class GameActivity extends AppCompatActivity {
 
         final Button toMenuButton = findViewById(R.id.to_menu_button);
         toMenuButton.setVisibility(View.INVISIBLE);
-        final Button nextWordButton = findViewById(R.id.next_word_button);
-        final Button finishGameButton = findViewById(R.id.finish_game_button);
 
+        final Button nextWordButton = findViewById(R.id.next_word_button);
         nextWordButton.setOnClickListener(v -> runGame(randomGame(randomGames)));
 
+        final Button finishGameButton = findViewById(R.id.end_game_button);
         finishGameButton.setOnClickListener(v -> endGame());
     }
 
@@ -111,19 +114,23 @@ public class GameActivity extends AppCompatActivity {
     }
 
     private void endGame() {
-        final Button nextWordButton = findViewById(R.id.next_word_button);
-        final Button finishGameButton = findViewById(R.id.finish_game_button);
         final TextView gameResult = findViewById(R.id.game_result);
         gameResult.setVisibility(View.GONE);
-        ImageView imageView = findViewById(R.id.result);
+
+        final ImageView imageView = findViewById(R.id.result);
         imageView.setVisibility(View.GONE);
+
+        final Button nextWordButton = findViewById(R.id.next_word_button);
         nextWordButton.setVisibility(View.INVISIBLE);
-        finishGameButton.setVisibility(View.INVISIBLE);
-        final Button toMenuButton = findViewById(R.id.to_menu_button);
+
+        final Button endGameButton = findViewById(R.id.end_game_button);
+        endGameButton.setVisibility(View.INVISIBLE);
+
         final TextView gameResultText = findViewById(R.id.game_result_text);
-        toMenuButton.setVisibility(View.VISIBLE);
         gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
 
+        final Button toMenuButton = findViewById(R.id.to_menu_button);
+        toMenuButton.setVisibility(View.VISIBLE);
         toMenuButton.setOnClickListener(v -> {
             Intent intent = new Intent(GameActivity.this, MainMenuActivity.class);
             startActivity(intent);

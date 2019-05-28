@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -37,7 +39,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             radioButtons[i]  = new RadioButton(this);
             radioButtons[i].setText(words.get(i).getRussian());
-            radioButtons[i].setTextSize(24);
+            radioButtons[i].setTextSize(18);
             radioButtons[i].setId(i);
             radioGroup.addView(radioButtons[i]);
         }
@@ -48,7 +50,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         final Word answer = words.get(answerNumber);
         final int wrongAnswerNumber = setHint(size, answerNumber);
 
-        taskWordText.setText(String.format("%s%s", answer.getEnglish(), answer.getTranscription()));
+        taskWordText.setText(String.format("%s\t\t%s", answer.getEnglish(), answer.getTranscription()));
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
             switch (checkedId) {
@@ -109,8 +111,26 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         MainController.getGameController().saveWordResult(answer, result);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian() + "-" + answer.getEnglish() + " " + answer.getTranscription());
+        intent.putExtra("word", answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Here you want to show the user a dialog box
+        new AlertDialog.Builder(this)
+                .setTitle("Exiting the ChooseDefinition game")
+                .setMessage("Are you sure?")
+                .setPositiveButton("YES", (dialog, whichButton) -> {
+                    // The user wants to leave - so dismiss the dialog and exit
+                    finish();
+                    dialog.dismiss();
+                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int whichButton) {
+                // The user is not sure, so you can exit or just stay
+                dialog.dismiss();
+            }
+        }).show();
     }
 }

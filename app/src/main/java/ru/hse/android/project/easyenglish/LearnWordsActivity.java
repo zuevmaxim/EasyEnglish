@@ -2,14 +2,13 @@ package ru.hse.android.project.easyenglish;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-
+import android.support.v7.widget.RecyclerView;
 import java.util.List;
-import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.adapters.LearnWordsListAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.words.Word;
 
 public class LearnWordsActivity extends AppCompatActivity {
 
@@ -19,13 +18,10 @@ public class LearnWordsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_learn_words);
 
         WordListController wordListController = MainController.getGameController().getWordListController();
-        List<String> words = wordListController.getCurrentListWords().stream()
-                .map(word -> word.getRussian() + " - " + word.getEnglish() + " " + word.getTranscription())
-                .collect(Collectors.toList());
+        List<Word> words = wordListController.getCurrentListWords();
 
-        final ListView currentWordList = findViewById(R.id.learn_words_list);
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
-                android.R.layout.simple_list_item_1, words);
+        RecyclerView currentWordList = findViewById(R.id.learn_words_list);
+        LearnWordsListAdapter adapter = new LearnWordsListAdapter(this, words);
         currentWordList.setAdapter(adapter);
     }
 }

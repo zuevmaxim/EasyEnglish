@@ -52,7 +52,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             MainController.getGameController().saveWordResult(word, result);
             Intent intent = new Intent();
             intent.putExtra("game result", result);
-            intent.putExtra("word", word.getRussian() + "-" + word.getEnglish() + " " + word.getTranscription());
+            intent.putExtra("word", word.getRussian() + "\n" + word.getEnglish() + "\n" + word.getTranscription());
             setResult(RESULT_OK, intent);
             finish();
         });

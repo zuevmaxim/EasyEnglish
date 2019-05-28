@@ -54,33 +54,32 @@ public class DictionaryActivity extends AppCompatActivity {
                         if (definition != null && definition.text != null) {
                             builder.append(definition.text);
                             if (definition.ts != null) {
-                                builder.append("[").append(definition.ts).append("]");
+                                builder.append("\t\t\t[").append(definition.ts).append("]");
                             }
                             if (definition.pos != null) {
-                                builder.append("(").append(definition.pos).append(")");
+                                builder.append("\t\t\t(").append(definition.pos).append(")");
                             }
                             builder.append("\n");
                             if (definition.tr != null) {
                                 for (TranslateController.DicResult.Translation translation : definition.tr) {
                                     if (translation != null && translation.text != null) {
-                                        builder.append("  -").append(translation.text);
+                                        builder.append("\t\t-").append(translation.text);
                                         if (translation.pos != null) {
-                                            builder.append("  ").append("(").append(translation.pos).append(")");
+                                            builder.append("\t\t\t(").append(translation.pos).append(")").append("\n");
                                         }
                                         if (translation.mean != null) {
-                                            builder.append("\n");
                                             for (TranslateController.DicResult.Meaning meaning : translation.mean) {
                                                 if (meaning != null && meaning.text != null) {
-                                                    builder.append("    -").append(meaning.text);
-                                                    builder.append("\n");
+                                                    builder.append("\t\t\t\t-").append(meaning.text).append("\n");
                                                 }
                                             }
                                         }
-                                        builder.append("\n");
                                     }
                                 }
+                                builder.append("\n");
                             }
                         }
+                        builder.append("\n");
                     }
                 }
                 translateResultText.setMovementMethod(new ScrollingMovementMethod());

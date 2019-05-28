@@ -45,7 +45,7 @@
     <string name="opponent_answer">Opponent answer:</string>
     <string name="your_answer">Your answer:</string>
     <string name="send_answer">send answer</string>
-    <string name="start_game">start game</string>
+    <string name="start_game">Start game</string>
 
 
     <string name="hello_world">Hello world!</string>
@@ -96,5 +96,8 @@
     <string name="rules_synonyms_text">Your task is to choose all the synonyms of the word from the list.</string>
    <string name="rules_matching">Matching rules</string>
     <string name="rules_matching_text">Match words with their translations.</string>
+    <string name="Transcription">Transcription</string>
+    <string name="A">A</string>
+    <string name="history">History</string>
 
 </resources>

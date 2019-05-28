@@ -37,12 +37,13 @@
             android:choiceMode="singleChoice"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7"
+            android:layout_weight="0.99"
             app:layoutManager="LinearLayoutManager"/>
 
         <Button
             android:id="@+id/add_new_list_button"
-            style="@style/DownCenterButton"
+            style="@style/GroupedButton"
+            android:layout_weight="0.01"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/add_new_list" />

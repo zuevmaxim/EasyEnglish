@@ -76,7 +76,6 @@ public class SynonymsActivity extends AppCompatActivity {
         for (int i = 0; i < size; i++) {
             checkBoxes[i]  = new CheckBox(this);
             checkBoxes[i].setText(boxedWords.get(i));
-            checkBoxes[i].setTextSize(24);
             checkBoxes[i].setTextColor(Color.parseColor("#CB000000"));
             checkBoxesLayout.addView(checkBoxes[i]);
         }

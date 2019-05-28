@@ -4,6 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:focusable="true"
+    android:focusableInTouchMode="true"
     tools:context=".AddNewListActivity">
 
 
@@ -27,7 +29,6 @@
         style="@style/MainLinearLayout"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,39 +36,37 @@
 
         <EditText
             android:id="@+id/new_list_name_text"
+            style="@style/EditableText"
+            android:inputType="textPersonName|text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:autofillHints=""
             android:layout_weight="0.01"
-            android:hint="@string/enter_list_name"/>
+            android:hint="@string/enter_list_name"
+            tools:targetApi="o"/>
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/new_word_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.8"
+            style="@style/RecyclerList"
+            android:layout_weight="0.94"
             app:layoutManager="LinearLayoutManager" />
 
         <LinearLayout
-            style="@style/MainLinearLayout"
-            android:gravity="center"
-            android:layout_weight="0.1"
-            android:layout_height="0dp"
+            style="@style/InnerLinearLayout"
+            android:layout_weight="0.05"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/add_word_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/add_word" />
+                android:text="@string/add_word"/>
 
             <Button
                 android:id="@+id/save_list_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/save" />
 
         </LinearLayout>

@@ -10,6 +10,7 @@
         android:id="@+id/textView"
         android:text="@string/app_name"
         style="@style/EasyEnglish"
+        android:textSize="35sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -18,32 +19,37 @@
         android:id="@+id/textView2"
         android:text="@string/games"
         style="@style/GameTitle"
+        android:textSize="28sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView" />
 
-    <Button
-        android:id="@+id/_10words_button"
-        android:text="@string/_10_words"
-        style="@style/MainButton"
+    <LinearLayout
+        style="@style/MainLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2">
 
-    <Button
-        android:id="@+id/local_games_button"
-        android:text="@string/local_games"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/_10words_button" />
+        <Button
+            android:id="@+id/_10words_button"
+            android:text="@string/_10_words"
+            android:layout_weight="1"
+            style="@style/MainButton"/>
 
-    <Button
-        android:id="@+id/word_chain_button"
-        android:text="@string/word_chain"
-        style="@style/MainButton"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/local_games_button" />
+        <Button
+            android:id="@+id/local_games_button"
+            android:text="@string/local_games"
+            android:layout_weight="1"
+            style="@style/MainButton"/>
+
+        <Button
+            android:id="@+id/word_chain_button"
+            android:text="@string/word_chain"
+            android:layout_weight="1"
+            style="@style/MainButton" />
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

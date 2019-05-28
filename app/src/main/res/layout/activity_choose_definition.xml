@@ -34,43 +34,40 @@
 
         <TextView
             android:id="@+id/word_task_text"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="0.2"
-            android:gravity="center"
-            android:textSize="24sp"
-            android:textStyle="normal" />
+            style="@style/MainText"
+            android:layout_weight="0.2" />
 
         <RadioGroup
             android:id="@+id/answers_radio_group"
             android:layout_width="wrap_content"
-            android:layout_height="0dp"
+            android:layout_height="wrap_content"
             android:layout_marginTop="25dp"
             android:layout_weight="0.7">
         </RadioGroup>
 
         <LinearLayout
-            style="@style/MainLinearLayout"
-            android:gravity="center"
+            style="@style/InnerLinearLayout"
             android:layout_marginStart="5dp"
-            android:layout_weight="0.2"
-            android:layout_height="0dp"
+            android:layout_weight="0.1"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/end_game_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/end_game"/>
-
-            <Button
                 android:id="@+id/rules_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rules" />
 
             <Button
+                android:id="@+id/end_game_button"
+                style="@style/GroupedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_game"/>
+
+            <Button
                 android:id="@+id/hints_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hints" />
