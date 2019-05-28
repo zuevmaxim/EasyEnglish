@@ -153,7 +153,6 @@ public class NetworkController extends AppCompatActivity {
     }
 
     private void changeLayout() {
-
     }
 
     @Override
