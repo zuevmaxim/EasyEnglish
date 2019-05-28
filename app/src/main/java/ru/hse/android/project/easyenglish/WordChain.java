@@ -4,7 +4,10 @@ import org.jetbrains.annotations.NotNull;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 public class WordChain {
@@ -66,6 +69,11 @@ public class WordChain {
 
     public String unhash(@NotNull byte[] message) {
         return new String(message, StandardCharsets.UTF_8);
+    }
+
+    public List<String> getHint() {
+        List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(0, 0));
+        return words.stream().filter(s -> isValidMove(s) == RESULT_OK).collect(Collectors.toList());
     }
 
  }
