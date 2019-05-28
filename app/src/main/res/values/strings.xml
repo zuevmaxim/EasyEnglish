@@ -96,5 +96,7 @@
     <string name="rules_synonyms_text">Your task is to choose all the synonyms of the word from the list.</string>
    <string name="rules_matching">Matching rules</string>
     <string name="rules_matching_text">Match words with their translations.</string>
+    <string name="Transcription">Transcription</string>
+    <string name="A">A</string>
 
 </resources>

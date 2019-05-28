@@ -33,19 +33,21 @@
 
         <TextView
             android:id="@+id/game_result"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:layout_weight="0.1"
-            android:textSize="24sp" />
+            style="@style/MainText"
+            android:layout_weight="0.1" />
 
         <TextView
             android:id="@+id/game_result_text"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:layout_weight="0.4"
-            android:textSize="24sp" />
+            style="@style/MainText"
+            android:layout_weight="0.4" />
+
+        <Button
+            android:id="@+id/to_menu_button"
+            style="@style/GroupedButton"
+            android:layout_weight="0.01"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/menu" />
 
         <LinearLayout
             style="@style/MainLinearLayout"
@@ -55,19 +57,15 @@
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/finish_game_button"
+                android:id="@+id/end_game_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/end_game"/>
 
             <Button
-                android:id="@+id/to_menu_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/menu" />
-
-            <Button
                 android:id="@+id/next_word_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/next" />

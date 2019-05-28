@@ -24,9 +24,7 @@
 
     <LinearLayout
         style="@style/MainLinearLayout"
-        android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -34,13 +32,12 @@
 
         <ListView
             android:id="@+id/theme_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
+            style="@style/MainLinearLayout"
             android:layout_weight="0.9" />
 
         <Button
             android:id="@+id/start_game_button"
+            style="@style/GroupedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.01"

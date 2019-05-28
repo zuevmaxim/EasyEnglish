@@ -27,7 +27,6 @@
         style="@style/MainLinearLayout"
         android:gravity="center"
         android:orientation="vertical"
-        android:layout_marginTop="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -43,31 +42,27 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/new_word_list"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_marginTop="10dp"
-            android:layout_weight="0.8"
+            style="@style/RecyclerList"
+            android:layout_weight="0.79"
             app:layoutManager="LinearLayoutManager" />
 
         <LinearLayout
             style="@style/MainLinearLayout"
-            android:gravity="center"
-            android:layout_weight="0.1"
-            android:layout_height="0dp"
+            android:layout_weight="0.2"
             android:orientation="horizontal">
 
             <Button
                 android:id="@+id/add_word_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/add_word" />
+                android:text="@string/add_word"/>
 
             <Button
                 android:id="@+id/save_list_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="@string/save" />
 
         </LinearLayout>

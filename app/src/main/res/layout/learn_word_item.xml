@@ -1,0 +1,32 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    style="@style/ElementInBorder">
+
+    <TextView
+        android:id="@+id/english_word_text"
+        android:layout_width="25dp"
+        android:layout_height="60dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/English"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/russian_word_text"
+        android:layout_width="25dp"
+        android:layout_height="60dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/Russian"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/transcription_text"
+        android:layout_width="25dp"
+        android:layout_height="60dp"
+        android:layout_weight="2"
+        android:gravity="center"
+        android:text="@string/Transcription"
+        android:textSize="18sp" />
+</LinearLayout>

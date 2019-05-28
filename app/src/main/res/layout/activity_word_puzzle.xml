@@ -37,10 +37,11 @@
             android:id="@+id/drag_and_drop_list"
             android:layout_width="match_parent"
             android:layout_height="0dp"
-            android:layout_weight="0.7" />
+            android:layout_weight="0.79" />
 
         <Button
-            android:id="@+id/check_answer"
+            android:id="@+id/check_answer_button"
+            style="@style/GroupedButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.01"
@@ -48,30 +49,33 @@
 
         <LinearLayout
             style="@style/MainLinearLayout"
-            android:gravity="center"
             android:layout_weight="0.2"
             android:layout_height="0dp"
             android:orientation="horizontal">
 
             <Button
-                android:id="@+id/end_game"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/end_game"/>
-
-            <Button
-                android:id="@+id/show_rules"
+                android:id="@+id/rules_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/rules" />
 
             <Button
-                android:id="@+id/show_hints"
+                android:id="@+id/end_game_button"
+                style="@style/GroupedButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/end_game"/>
+
+            <Button
+                android:id="@+id/hints_button"
+                style="@style/GroupedButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/hints" />
 
         </LinearLayout>
+
 
     </LinearLayout>
 

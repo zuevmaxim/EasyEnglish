@@ -7,8 +7,8 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:textColor">#CB000000</item>
+        <item name="android:textSize">18sp</item>
     </style>
-
 
     <style name="EasyEnglish">
         <item name="android:fontFamily">sans-serif-black</item>
@@ -26,9 +26,17 @@
     <style name="MainList" parent="@android:style/Widget.ListView">
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
-        <item name="android:textSize">20sp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
+    </style>
+
+    <style name="RecyclerList" parent="@android:style/Widget.ListView">
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
     </style>
 
     <style name="GameTitle">
@@ -42,19 +50,52 @@
 
     <style name="Title">
         <item name="android:textAlignment">center</item>
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="MainLinearLayout">
-        <item name="android:layout_marginTop">15dp</item>
-        <item name="android:layout_marginBottom">15dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
         <item name="android:layout_width">match_parent</item>
+        <item name="android:gravity">center</item>
         <item name="android:layout_height">0dp</item>
         <item name="android:layout_weight">1</item>
         <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="MainText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="TitleInBorder">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:background">@color/colorLightPrimary</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ElementInBorder">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:background">@drawable/border</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
     </style>
 
     <style name="MainButton" parent="Theme.AppCompat.Light">
@@ -71,14 +112,14 @@
         <item name="android:textAlignment">center</item>
     </style>
 
-    <style name="DownCenterButton" parent="Theme.AppCompat.Light">
-        <item name="android:layout_gravity">center</item>
-        <item name="android:textSize">20sp</item>
-        <item name="android:layout_width">100dp</item>
+    <style name="GroupedButton" parent="Theme.AppCompat.Light">
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_width">70dp</item>
+        <item name="android:textAllCaps">true</item>
         <item name="android:layout_height">40dp</item>
-        <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="android:layout_marginTop">5dp</item>
         <item name="android:layout_marginBottom">5dp</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
         <item name="android:paddingLeft">5dp</item>
         <item name="android:paddingRight">5dp</item>
         <item name="android:textAlignment">center</item>
