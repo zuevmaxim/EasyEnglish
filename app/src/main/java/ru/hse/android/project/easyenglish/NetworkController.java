@@ -51,7 +51,9 @@ public class NetworkController extends AppCompatActivity {
 
     // Local convenience pointers
     private TextView mDataView;
+    private TextView mDataFirstLetterText;
     private TextView mOpponentText;
+    private TextView mOpponentLastLetterText;
     private TextView mTurnTextView;
 
     // For our intents
@@ -67,7 +69,7 @@ public class NetworkController extends AppCompatActivity {
     // This is the current match we're in; null if not loaded
     private TurnBasedMatch mMatch;
 
-    private String opponentWord;
+    private String opponentWord = "";
     private WordChain wordChain;
 
     @Override
@@ -93,7 +95,7 @@ public class NetworkController extends AppCompatActivity {
     }
 
     private void initMenuLayout() {
-        Button startGameButton = findViewById(R.id.start_game_button); //TODO : rename
+        Button startGameButton = findViewById(R.id.start_game_button);
         startGameButton.setOnClickListener(view -> {
             Log.d(TAG, "Start game button clicked");
             mTurnBasedMultiplayerClient.getSelectOpponentsIntent(PLAYERS_NUMBER, PLAYERS_NUMBER, false)
@@ -124,26 +126,26 @@ public class NetworkController extends AppCompatActivity {
             onDoneClicked();
         });
 
-        Button cancelButton = findViewById(R.id.cancel_button);
-        cancelButton.setOnClickListener(view -> {
+        Button endGameButton = findViewById(R.id.end_game_button);
+        endGameButton.setOnClickListener(view -> {
             Log.d(TAG, "cancel button clicked");
 
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             adb.setTitle("End game");
             adb.setMessage("Press ok to finish the game.");
             adb.setIcon(android.R.drawable.ic_dialog_alert);
-            adb.setPositiveButton("OK", (dialog, which) -> {
-                mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
-                        .addOnSuccessListener(s -> endGame())
-                        .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
-            });
+            adb.setPositiveButton("OK", (dialog, which) -> mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
+                    .addOnSuccessListener(s -> endGame())
+                    .addOnFailureListener(createFailureListener("There was a problem cancelling the match!")));
             adb.setNegativeButton("Cancel", (dialog, which) -> {});
             adb.show();
 
         });
 
+        mDataFirstLetterText = findViewById(R.id.player_first_letter);
         mDataView = findViewById(R.id.answer_word_text);
         mOpponentText = findViewById(R.id.opponent_word);
+        mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
         mTurnTextView = findViewById(R.id.turn_status_text);
     }
 
@@ -243,7 +245,7 @@ public class NetworkController extends AppCompatActivity {
     // player.
     public void onDoneClicked() {
         String nextParticipantId = getNextParticipantId();
-        String word = mDataView.getText().toString();
+        String word = mDataFirstLetterText.getText().toString().toLowerCase() + mDataView.getText().toString();
         if (!wordChain.isMyTurn()) {
             Toast.makeText(this, "Not your turn!", Toast.LENGTH_LONG).show();
             return;
@@ -283,7 +285,15 @@ public class NetworkController extends AppCompatActivity {
     // Switch to gameplay view.
     public void setGameplayUI() {
         isDoingTurn = true;
-        mOpponentText.setText(opponentWord);
+        if (opponentWord.length() > 0) {
+            String c = opponentWord.substring(opponentWord.length() - 1);
+            mOpponentLastLetterText.setText(c.toUpperCase());
+            mDataFirstLetterText.setText(c.toUpperCase());
+            mOpponentText.setText(opponentWord.substring(0, opponentWord.length() - 1));
+        } else {
+            mDataFirstLetterText.setText("");
+            mOpponentText.setText("");
+        }
         mTurnTextView.setText(String.format("Turn %s", wordChain.isMyTurn() ? "My" : "Opponent"));
     }
 
@@ -358,6 +368,7 @@ public class NetworkController extends AppCompatActivity {
         Log.e(TAG, message);
         new AlertDialog.Builder(this)
                 .setMessage("Game error. Sorry.")
+                .setCancelable(false)
                 .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
                 .show();
     }

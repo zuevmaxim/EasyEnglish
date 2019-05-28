@@ -101,7 +101,7 @@
     <string name="history">History</string>
     <string name="finish_game">finish game</string>
     <string name="leave_game">leave game</string>
-    <string name="opponent">Opponent</string>
+    <string name="opponent">Opponent:</string>
     <string name="your">Your:</string>
 
 </resources>
