@@ -154,13 +154,13 @@ public class NetworkController extends AppCompatActivity {
             AlertDialog.Builder adb = new AlertDialog.Builder(NetworkController.this);
             adb.setTitle("Game history");
             View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-            adb.setView(dialogView);
+            adb.setView(dialogView).setPositiveButton("OK", (dialogInterface, i) -> { });
             RecyclerView recyclerView = dialogView.findViewById(R.id.list);
             recyclerView.setLayoutManager(new LinearLayoutManager(NetworkController.this));
             List<Pair<String, String>> history = new ArrayList<>();
             for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
                 String word1 = it.next();
-                String word2 = it.hasNext() ? it.next() : "";
+                String word2 = it.hasNext() ? it.next() : "-";
                 history.add(new Pair<>(word1, word2));
             }
             WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(NetworkController.this, history);
@@ -541,7 +541,7 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
-        opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getDisplayName();
+        opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mMatch.getParticipantId(mPlayerId))).collect(Collectors.toList()).get(0).getDisplayName();
         opPlayerId = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getParticipantId();
         ((TextView) findViewById(R.id.first_player_name_text)).setText(mDisplayName);
         ((TextView) findViewById(R.id.second_player_name_text)).setText(opDisplayName);
