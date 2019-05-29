@@ -6,9 +6,10 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +28,6 @@ import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.games.multiplayer.Multiplayer;
-import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
@@ -36,9 +36,11 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
-import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
 
 public class NetworkController extends AppCompatActivity {
 
@@ -144,7 +146,24 @@ public class NetworkController extends AppCompatActivity {
                     .addOnFailureListener(createFailureListener("There was a problem cancelling the match!")));
             adb.setNegativeButton("Cancel", (dialog, which) -> {});
             adb.show();
+        });
 
+        Button historyButton = findViewById(R.id.history_button);
+        historyButton.setOnClickListener(view -> {
+            AlertDialog.Builder adb = new AlertDialog.Builder(NetworkController.this);
+            adb.setTitle("Game history");
+            View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+            adb.setView(dialogView);
+            RecyclerView recyclerView = dialogView.findViewById(R.id.list);
+            List<Pair<String, String>> history = new ArrayList<>();
+            for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
+                String word1 = it.next();
+                String word2 = it.hasNext() ? it.next() : "";
+                history.add(new Pair<>(word1, word2));
+            }
+            WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(NetworkController.this, history);
+            recyclerView.setAdapter(adapter);
+            adb.show();
         });
 
         mDataFirstLetterText = findViewById(R.id.player_first_letter);
