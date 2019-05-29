@@ -11,33 +11,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SynonymsActivity"></activity>
-        <activity android:name=".ChoosePhraseListActivity" />
-        <activity android:name=".WordPuzzleActivity" />
-        <activity android:name=".MatchingActivity" />
-        <activity android:name=".WordChainFindOpponentActivity" />
-        <activity android:name=".WordChainActivity" />
-        <activity android:name=".EditListActivity" />
-        <activity android:name=".AddNewListActivity" />
-        <activity android:name=".LearnWordsActivity" />
-        <activity android:name=".WordListEditorActivity" />
-        <activity android:name=".ChooseDefinitionActivity" />
-        <activity android:name=".WordListActivity" />
-        <activity android:name=".GameActivity" />
-        <activity android:name=".MainMenuActivity">
+        <activity android:name=".SynonymsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChoosePhraseListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordPuzzleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MatchingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordChainFindOpponentActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordChainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".EditListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".AddNewListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LearnWordsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordListEditorActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChooseDefinitionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainMenuActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LetterPuzzleActivity" />
-        <activity android:name=".NetworkController" />
-        <activity android:name=".DictionaryActivity" />
-        <activity android:name=".StatisticsActivity" />
-        <activity android:name=".LocalGamesMenuActivity" />
-        <activity android:name=".ErrorActivity" />
-        <activity android:name=".GamesMenuActivity" />
+        <activity android:name=".LetterPuzzleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".NetworkController"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DictionaryActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".StatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LocalGamesMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ErrorActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GamesMenuActivity"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="com.google.android.gms.games.APP_ID"
