@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +27,7 @@ import com.google.android.gms.games.TurnBasedMultiplayerClient;
 import com.google.android.gms.games.multiplayer.Invitation;
 import com.google.android.gms.games.multiplayer.InvitationCallback;
 import com.google.android.gms.games.multiplayer.Multiplayer;
+import com.google.android.gms.games.multiplayer.Participant;
 import com.google.android.gms.games.multiplayer.realtime.RoomConfig;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatch;
 import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchConfig;
@@ -34,6 +36,9 @@ import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class NetworkController extends AppCompatActivity {
 
@@ -188,8 +193,11 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    private String mDisplayName; // TODO show name
+    private String mDisplayName;
     private String mPlayerId;
+
+    private String opDisplayName;
+    private String opPlayerId;
 
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
         Log.d(TAG, "onConnected(): connected to Google APIs");
@@ -294,7 +302,7 @@ public class NetworkController extends AppCompatActivity {
             mDataFirstLetterText.setText("");
             mOpponentText.setText("");
         }
-        mTurnTextView.setText(String.format("Turn %s", wordChain.isMyTurn() ? "My" : "Opponent"));
+        mTurnTextView.setText(String.format("%s turn", wordChain.isMyTurn() ? "Your" : "Opponent"));
     }
 
 
@@ -512,6 +520,10 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
+        opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getDisplayName();
+        opPlayerId = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getParticipantId();
+        ((TextView) findViewById(R.id.first_player_name_text)).setText(mDisplayName);
+        ((TextView) findViewById(R.id.second_player_name_text)).setText(opDisplayName);
         if (wordChain == null) {
             Log.e(TAG, "Error : wordChain == null unexpectedly.");
             guestCreateMatch(match);

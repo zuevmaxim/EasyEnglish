@@ -118,6 +118,19 @@
         <item name="android:textStyle">normal</item>
     </style>
 
+    <style name="ElementInPinkBorder">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginStart">5dp</item>
+        <item name="android:layout_marginEnd">5dp</item>
+        <item name="android:background">@drawable/pink_border</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">24sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
     <style name="MainButton" parent="Theme.AppCompat.Light">
         <item name="android:layout_gravity">center</item>
         <item name="android:textSize">20sp</item>

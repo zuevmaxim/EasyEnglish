@@ -103,5 +103,6 @@
     <string name="leave_game">leave game</string>
     <string name="opponent">Opponent:</string>
     <string name="your">Your:</string>
+    <string name="VS">VS</string>
 
 </resources>
