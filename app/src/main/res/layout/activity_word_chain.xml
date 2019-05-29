@@ -100,7 +100,7 @@
         <LinearLayout
             style="@style/ElementInPinkBorder"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.35"
             android:layout_marginTop="0dp"
             android:gravity="start"
             android:orientation="vertical">
@@ -113,14 +113,15 @@
                 android:layout_marginEnd="5dp"
                 android:layout_marginStart="15dp"
                 android:textSize="14sp"
+                android:layout_weight="0.1"
                 android:text="@string/opponent_answer"
                 android:textAlignment="viewStart" />
 
             <LinearLayout
                 style="@style/InnerLinearLayout"
                 android:layout_height="wrap_content"
-                android:gravity="end"
-                android:layout_marginEnd="20dp"
+                android:gravity="start"
+                android:layout_weight="0.9"
                 android:orientation="horizontal">
 
                 <TextView
@@ -140,7 +141,7 @@
                     android:text="@string/A"
                     android:textAlignment="textStart"
                     android:textColor="@color/colorAccent"
-                    android:textSize="50sp" />
+                    android:textSize="40sp" />
 
             </LinearLayout>
 
@@ -149,7 +150,7 @@
         <LinearLayout
             style="@style/ElementInPinkBorder"
             android:layout_height="wrap_content"
-            android:layout_weight="0.3"
+            android:layout_weight="0.35"
             android:layout_marginTop="0dp"
             android:gravity="start"
             android:orientation="vertical">
@@ -160,6 +161,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="5dp"
+                android:layout_weight="0.1"
                 android:layout_marginStart="15dp"
                 android:textSize="14sp"
                 android:text="@string/your_answer"
@@ -169,6 +171,7 @@
                 style="@style/InnerLinearLayout"
                 android:layout_height="wrap_content"
                 android:gravity="start"
+                android:layout_weight="0.9"
                 android:orientation="horizontal">
 
                 <TextView
@@ -177,13 +180,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="15dp"
+                    android:layout_marginTop="0dp"
                     android:text="@string/A"
                     android:textAlignment="textEnd"
                     android:textColor="@color/colorAccent"
-                    android:textSize="50sp" />
+                    android:textSize="40sp" />
 
                 <EditText
                     android:id="@+id/answer_word_text"
+                    android:layout_marginTop="0dp"
                     style="@style/EditableText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -191,7 +196,6 @@
                     android:hint="@string/enter_word"
                     android:textAlignment="textStart"
                     android:textSize="20sp" />
-
             </LinearLayout>
         </LinearLayout>
 
@@ -205,7 +209,7 @@
 
         <LinearLayout
             style="@style/MainLinearLayout"
-            android:layout_weight="0.2"
+            android:layout_weight="0.1"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
