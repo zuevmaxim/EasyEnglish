@@ -42,7 +42,7 @@
             <TextView
                 android:id="@+id/first_player_name_text"
                 style="@style/MainText"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.44"
@@ -51,7 +51,7 @@
 
             <TextView
                 style="@style/MainText"
-                android:textSize="24sp"
+                android:textSize="20sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
@@ -62,7 +62,7 @@
             <TextView
                 android:id="@+id/second_player_name_text"
                 style="@style/MainText"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.44"
@@ -85,7 +85,7 @@
                 android:layout_weight="0.7"
                 android:layout_marginStart="15dp"
                 android:textAlignment="viewStart"
-                android:textSize="20sp" />
+                android:textSize="14sp" />
 
             <Button
                 android:id="@+id/history_button"
@@ -97,88 +97,108 @@
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/opponent_word_text"
-            style="@style/MainText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:textSize="20sp"
-            android:text="@string/opponent_answer"
-            android:textAlignment="viewStart" />
-
         <LinearLayout
             style="@style/ElementInPinkBorder"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
+            android:layout_weight="0.3"
+            android:layout_marginTop="0dp"
             android:gravity="start"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/opponent_word"
+                android:id="@+id/opponent_word_text"
                 style="@style/MainText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:layout_marginStart="15dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAlignment="textEnd" />
+                android:textSize="14sp"
+                android:text="@string/opponent_answer"
+                android:textAlignment="viewStart" />
 
-            <TextView
-                android:id="@+id/opponent_last_letter"
-                style="@style/MainText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/InnerLinearLayout"
                 android:layout_height="wrap_content"
-                android:text="@string/A"
-                android:textAlignment="textStart"
-                android:textColor="@color/colorAccent"
-                android:textSize="60sp" />
+                android:gravity="end"
+                android:layout_marginEnd="20dp"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/opponent_word"
+                    style="@style/MainText"
+                    android:layout_marginStart="15dp"
+                    android:textSize="20sp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="textEnd" />
+
+                <TextView
+                    android:id="@+id/opponent_last_letter"
+                    style="@style/MainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/A"
+                    android:textAlignment="textStart"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="50sp" />
+
+            </LinearLayout>
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/your_word_text"
-            style="@style/MainText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="5dp"
-            android:textSize="20sp"
-            android:text="@string/your_answer"
-            android:textAlignment="viewStart" />
-
-
         <LinearLayout
             style="@style/ElementInPinkBorder"
             android:layout_height="wrap_content"
-            android:layout_weight="0.2"
-            android:gravity="left"
-            android:orientation="horizontal">
+            android:layout_weight="0.3"
+            android:layout_marginTop="0dp"
+            android:gravity="start"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/player_first_letter"
+                android:id="@+id/your_word_text"
                 style="@style/MainText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
                 android:layout_marginStart="15dp"
-                android:text="@string/A"
-                android:textAlignment="textEnd"
-                android:textColor="@color/colorAccent"
-                android:textSize="60sp" />
+                android:textSize="14sp"
+                android:text="@string/your_answer"
+                android:textAlignment="viewStart" />
 
-            <EditText
-                android:id="@+id/answer_word_text"
-                style="@style/EditableText"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                style="@style/InnerLinearLayout"
                 android:layout_height="wrap_content"
-                android:autofillHints=""
-                android:hint="@string/enter_word"
-                android:textAlignment="textStart"
-                android:textSize="18sp" />
+                android:gravity="start"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:id="@+id/player_first_letter"
+                    style="@style/MainText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="15dp"
+                    android:text="@string/A"
+                    android:textAlignment="textEnd"
+                    android:textColor="@color/colorAccent"
+                    android:textSize="50sp" />
+
+                <EditText
+                    android:id="@+id/answer_word_text"
+                    style="@style/EditableText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autofillHints=""
+                    android:hint="@string/enter_word"
+                    android:textAlignment="textStart"
+                    android:textSize="20sp" />
+
+            </LinearLayout>
         </LinearLayout>
 
         <Button
             android:id="@+id/send_answer_button"
             style="@style/GroupedButton"
-            android:layout_weight="0.01"
+            android:layout_weight="0.1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/send_answer" />
