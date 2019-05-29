@@ -4,6 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 
@@ -190,6 +193,22 @@ public class WordFactory extends SQLiteAssetHelper {
 
         if (cursor.moveToNext()) {
            result = true;
+        }
+        cursor.close();
+        return result;
+    }
+
+    public List<String> getEnglishWordsStartsWithChar(String s) {
+        List<String> result = new ArrayList<>();
+        String[] columns = {ENGLISH_COLUMN};
+        Cursor cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        columns,
+                        ENGLISH_COLUMN + " LIKE '" + s + "%'",
+                        null, null, null, "RANDOM() LIMIT 10");
+
+        while (cursor.moveToNext()) {
+            result.add(cursor.getString(cursor.getColumnIndexOrThrow(ENGLISH_COLUMN)));
         }
         cursor.close();
         return result;
