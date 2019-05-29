@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -155,6 +156,7 @@ public class NetworkController extends AppCompatActivity {
             View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
             adb.setView(dialogView);
             RecyclerView recyclerView = dialogView.findViewById(R.id.list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(NetworkController.this));
             List<Pair<String, String>> history = new ArrayList<>();
             for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
                 String word1 = it.next();
