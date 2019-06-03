@@ -37,6 +37,9 @@ public class SynonymsActivity extends AppCompatActivity {
         final List<String> notSynonyms = new ArrayList<>();
 
         if (synonyms == null) {
+            Intent intent = new Intent();
+            setResult(GameActivity.RESULT_REMOVE_SYNONYMS, intent);
+            finish();
             return;
         }
 

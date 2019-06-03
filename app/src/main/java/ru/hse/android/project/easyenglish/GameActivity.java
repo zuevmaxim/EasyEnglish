@@ -1,17 +1,20 @@
 package ru.hse.android.project.easyenglish;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import ru.hse.android.project.easyenglish.controllers.MainController;
@@ -24,6 +27,10 @@ public class GameActivity extends AppCompatActivity {
     private static final Random RANDOM = new Random();
     private final WordListController wordListController = MainController.getGameController().getWordListController();
     private String previousListName;
+
+    public final static int RESULT_REMOVE_SYNONYMS = 999;
+
+    private List<Class<?>> randomGames;
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -62,6 +69,17 @@ public class GameActivity extends AppCompatActivity {
                     succeedTasks += result ? 1 : 0;
                     totalTasks++;
                 }
+            } else if (resultCode == RESULT_REMOVE_SYNONYMS) {
+                randomGames.remove(SynonymsActivity.class);
+                if (randomGames.isEmpty()) {
+                    new AlertDialog.Builder(this)
+                            .setMessage(this.getString(R.string.check_internet_connect))
+                            .setCancelable(false)
+                            .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
+                            .show();
+                    return;
+                }
+                runGame(randomGame());
             }
         }
     }
@@ -76,38 +94,35 @@ public class GameActivity extends AppCompatActivity {
         String gameName = intent.getStringExtra("game name");
         final Class<?> gameClass = chooseGameByName(gameName);
 
-         Class<?>[] randomGames;
+        randomGames = new ArrayList<>();
          if (gameName.equals("10 Words")) {
              previousListName = wordListController.getCurrentWordList();
              wordListController.setCurrentRandomWordList();
-
-            randomGames = new Class<?>[]{
-                     LetterPuzzleActivity.class,
-                     ChooseDefinitionActivity.class,
-                     MatchingActivity.class,
-                     SynonymsActivity.class
-             };
+             randomGames.add(LetterPuzzleActivity.class);
+             randomGames.add(ChooseDefinitionActivity.class);
+             randomGames.add(MatchingActivity.class);
+             randomGames.add(SynonymsActivity.class);
          } else {
-             randomGames = new Class<?>[]{gameClass};
+             randomGames.add(gameClass);
          }
 
         succeedTasks = 0;
         totalTasks = 0;
 
-        runGame(randomGame(randomGames));
+        runGame(randomGame());
 
         final Button toMenuButton = findViewById(R.id.to_menu_button);
         toMenuButton.setVisibility(View.INVISIBLE);
 
         final Button nextWordButton = findViewById(R.id.next_word_button);
-        nextWordButton.setOnClickListener(v -> runGame(randomGame(randomGames)));
+        nextWordButton.setOnClickListener(v -> runGame(randomGame()));
 
         final Button finishGameButton = findViewById(R.id.end_game_button);
         finishGameButton.setOnClickListener(v -> endGame());
     }
 
-    private Class<?> randomGame(Class<?>[] randomGames) {
-        return randomGames[RANDOM.nextInt(randomGames.length)];
+    private Class<?> randomGame() {
+        return randomGames.get(RANDOM.nextInt(randomGames.size()));
     }
 
     private void runGame(Class<?> gameClass) {
