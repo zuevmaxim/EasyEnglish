@@ -22,7 +22,7 @@ public class GameActivity extends AppCompatActivity {
     private int totalTasks = 0;
     private static final int GAME_RESULT_CODE = 42;
     private static final Random RANDOM = new Random();
-    private WordListController wordListController = MainController.getGameController().getWordListController();
+    private final WordListController wordListController = MainController.getGameController().getWordListController();
     private String previousListName;
 
     @Override
@@ -30,7 +30,9 @@ public class GameActivity extends AppCompatActivity {
         Log.e("TAG", "onActivityResult");
         if (requestCode == GAME_RESULT_CODE) {
             if (resultCode == RESULT_OK) {
-                assert data != null;
+                if (data == null) {
+                    throw new AssertionError();
+                }
                 boolean endOfGame = data.getBooleanExtra("end game", false);
                 if (endOfGame) {
                     endGame();
