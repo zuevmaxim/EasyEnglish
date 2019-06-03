@@ -635,11 +635,15 @@ public class NetworkController extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        new AlertDialog.Builder(this)
-                .setTitle("Exiting game")
-                .setMessage("Are you sure?")
-                .setPositiveButton("YES", (dialog, whichButton) -> cancelMatch())
-                .setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
+        if (isGame) {
+            new AlertDialog.Builder(this)
+                    .setTitle("Exiting game")
+                    .setMessage("Are you sure?")
+                    .setPositiveButton("YES", (dialog, whichButton) -> cancelMatch())
+                    .setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
+        } else {
+            super.onBackPressed();
+        }
     }
 
     public void cancelMatch() {
