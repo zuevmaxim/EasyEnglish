@@ -118,19 +118,6 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        // Here you want to show the user a dialog box
-        new AlertDialog.Builder(this)
-                .setTitle("Exiting the ChooseDefinition game")
-                .setMessage("Are you sure?")
-                .setPositiveButton("YES", (dialog, whichButton) -> {
-                    // The user wants to leave - so dismiss the dialog and exit
-                    finish();
-                    dialog.dismiss();
-                }).setNegativeButton("NO", new DialogInterface.OnClickListener() {
-            public void onClick(DialogInterface dialog, int whichButton) {
-                // The user is not sure, so you can exit or just stay
-                dialog.dismiss();
-            }
-        }).show();
+        GameActivity.onBackPressed(this);
     }
 }

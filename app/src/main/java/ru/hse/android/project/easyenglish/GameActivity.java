@@ -1,5 +1,9 @@
 package ru.hse.android.project.easyenglish;
 
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -148,6 +152,19 @@ public class GameActivity extends AppCompatActivity {
             case "Synonyms" : return SynonymsActivity.class;
         }
         return null;
+    }
+
+    public static void onBackPressed(Context context) {
+        new AlertDialog.Builder(context)
+                .setTitle("Exiting the ChooseDefinition game")
+                .setMessage("Are you sure?")
+                .setPositiveButton("YES", (dialog, whichButton) -> {
+                    Intent intent = new Intent();
+                    intent.putExtra("end game", true);
+                    ((Activity)context).setResult(RESULT_OK, intent);
+                    ((Activity)context).finish();
+                    dialog.dismiss();
+                }).setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
     }
 
     @Override
