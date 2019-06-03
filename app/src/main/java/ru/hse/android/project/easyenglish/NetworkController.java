@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +40,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
@@ -47,6 +49,7 @@ public class NetworkController extends AppCompatActivity {
 
     private static final String TAG = "WORD_CHAIN";
     private static final int PLAYERS_NUMBER = 1;
+    private static final AtomicBoolean isDataRecived = new AtomicBoolean(false);
 
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
@@ -177,7 +180,7 @@ public class NetworkController extends AppCompatActivity {
 
     private void changeLayout() {
         boolean isSignedIn = mTurnBasedMultiplayerClient != null;
-
+        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         if (!isSignedIn) {
             setContentView(R.layout.activity_sign_in);
             initSingInLayout();
@@ -185,6 +188,7 @@ public class NetworkController extends AppCompatActivity {
         }
 
         if (isGame) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
             setContentView(R.layout.activity_word_chain);
             initGameLayout();
         } else {
@@ -217,9 +221,6 @@ public class NetworkController extends AppCompatActivity {
     private String mDisplayName;
     private String mPlayerId;
 
-    private String opDisplayName;
-    private String opPlayerId;
-
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
         Log.d(TAG, "onConnected(): connected to Google APIs");
 
@@ -239,6 +240,10 @@ public class NetworkController extends AppCompatActivity {
         Log.d(TAG, "onConnected(): Connection successful");
         if (!isGame) {
             changeLayout();
+        }
+
+        if (!isDataRecived.get() && mMatch != null) {
+            updateMatch(mMatch);
         }
 
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
@@ -274,7 +279,7 @@ public class NetworkController extends AppCompatActivity {
     // player.
     public void onDoneClicked() {
         String nextParticipantId = getNextParticipantId();
-        String word = mDataFirstLetterText.getText().toString().toLowerCase() + mDataView.getText().toString();
+        String word = mDataFirstLetterText.getText().toString().toLowerCase() + mDataView.getText().toString().toLowerCase();
         if (!wordChain.isMyTurn()) {
             Toast.makeText(this, "Not your turn!", Toast.LENGTH_LONG).show();
             return;
@@ -389,7 +394,7 @@ public class NetworkController extends AppCompatActivity {
             status = apiException.getStatusCode();
         }
 
-        if (!checkStatusCode(status)) {
+        if (checkStatusCode(status)) {
             return;
         }
 
@@ -510,6 +515,7 @@ public class NetworkController extends AppCompatActivity {
                 wordChain.hash("test"), myParticipantId)
                 .addOnSuccessListener(match1 -> {
                     wordChain.changeTurn();
+                    isDataRecived.set(false);
                     updateMatch(match1);
                     setGameplayUI();
                 })
@@ -541,8 +547,8 @@ public class NetworkController extends AppCompatActivity {
     public void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
-        opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mMatch.getParticipantId(mPlayerId))).collect(Collectors.toList()).get(0).getDisplayName();
-        opPlayerId = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getParticipantId();
+        String opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mMatch.getParticipantId(mPlayerId))).collect(Collectors.toList()).get(0).getDisplayName();
+        String opPlayerId = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mPlayerId)).collect(Collectors.toList()).get(0).getParticipantId();
         ((TextView) findViewById(R.id.first_player_name_text)).setText(mDisplayName);
         ((TextView) findViewById(R.id.second_player_name_text)).setText(opDisplayName);
         if (wordChain == null) {
@@ -567,6 +573,7 @@ public class NetworkController extends AppCompatActivity {
         // OK, it's active. Check on turn status.
         if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
             opponentWord = wordChain.unhash(mMatch.getData());
+            isDataRecived.set(true);
             mDataView.setText("");
             wordChain.makeMove(opponentWord);
             wordChain.changeTurn();
