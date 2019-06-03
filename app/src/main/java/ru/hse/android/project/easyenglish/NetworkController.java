@@ -40,7 +40,6 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
@@ -49,7 +48,6 @@ public class NetworkController extends AppCompatActivity {
 
     private static final String TAG = "WORD_CHAIN";
     private static final int PLAYERS_NUMBER = 1;
-    private static final AtomicBoolean isDataRecived = new AtomicBoolean(false);
 
     // Client used to sign in with Google APIs
     private GoogleSignInClient mGoogleSignInClient = null;
@@ -86,6 +84,7 @@ public class NetworkController extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.d(TAG, "onCreate");
         changeLayout();
 
 
@@ -145,9 +144,7 @@ public class NetworkController extends AppCompatActivity {
             adb.setTitle("End game");
             adb.setMessage("Press ok to finish the game.");
             adb.setIcon(android.R.drawable.ic_dialog_alert);
-            adb.setPositiveButton("OK", (dialog, which) -> mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
-                    .addOnSuccessListener(s -> endGame())
-                    .addOnFailureListener(createFailureListener("There was a problem cancelling the match!")));
+            adb.setPositiveButton("OK", (dialog, which) -> cancelMatch());
             adb.setNegativeButton("Cancel", (dialog, which) -> {});
             adb.show();
         });
@@ -204,20 +201,6 @@ public class NetworkController extends AppCompatActivity {
         signInSilently();
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        // Unregister the invitation callbacks; they will be re-registered via
-        // onResume->signInSilently->onConnected.
-        if (mInvitationsClient != null) {
-            mInvitationsClient.unregisterInvitationCallback(mInvitationCallback);
-        }
-
-        if (mTurnBasedMultiplayerClient != null) {
-            mTurnBasedMultiplayerClient.unregisterTurnBasedMatchUpdateCallback(mMatchUpdateCallback);
-        }
-    }
-
     private String mDisplayName;
     private String mPlayerId;
 
@@ -240,10 +223,6 @@ public class NetworkController extends AppCompatActivity {
         Log.d(TAG, "onConnected(): Connection successful");
         if (!isGame) {
             changeLayout();
-        }
-
-        if (!isDataRecived.get() && mMatch != null) {
-            updateMatch(mMatch);
         }
 
         GamesClient gamesClient = Games.getGamesClient(this, googleSignInAccount);
@@ -515,7 +494,6 @@ public class NetworkController extends AppCompatActivity {
                 wordChain.hash("test"), myParticipantId)
                 .addOnSuccessListener(match1 -> {
                     wordChain.changeTurn();
-                    isDataRecived.set(false);
                     updateMatch(match1);
                     setGameplayUI();
                 })
@@ -561,10 +539,12 @@ public class NetworkController extends AppCompatActivity {
 
         if (status == TurnBasedMatch.MATCH_STATUS_CANCELED) {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
-            alertDialogBuilder.setTitle("End game!").setMessage("You win!");
 
-            alertDialogBuilder.setCancelable(false).setPositiveButton("OK",
-                    (dialog, id) -> endGame());
+            alertDialogBuilder
+                    .setTitle("End game!")
+                    .setMessage("You win!")
+                    .setCancelable(false)
+                    .setPositiveButton("OK", (dialog, id) -> endGame());
             AlertDialog mAlertDialog = alertDialogBuilder.create();
             mAlertDialog.show();
             return;
@@ -573,7 +553,6 @@ public class NetworkController extends AppCompatActivity {
         // OK, it's active. Check on turn status.
         if (turnStatus == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN) {
             opponentWord = wordChain.unhash(mMatch.getData());
-            isDataRecived.set(true);
             mDataView.setText("");
             wordChain.makeMove(opponentWord);
             wordChain.changeTurn();
@@ -654,11 +633,39 @@ public class NetworkController extends AppCompatActivity {
         return false;
     }
 
+    @Override
+    public void onBackPressed() {
+        new AlertDialog.Builder(this)
+                .setTitle("Exiting game")
+                .setMessage("Are you sure?")
+                .setPositiveButton("YES", (dialog, whichButton) -> cancelMatch())
+                .setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
+    }
+
+    public void cancelMatch() {
+        if (mTurnBasedMultiplayerClient != null && mMatch != null) {
+            Log.d(TAG, "Cancel game");
+            mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
+                    .addOnSuccessListener(s -> endGame())
+                    .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
+        }
+    }
+
     public void endGame() {
+        Log.d(TAG, "endGame");
         isGame = false;
         isDoingTurn = false;
         wordChain = null;
+        mMatch = null;
         opponentWord = "";
         changeLayout();
+    }
+
+    public void onPause() {
+        Log.d(TAG, "onPause");
+        if (isFinishing()) {
+            cancelMatch();
+        }
+        super.onPause();
     }
 }
