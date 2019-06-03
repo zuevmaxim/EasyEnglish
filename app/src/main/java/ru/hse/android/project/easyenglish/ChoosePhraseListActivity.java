@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.controllers.MainController;
@@ -37,6 +38,9 @@ public class ChoosePhraseListActivity extends AppCompatActivity {
         ListView themesList = findViewById(R.id.theme_list);
         ArrayAdapter<String> adapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_list_item_single_choice, themes);
+
+        themesList.setItemsCanFocus(true);
+        themesList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         themesList.setAdapter(adapter);
 
         currentTheme = phrasesController.getCurrentTheme();

@@ -154,15 +154,15 @@ public class GameActivity extends AppCompatActivity {
         return null;
     }
 
-    public static void onBackPressed(Context context) {
+    public static void onBackPressed(Activity context) {
         new AlertDialog.Builder(context)
-                .setTitle("Exiting the ChooseDefinition game")
+                .setTitle("Exiting game")
                 .setMessage("Are you sure?")
                 .setPositiveButton("YES", (dialog, whichButton) -> {
                     Intent intent = new Intent();
                     intent.putExtra("end game", true);
-                    ((Activity)context).setResult(RESULT_OK, intent);
-                    ((Activity)context).finish();
+                    context.setResult(RESULT_OK, intent);
+                    context.finish();
                     dialog.dismiss();
                 }).setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
     }
