@@ -16,10 +16,8 @@ import java.util.List;
 
 import ru.hse.android.project.easyenglish.EditListActivity;
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.controllers.GameController;
 import ru.hse.android.project.easyenglish.controllers.MainController;
-
-import static ru.hse.android.project.easyenglish.controllers.WordListController.RANDOM_WORD_LIST_TABLE_NAME;
+import ru.hse.android.project.easyenglish.controllers.WordListController;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
 
@@ -46,10 +44,11 @@ private static final int EDIT_LIST_CODE = 38;
         final String listName = wordListNames.get(position);
 
         viewHolder.nameView.setText(listName);
+        WordListController controller = MainController.getGameController().getWordListController();
 
-        if (listName.replace(" ", "_").equals(RANDOM_WORD_LIST_TABLE_NAME)) { //TODO
+        if (controller.getWordListId(listName) == controller.getRandomWordListId()) {
             viewHolder.editButton.setText(R.string.Update);
-            viewHolder.editButton.setOnClickListener(v -> MainController.getGameController().getWordListController().updateRandomWordList());
+            viewHolder.editButton.setOnClickListener(v -> controller.updateRandomWordList());
         } else {
             viewHolder.editButton.setOnClickListener(v -> {
                 Intent intent = new Intent(context, EditListActivity.class);

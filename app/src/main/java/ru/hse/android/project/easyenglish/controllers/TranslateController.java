@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -17,11 +16,15 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import ru.hse.android.project.easyenglish.words.ExtendedWord;
 import ru.hse.android.project.easyenglish.words.PartOfSpeech;
 
 public class TranslateController {
+    private static final int TIMEOUT = 1000;
+
     public static String translate(String word, String languagePair) {
         DicResult dicResult = translateTotal(word, languagePair);
         String result = null;
@@ -66,10 +69,12 @@ public class TranslateController {
         DictionaryTask translatorTask = new DictionaryTask();
         translatorTask.execute(word, languagePair);
         try {
-            return translatorTask.get();
+            return translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (TimeoutException e) {
             e.printStackTrace();
         }
         return null;
@@ -127,6 +132,9 @@ public class TranslateController {
         protected DicResult doInBackground(String... params) {
             String textToBeTranslated = params[0];
             String languagePair = params[1];
+            if (textToBeTranslated == null) {
+                return null;
+            }
             if (textToBeTranslated.isEmpty()) {
                 return null;
             }
@@ -150,10 +158,9 @@ public class TranslateController {
                 }
 
                 httpJsonConnection.disconnect();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
 
             String resultString = stringBuilder.toString().trim();
@@ -202,7 +209,7 @@ public class TranslateController {
         translatorTask.execute(word, languagePair);
         String result = null;
         try {
-            result = translatorTask.get(1000, TimeUnit.MILLISECONDS);
+            result = translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -238,17 +245,18 @@ public class TranslateController {
                     }
                 }
                 httpJsonConnection.disconnect();
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
             } catch (IOException e) {
                 e.printStackTrace();
+                return null;
             }
             String resultString = stringBuilder.toString().trim();
-            resultString = resultString.substring(resultString.indexOf('[') + 1);
-            resultString = resultString.substring(0, resultString.indexOf("]"));
-            resultString = resultString.substring(resultString.indexOf("\"") + 1);
-            resultString = resultString.substring(0, resultString.indexOf("\""));
-            return resultString;
+            Pattern pattern = Pattern.compile("\\[\"(\\w*)\"\\]");
+            Matcher matcher = pattern.matcher(resultString);
+            if (matcher.find()) {
+                String result = matcher.group();
+                return result.substring(2, result.length() - 2);
+            }
+            return null;
         }
     }
 }

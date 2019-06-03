@@ -19,7 +19,7 @@ public class WordListController extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
-    public static final String RANDOM_WORD_LIST_TABLE_NAME = "random_word_list";
+    public static final String RANDOM_WORD_LIST_NAME = "random_word_list";
     private static final String NAME_COLUMN = "name";
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
@@ -32,7 +32,7 @@ public class WordListController extends SQLiteAssetHelper {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
-    private int getWordListId(String name) {
+    public int getWordListId(String name) {
         name = name.replace(' ', '_');
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -48,13 +48,17 @@ public class WordListController extends SQLiteAssetHelper {
         return result;
     }
 
+    public int getRandomWordListId() {
+        return getWordListId(RANDOM_WORD_LIST_NAME);
+    }
+
     private String getTableName(String wordListName) {
         return TABLE + getWordListId(wordListName);
     }
 
     public boolean needsInit() {
         String[] columns = {WORD_ID_COLUMN};
-        Cursor cursor = getReadableDatabase().query(getTableName(RANDOM_WORD_LIST_TABLE_NAME), columns, null, null, null, null, null);
+        Cursor cursor = getReadableDatabase().query(getTableName(RANDOM_WORD_LIST_NAME), columns, null, null, null, null, null);
         if (cursor.moveToNext()) {
             return false;
         }
@@ -63,7 +67,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     public void updateRandomWordList() {
-        String tableName = getTableName(RANDOM_WORD_LIST_TABLE_NAME);
+        String tableName = getTableName(RANDOM_WORD_LIST_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
@@ -131,7 +135,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     public void setCurrentRandomWordList() {
-        setCurrentWordList(RANDOM_WORD_LIST_TABLE_NAME);
+        setCurrentWordList(RANDOM_WORD_LIST_NAME);
     }
 
     private boolean containsWordList(String listName) {
