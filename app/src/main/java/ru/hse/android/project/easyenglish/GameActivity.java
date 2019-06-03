@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
@@ -163,6 +164,19 @@ public class GameActivity extends AppCompatActivity {
             case "Synonyms" : return SynonymsActivity.class;
         }
         return null;
+    }
+
+    public static void onBackPressed(Activity context) {
+        new AlertDialog.Builder(context)
+                .setTitle("Exiting game")
+                .setMessage("Are you sure?")
+                .setPositiveButton("YES", (dialog, whichButton) -> {
+                    Intent intent = new Intent();
+                    intent.putExtra("end game", true);
+                    context.setResult(RESULT_OK, intent);
+                    context.finish();
+                    dialog.dismiss();
+                }).setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
     }
 
     @Override

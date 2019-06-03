@@ -19,7 +19,7 @@ public class WordListController extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
-    private static final String RANDOM_WORD_LIST_TABLE_NAME = "random_word_list";
+    public static final String RANDOM_WORD_LIST_TABLE_NAME = "random_word_list";
     private static final String NAME_COLUMN = "name";
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";

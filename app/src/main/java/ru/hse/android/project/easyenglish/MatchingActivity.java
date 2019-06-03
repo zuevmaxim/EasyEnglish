@@ -97,4 +97,9 @@ public class MatchingActivity extends AppCompatActivity {
             finish();
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        GameActivity.onBackPressed(this);
+    }
 }

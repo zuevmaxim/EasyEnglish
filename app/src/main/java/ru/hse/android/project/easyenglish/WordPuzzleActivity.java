@@ -79,4 +79,9 @@ public class WordPuzzleActivity extends AppCompatActivity {
             finish();
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        GameActivity.onBackPressed(this);
+    }
 }
