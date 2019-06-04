@@ -52,8 +52,9 @@ public class PhrasesController extends SQLiteAssetHelper {
     public List<Phrase> getCurrentThemeList() {
         List<Phrase> result = new ArrayList<>();
         String[] columns = {RUSSIAN_COLUMN, ENGLISH_COLUMN};
+        String tableName = currentTheme.replace(' ', '_');
         Cursor cursor = getReadableDatabase()
-                .query(currentTheme, columns, null, null, null, null, null);
+                .query(tableName, columns, null, null, null, null, null);
         while (cursor.moveToNext()) {
             String russian = cursor.getString(cursor.getColumnIndexOrThrow(RUSSIAN_COLUMN));
             String english = cursor.getString(cursor.getColumnIndexOrThrow(ENGLISH_COLUMN));
