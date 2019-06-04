@@ -236,7 +236,7 @@ public class WordFactory extends SQLiteAssetHelper {
                 .query(TABLE_NAME,
                         columns,
                         ENGLISH_COLUMN + " LIKE '" + s + "%'",
-                        null, null, null, "RANDOM() LIMIT 10");
+                        null, null, null, "RANDOM()");
 
         while (cursor.moveToNext()) {
             result.add(cursor.getString(cursor.getColumnIndexOrThrow(ENGLISH_COLUMN)));

@@ -2,6 +2,7 @@ package ru.hse.android.project.easyenglish;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -40,6 +41,7 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
@@ -173,6 +175,48 @@ public class NetworkController extends AppCompatActivity {
         mOpponentText = findViewById(R.id.opponent_word);
         mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
         mTurnTextView = findViewById(R.id.turn_status_text);
+
+
+        Button showHintsButton = findViewById(R.id.hints_button);
+        showHintsButton.setOnClickListener(v -> {
+            Log.d(TAG, "hints button clicked");
+
+            AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            if (wordChain.getHintsNumber() == 0) {
+                adb.setTitle("Hints")
+                        .setMessage("All hints had been used.")
+                        .setPositiveButton("OK", (dialog, which) -> { })
+                        .show();
+            } else {
+                if (wordChain == null) {
+                    adb.setTitle("Hints")
+                            .setMessage("No hints available.")
+                            .setPositiveButton("OK", (dialog, which) -> { })
+                            .show();
+                    return;
+                }
+                List<String> hints = wordChain.getHint();
+                int availableHints = Math.min(wordChain.getHintsNumber(), hints.size());
+                if (availableHints == 0) {
+                    adb.setTitle("Hints")
+                            .setMessage("No hints available.")
+                            .setPositiveButton("OK", (dialog, which) -> { })
+                            .show();
+                } else {
+                    adb.setTitle("Hints")
+                            .setMessage(availableHints + " hints available.\nDo you want a hint?")
+                            .setPositiveButton("YES", (dialog, which) -> {
+                                wordChain.useHint();
+                                String word = hints.get(0);
+                                Toast.makeText(this, word, Toast.LENGTH_LONG).show();
+                                dialog.dismiss();
+                            })
+                            .setNegativeButton("Cancel", (dialog, which) -> {})
+                            .show();
+                }
+
+            }
+        });
     }
 
     private void changeLayout() {

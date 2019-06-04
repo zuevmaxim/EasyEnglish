@@ -18,6 +18,7 @@ public class WordChain {
     private int turn = 0;
     private LinkedHashSet<String> previousWords = new LinkedHashSet<>();
     private String lastWord = "";
+    private int hintsNumber = 3;
 
     public static final int RESULT_OK = 0;
     public static final int RESULT_REPETITION = 1;
@@ -42,15 +43,15 @@ public class WordChain {
         return turn == 1;
     }
 
-    public int isValidMove(String word) { //TODO should return error code
+    public int isValidMove(String word) {
         if (previousWords.contains(word)) {
             return RESULT_REPETITION;
-        } else if (!TranslateController.wordInfo(word).isNoun()) {
-            return RESULT_NOT_A_NOUN;
         } else if (word.isEmpty()) {
             return RESULT_EMPTY;
         } else if (!lastWord.isEmpty() && lastWord.charAt(lastWord.length() - 1) != word.charAt(0)) {
             return RESULT_WRONG_FIRST_LETTER;
+        } else if (!TranslateController.wordInfo(word).isNoun()) {
+            return RESULT_NOT_A_NOUN;
         } else {
             return RESULT_OK;
         }
@@ -72,8 +73,15 @@ public class WordChain {
     }
 
     public List<String> getHint() {
-        List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(0, 0));
-        return words.stream().filter(s -> isValidMove(s) == RESULT_OK).collect(Collectors.toList());
+        List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(0, 1));
+        return words.stream().filter(s -> isValidMove(s) == RESULT_OK).limit(hintsNumber).collect(Collectors.toList());
     }
 
- }
+    public int getHintsNumber() {
+        return hintsNumber;
+    }
+
+    public void useHint() {
+        hintsNumber = Math.max(0, hintsNumber - 1);
+    }
+}
