@@ -19,7 +19,7 @@ public class WordListController extends SQLiteAssetHelper {
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
-    public static final String RANDOM_WORD_LIST_NAME = "random_word_list";
+    public static final String RANDOM_WORD_LIST_NAME = "random word list";
     private static final String NAME_COLUMN = "name";
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
@@ -33,7 +33,6 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     public int getWordListId(String name) {
-        name = name.replace(' ', '_');
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
@@ -41,7 +40,7 @@ public class WordListController extends SQLiteAssetHelper {
                         NAME_COLUMN + " = ?",
                         new String[]{name}, null, null, null);
         int result = 0;
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             result = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
         }
         cursor.close();
@@ -70,11 +69,11 @@ public class WordListController extends SQLiteAssetHelper {
         String tableName = getTableName(RANDOM_WORD_LIST_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
-        for (int i = 0; i < RANDOM_WORD_LIST_LENGTH; i++) {
-            int wordId = wordFactory.nextWordId(); //TODO get a list of ids
+        List<Integer> ids = wordFactory.nextWordIds(RANDOM_WORD_LIST_LENGTH);
+        for (int id : ids) {
             getWritableDatabase().execSQL(
                     "INSERT INTO " + tableName +
-                            "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
+                            "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
         }
         MainController.getGameController().getWordStorage().updateStorage();
     }
@@ -83,9 +82,9 @@ public class WordListController extends SQLiteAssetHelper {
         List<String> lists = new ArrayList<>();
         String[] columns = {NAME_COLUMN};
         Cursor cursor = getReadableDatabase().query(WORD_LISTS_TABLE_NAME, columns, null, null, null, null, null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             String list = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-            lists.add(list.replace('_', ' '));
+            lists.add(list);
         }
         cursor.close();
         return lists;
@@ -99,10 +98,9 @@ public class WordListController extends SQLiteAssetHelper {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> words = new ArrayList<>();
         String[] columns = {WORD_ID_COLUMN};
-        String listName = wordListName.replace(' ', '_');
-        String tableName = getTableName(listName);
+        String tableName = getTableName(wordListName);
         Cursor cursor = getReadableDatabase().query(tableName, columns, null, null, null, null, null);
-        while(cursor.moveToNext()) {
+        while (cursor.moveToNext()) {
             int wordId = cursor.getInt(cursor.getColumnIndexOrThrow(WORD_ID_COLUMN));
             words.add(wordFactory.getWordById(wordId));
         }
@@ -118,19 +116,17 @@ public class WordListController extends SQLiteAssetHelper {
                         CURRENT_LIST_COLUMN + " = ?",
                         new String[]{"1"}, null, null, null);
         String result = "";
-        while(cursor.moveToNext()) {
-            String list = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-            result = list.replace('_', ' ');
+        while (cursor.moveToNext()) {
+            result = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
         }
         cursor.close();
         return result;
     }
 
     public void setCurrentWordList(String newListName) {
-        String currentListName = getCurrentWordList().replace(' ', '_');
-        String newCurrentListName = newListName.replace(' ', '_');
+        String currentListName = getCurrentWordList();
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
-        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newCurrentListName + "'");
+        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newListName + "'");
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
@@ -139,13 +135,12 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     private boolean containsWordList(String listName) {
-        String name = listName.replace(' ', '_');
         boolean result = false;
         Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
                         new String[]{NAME_COLUMN},
                         NAME_COLUMN + " = ? ",
-                        new String[]{name}, null, null, null);
+                        new String[]{listName}, null, null, null);
         if (cursor.moveToNext()) {
             result = true;
         }
@@ -162,22 +157,20 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     private void addNewWordList(String name) {
-        String wordListName = name.replace(' ', '_');
         getWritableDatabase().execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
-                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + wordListName + "', 0)");
+                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + name + "', 0)");
         getWritableDatabase().execSQL(
-                "CREATE TABLE " + getTableName(wordListName) +
+                "CREATE TABLE " + getTableName(name) +
                         "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         WORD_ID_COLUMN + " INTEGER)");
     }
 
     private void addNewWordIntoList(String name, Word word) throws WrongWordException {
-        String wordListName = name.replace(' ', '_');
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         int wordId = wordFactory.addNewWord(word);
         getWritableDatabase().execSQL(
-                "INSERT INTO " + getTableName(wordListName) +
+                "INSERT INTO " + getTableName(name) +
                         "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
     }
 

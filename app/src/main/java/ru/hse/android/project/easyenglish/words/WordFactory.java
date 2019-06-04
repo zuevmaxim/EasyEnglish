@@ -30,17 +30,21 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     public int nextWordId() {
+        return nextWordIds(1).get(0);
+    }
+
+    public List<Integer> nextWordIds(int n) {
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
                 .query(TABLE_NAME,
                         columns,
-                        null, null, null, null, "RANDOM() LIMIT 1");
-        int id = 0;
-        if (cursor.moveToNext()) {
-            id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
+                        null, null, null, null, "RANDOM() LIMIT " + n);
+        List<Integer> result = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            result.add(cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN)));
         }
         cursor.close();
-        return id;
+        return result;
     }
 
     public Word getWordById(int id) {
