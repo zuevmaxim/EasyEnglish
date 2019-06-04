@@ -21,6 +21,7 @@ public class WordFactory extends SQLiteAssetHelper {
     //private static final String DATE_COLUMN = "date";
     private static final String ERRORS_NUMBER_COLUMN = "errors";
     private static final String TOTAL_NUMBER_COLUMN = "total";
+    private static final String PERCENT_COLUMN = "percent";
     private final Context context;
 
 
@@ -33,13 +34,36 @@ public class WordFactory extends SQLiteAssetHelper {
         return nextWordIds(1).get(0);
     }
 
-    public List<Integer> nextWordIds(int n) {
+    public List<Integer> nextWordIds(int length) {
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
                 .query(TABLE_NAME,
                         columns,
-                        null, null, null, null, "RANDOM() LIMIT " + n);
+                        null, null, null, null, "RANDOM() LIMIT " + length);
         List<Integer> result = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            result.add(cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN)));
+        }
+        cursor.close();
+        return result;
+    }
+
+    public List<Integer> generateDayList(int length, int newWordsLength) {
+        String[] columns = {ID_COLUMN};
+        Cursor cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        columns,
+                        TOTAL_NUMBER_COLUMN + " = 0", null, null, null, "RANDOM() LIMIT " + newWordsLength);
+        List<Integer> result = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            result.add(cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN)));
+        }
+        cursor.close();
+        int rest = length - result.size();
+        cursor = getReadableDatabase()
+                .query(TABLE_NAME,
+                        columns,
+                        null, null, null, null, PERCENT_COLUMN + " LIMIT " + rest);
         while (cursor.moveToNext()) {
             result.add(cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN)));
         }
@@ -67,6 +91,7 @@ public class WordFactory extends SQLiteAssetHelper {
         getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
                 ERRORS_NUMBER_COLUMN + " = 0, " +
                 TOTAL_NUMBER_COLUMN + " = 0" +
+                PERCENT_COLUMN + " = 0" +
                 " WHERE " + RUSSIAN_COLUMN + " = '" + word.getRussian() + "' AND " +
                 ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
     }
@@ -106,10 +131,12 @@ public class WordFactory extends SQLiteAssetHelper {
     public void saveWordStatistic(Word word, boolean result) {
         int previousErrorResult = getWordErrorNumber(word);
         int previousTotalResult = getWordTotalNumber(word);
+        double percent = 1 - (result ? previousErrorResult : previousErrorResult + 1) / (1.0 + previousTotalResult);
 
         getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
                 ERRORS_NUMBER_COLUMN + " = " + (result ? previousErrorResult : previousErrorResult + 1) + ", " +
                 TOTAL_NUMBER_COLUMN + " = " + (previousTotalResult + 1) +
+                PERCENT_COLUMN + " = " + percent +
                 " WHERE " + RUSSIAN_COLUMN + " = '" + word.getRussian() + "' AND " +
                 ENGLISH_COLUMN + " = '" + word.getEnglish() + "'");
     }

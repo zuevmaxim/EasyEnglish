@@ -98,7 +98,7 @@ public class GameActivity extends AppCompatActivity {
         randomGames = new ArrayList<>();
          if (gameName.equals("10 Words")) {
              previousListName = wordListController.getCurrentWordList();
-             wordListController.setCurrentRandomWordList();
+             wordListController.setCurrentDayList();
              randomGames.add(LetterPuzzleActivity.class);
              randomGames.add(ChooseDefinitionActivity.class);
              randomGames.add(MatchingActivity.class);

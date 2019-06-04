@@ -18,6 +18,9 @@ public class GameController {
         if (wordListController.needsInit()) {
             wordListController.updateRandomWordList();
         }
+        if (wordListController.needsDayListInit()) {
+            wordListController.updateDayList();
+        }
         wordStorage.updateStorage();
         phaseStorage.updateStorage();
     }

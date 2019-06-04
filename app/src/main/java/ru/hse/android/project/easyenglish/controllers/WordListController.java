@@ -6,6 +6,7 @@ import android.database.Cursor;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,13 +21,18 @@ public class WordListController extends SQLiteAssetHelper {
     private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
     public static final String RANDOM_WORD_LIST_NAME = "random word list";
+    private static final String DAY_LIST_NAME = "day list";
     private static final String NAME_COLUMN = "name";
+    private static final String DATE_COLUMN = "date";
     private static final String CURRENT_LIST_COLUMN = "is_current";
     private static final String ID_COLUMN = "id";
     private static final String WORD_ID_COLUMN = "word_id";
     private static final String TABLE = "table";
 
     private static final int RANDOM_WORD_LIST_LENGTH = 20;
+    private static final int DAY_LIST_LENGTH = 10;
+    private static final int PREF_NEW_WORDS = 7;
+    private static final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
     public WordListController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,6 +71,26 @@ public class WordListController extends SQLiteAssetHelper {
         return true;
     }
 
+    public boolean needsDayListInit() {
+        Cursor dayListCursor = getReadableDatabase().query(WORD_LISTS_TABLE_NAME,
+                new String[] {DATE_COLUMN},
+                NAME_COLUMN + " = ?",
+                new String[] {DAY_LIST_NAME},
+                null, null, null);
+        boolean result = false;
+        String currentDate = format.format(System.currentTimeMillis());
+        if (dayListCursor.moveToNext()) {
+            String date = dayListCursor.getString(dayListCursor.getColumnIndexOrThrow(DATE_COLUMN));
+            if (!date.equals(currentDate)) {
+                result = true;
+            }
+        } else {
+            result = true;
+        }
+        dayListCursor.close();
+        return result;
+    }
+
     public void updateRandomWordList() {
         String tableName = getTableName(RANDOM_WORD_LIST_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);
@@ -76,6 +102,21 @@ public class WordListController extends SQLiteAssetHelper {
                             "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
         }
         MainController.getGameController().getWordStorage().updateStorage();
+    }
+
+    public void updateDayList() {
+        String currentDate = format.format(System.currentTimeMillis());
+        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + DATE_COLUMN + " = " + currentDate +
+                " WHERE " + NAME_COLUMN + " = '" + DAY_LIST_NAME + "'");
+        String tableName = getTableName(DAY_LIST_NAME);
+        getWritableDatabase().execSQL("DELETE FROM " + tableName);
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        List<Integer> ids = wordFactory.generateDayList(DAY_LIST_LENGTH, PREF_NEW_WORDS);
+        for (int id : ids) {
+            getWritableDatabase().execSQL(
+                    "INSERT INTO " + tableName +
+                            "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
+        }
     }
 
     public List<String> getWordLists() {
@@ -130,8 +171,8 @@ public class WordListController extends SQLiteAssetHelper {
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
-    public void setCurrentRandomWordList() {
-        setCurrentWordList(RANDOM_WORD_LIST_NAME);
+    public void setCurrentDayList() {
+        setCurrentWordList(DAY_LIST_NAME);
     }
 
     private boolean containsWordList(String listName) {
