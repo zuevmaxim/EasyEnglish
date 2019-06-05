@@ -117,6 +117,7 @@ public class WordListController extends SQLiteAssetHelper {
                     "INSERT INTO " + tableName +
                             "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
         }
+        MainController.getGameController().getWordStorage().updateStorage();
     }
 
     public List<String> getWordLists() {
