@@ -16,7 +16,7 @@
     <string name="word_chain">Word chain</string>
     <string name="statistics">Statistics</string>
     <string name="menu">Menu</string>
-    <string name="next">Next word</string>
+    <string name="next">Next</string>
     <string name="finish">Finish</string>
     <string name="check_answer">Check answer</string>
     <string name="swap"><![CDATA[<->]]></string>
