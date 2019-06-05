@@ -17,7 +17,7 @@ import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class WordListController extends SQLiteAssetHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "word_lists.db";
     private static final String WORD_LISTS_TABLE_NAME = "word_lists";
     public static final String RANDOM_WORD_LIST_NAME = "random word list";
@@ -36,6 +36,7 @@ public class WordListController extends SQLiteAssetHelper {
 
     public WordListController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        setForcedUpgrade();
     }
 
     public int getWordListId(String name) {

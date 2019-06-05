@@ -11,7 +11,7 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 
 public class WordFactory extends SQLiteAssetHelper {
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "dictionary.db";
     private static final String TABLE_NAME = "words";
     private static final String ID_COLUMN = "_id";
@@ -28,6 +28,7 @@ public class WordFactory extends SQLiteAssetHelper {
     public WordFactory(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
+        setForcedUpgrade();
     }
 
     public int nextWordId() {

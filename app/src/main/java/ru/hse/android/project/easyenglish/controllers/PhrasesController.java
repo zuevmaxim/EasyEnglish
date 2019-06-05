@@ -10,7 +10,7 @@ import java.util.List;
 
 public class PhrasesController extends SQLiteAssetHelper {
 
-    private static final int DATABASE_VERSION = 1;
+    private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "phrases.db";
     private static final String THEMES_TABLE_NAME = "themes";
     private static final String NAME_COLUMN = "name";
@@ -22,6 +22,7 @@ public class PhrasesController extends SQLiteAssetHelper {
 
     public PhrasesController(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        setForcedUpgrade();
         updateCurrentTheme();
     }
 
