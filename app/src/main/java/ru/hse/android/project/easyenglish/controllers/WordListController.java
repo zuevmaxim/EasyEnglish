@@ -57,6 +57,10 @@ public class WordListController extends SQLiteAssetHelper {
         return getWordListId(RANDOM_WORD_LIST_NAME);
     }
 
+    public int getDayListId() {
+        return getWordListId(DAY_LIST_NAME);
+    }
+
     private String getTableName(String wordListName) {
         return TABLE + getWordListId(wordListName);
     }
