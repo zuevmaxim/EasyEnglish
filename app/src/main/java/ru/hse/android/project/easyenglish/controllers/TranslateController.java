@@ -112,7 +112,7 @@ public class TranslateController {
             if (dicResult.def.length > 0
                     && dicResult.def[0] != null
                     && dicResult.def[0].ts != null) {
-                transcription = dicResult.def[0].ts;
+                transcription = "[" + dicResult.def[0].ts + "]";
             }
             for (DicResult.Definition definition : dicResult.def) {
                 if (definition != null) {

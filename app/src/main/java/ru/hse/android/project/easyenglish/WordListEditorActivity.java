@@ -1,18 +1,16 @@
 package ru.hse.android.project.easyenglish;
 
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ListView;
 
 import java.util.List;
 
-import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.adapters.WordListAdapter;
+import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 
 public class WordListEditorActivity extends AppCompatActivity {
@@ -28,7 +26,7 @@ public class WordListEditorActivity extends AppCompatActivity {
 
         Button addNewListButton = findViewById(R.id.add_new_list_button);
         addNewListButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, AddNewListActivity.class);
+            Intent intent = new Intent(this, EditListActivity.class);
             startActivityForResult(intent, ADD_NEW_LIST_CODE);
         });
         setResult(RESULT_OK);

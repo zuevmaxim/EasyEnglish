@@ -236,6 +236,9 @@ public class WordListController extends SQLiteAssetHelper {
         if (!containsWordList(name)) {
             throw new WrongListNameException("No such word list.");
         }
+        if (getWordListId(name) == getWordListId(getCurrentWordList())) {
+            setCurrentWordList(RANDOM_WORD_LIST_NAME);
+        }
         getWritableDatabase().execSQL("DROP TABLE " + getTableName(name));
         getWritableDatabase().execSQL("DELETE FROM " + WORD_LISTS_TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordListId(name));
     }
@@ -250,9 +253,12 @@ public class WordListController extends SQLiteAssetHelper {
         }
 
         checkWordsToAdd(newWords);
-
+        boolean wasCurrent = getWordListId(name) == getWordListId(getCurrentWordList());
         deleteWordList(name);
         addNewWordList(newName, newWords);
+        if (wasCurrent) {
+            setCurrentWordList(newName);
+        }
     }
 
     private void checkWordsToAdd(List<Word> words) throws WrongWordException {

@@ -180,7 +180,7 @@ public class GameActivity extends AppCompatActivity {
 
     @Override
     public void onStop() {
-        if (previousListName != null) {
+        if (previousListName != null && isFinishing()) {
             wordListController.setCurrentWordList(previousListName);
         }
         super.onStop();
