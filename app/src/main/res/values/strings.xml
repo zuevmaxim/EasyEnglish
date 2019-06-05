@@ -107,5 +107,6 @@
     <string name="Update">update</string>
     <string name="You">You</string>
     <string name="Opponent">Opponent</string>
+    <string name="menu_option">⋮</string>
 
 </resources>

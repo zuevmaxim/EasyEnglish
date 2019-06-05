@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import java.util.List;
@@ -18,6 +19,7 @@ import ru.hse.android.project.easyenglish.EditListActivity;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
 
@@ -46,14 +48,44 @@ private static final int EDIT_LIST_CODE = 38;
         viewHolder.nameView.setText(listName);
         WordListController controller = MainController.getGameController().getWordListController();
 
-        if (controller.getWordListId(listName) == controller.getRandomWordListId()) {
-            viewHolder.editButton.setText(R.string.Update);
-            viewHolder.editButton.setOnClickListener(v -> controller.updateRandomWordList());
+        if (controller.getWordListId(listName) == controller.getRandomWordListId()
+                || controller.getWordListId(listName) == controller.getDayListId()) {
+            viewHolder.menuButton.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
+                popupMenu.inflate(R.menu.update_menu);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    if (item.getItemId() == R.id.item_update) {
+                        controller.updateRandomWordList();
+                        notifyDataSetChanged();
+                    }
+                    return false;
+                });
+                popupMenu.show();
+            });
         } else {
-            viewHolder.editButton.setOnClickListener(v -> {
-                Intent intent = new Intent(context, EditListActivity.class);
-                intent.putExtra("list name", listName);
-                ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
+            viewHolder.menuButton.setOnClickListener(v -> {
+                PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
+                popupMenu.inflate(R.menu.edit_list_menu);
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()) {
+                        case R.id.item_edit :
+                            Intent intent = new Intent(context, EditListActivity.class);
+                            intent.putExtra("list name", listName);
+                            ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
+                            notifyDataSetChanged();
+                            break;
+                        case R.id.item_delete :
+                            try {
+                                MainController.getGameController().getWordListController().deleteWordList(listName);
+                                wordListNames.remove(listName);
+                                notifyDataSetChanged();
+                            } catch (WrongListNameException e) {
+                            }
+                            break;
+                    }
+                    return false;
+                });
+                popupMenu.show();
             });
         }
     }
@@ -69,11 +101,11 @@ private static final int EDIT_LIST_CODE = 38;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        private final Button editButton;
+        private final TextView menuButton;
         private final TextView nameView;
         private ViewHolder(View view){
             super(view);
-            editButton = view.findViewById(R.id.set_list_button);
+            menuButton = view.findViewById(R.id.option_menu);
             nameView = view.findViewById(R.id.list_name);
         }
     }

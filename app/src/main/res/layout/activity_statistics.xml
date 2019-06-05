@@ -71,15 +71,6 @@
                 android:gravity="center"
                 android:text="@string/wrong_answers"
                 android:textSize="18sp" />
-
-            <TextView
-                android:id="@+id/reset_column"
-                android:layout_width="5dp"
-                android:layout_height="60dp"
-                android:layout_weight="1.3"
-                android:gravity="center"
-                android:text="@string/reset"
-                android:textSize="18sp" />
         </LinearLayout>
 
         <android.support.v7.widget.RecyclerView
