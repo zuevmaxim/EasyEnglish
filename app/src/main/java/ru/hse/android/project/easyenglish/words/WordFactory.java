@@ -177,6 +177,9 @@ public class WordFactory extends SQLiteAssetHelper {
         if (cursor.moveToNext()) {
             id = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
             cursor.close();
+            if (getWordById(id).getTranscription().isEmpty() && !word.getTranscription().isEmpty()) {
+                getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " + TRANSCRIPTION_COLUMN + " = '" + word.getTranscription() + "' WHERE " + ID_COLUMN + " = " + id);
+            }
             return id;
         }
         cursor.close();
