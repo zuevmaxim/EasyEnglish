@@ -12,7 +12,10 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -135,6 +138,13 @@ public class NetworkController extends AppCompatActivity {
         Button sendAnswerButton = findViewById(R.id.send_answer_button);
         sendAnswerButton.setOnClickListener(view -> {
             Log.d(TAG, "send answer button clicked");
+            /*n
+            LinearLayout opponentLayout = findViewById(R.id.opponent_layout);
+            LinearLayout playerLayout = findViewById(R.id.player_layout);
+            Animation animation = AnimationUtils.loadAnimation(this, R.anim.translation);
+            opponentLayout.startAnimation(animation);
+            playerLayout.startAnimation(animation);
+            */
             onDoneClicked();
         });
 
