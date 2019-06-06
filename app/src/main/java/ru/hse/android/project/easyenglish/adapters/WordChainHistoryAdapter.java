@@ -26,7 +26,13 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         englishPairs = words;
         for (Pair pair : englishPairs) {
             String firstRussian = TranslateController.fastTranslate((String) pair.getKey(), "en-ru");
+            if (pair.getKey().equals("-") || firstRussian == null) {
+                firstRussian = "-";
+            }
             String secondRussian = TranslateController.fastTranslate((String) pair.getValue(), "en-ru");
+            if (pair.getValue().equals("-") || secondRussian == null) {
+                secondRussian = "-";
+            }
             russianPairs.add(new Pair<>(firstRussian, secondRussian));
             switchPairs.add(new Pair<>(true, true));
         }
