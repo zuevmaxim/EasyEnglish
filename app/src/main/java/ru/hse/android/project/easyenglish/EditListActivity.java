@@ -64,7 +64,11 @@ public class EditListActivity extends AppCompatActivity {
             List<Word> wordList = wordPairList
                     .stream()
                     .map(Pair::getKey)
-                    .peek(word -> word.setTranscription(TranslateController.wordInfo(word.getEnglish()).getTranscription()))
+                    .peek(word -> {
+                        if (word.getTranscription().isEmpty()) {
+                            word.setTranscription(TranslateController.wordInfo(word.getEnglish()).getTranscription());
+                        }
+                    })
                     .collect(Collectors.toList());
             try {
                 if (isNewList) {
