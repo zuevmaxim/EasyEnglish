@@ -86,8 +86,9 @@
             <Button
                 android:id="@+id/translate_button"
                 style="@style/GroupedButton"
-                android:layout_weight="0.3"
+                android:layout_weight="wrap_content"
                 android:layout_width="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
                 android:text="@string/translate" />
         </LinearLayout>
