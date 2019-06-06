@@ -44,7 +44,7 @@ public class DragAndDropListView extends ListView {
         if(ev.getAction() == MotionEvent.ACTION_DOWN){
             int x = (int)ev.getX();
             int y = (int)ev.getY();
-            OFFSET = (int)ev.getX();
+            OFFSET = getWidth() / 2;
 
             dragSrcPosition = dragPosition = pointToPosition(x, y);
             if (dragPosition == AdapterView.INVALID_POSITION) {
