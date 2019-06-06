@@ -73,10 +73,10 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", this.getString(R.string.rules_choose_definitions));
+            args.putString("title", this.getString(R.string.rules_choose_definitions));
             args.putString("message", this.getString(R.string.rules_text_choose_definitions));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "rules");
+            rules.show(getSupportFragmentManager(), "message");
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
@@ -84,7 +84,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", this.getString(R.string.hints_choose_definitions));
-            args.putString("message", words.get(wrongAnswerNumber).getRussian() + this.getString(R.string.is_wrong_answer));
+            args.putString("message", words.get(wrongAnswerNumber).getRussian() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });

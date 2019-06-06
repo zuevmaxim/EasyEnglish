@@ -19,7 +19,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
     private String shuffleLetters(String word) {
         List<String> letters = Arrays.asList(word.split(""));
         String shuffledWordResult = word;
-        while (shuffledWordResult.equals(word) && word.length() > 0) {
+        while (shuffledWordResult.equals(word) && word.length() > 1) {
             StringBuilder shuffledWord = new StringBuilder();
             Collections.shuffle(letters);
             for (String letter : letters) {
@@ -61,10 +61,10 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", this.getString(R.string.rules_letter_puzzle));
-            args.putString("rule", this.getString(R.string.rules_letter_puzzle_text));
+            args.putString("title", getString(R.string.rules_letter_puzzle));
+            args.putString("message", getString(R.string.rules_letter_puzzle_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "rule");
+            rules.show(getSupportFragmentManager(), "message");
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
@@ -73,6 +73,16 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             intent.putExtra("end game", true);
             setResult(RESULT_OK, intent);
             finish();
+        });
+
+        Button showHintsButton = findViewById(R.id.hints_button);
+        showHintsButton.setOnClickListener(v -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("title", "Letter puzzle");
+            args.putString("message", "The first letter is " + english.charAt(0) + ".");
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "message");
         });
     }
 

@@ -112,10 +112,10 @@ public class SynonymsActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("game", this.getString(R.string.rules_synonyms));
+            args.putString("title", this.getString(R.string.rules_synonyms));
             args.putString("message", this.getString(R.string.rules_synonyms_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "rules");
+            rules.show(getSupportFragmentManager(), "message");
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
@@ -123,7 +123,7 @@ public class SynonymsActivity extends AppCompatActivity {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", this.getString(R.string.synonyms));
-            args.putString("message", wrongAnswer + this.getString(R.string.is_wrong_answer));
+            args.putString("message", wrongAnswer + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });

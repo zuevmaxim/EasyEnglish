@@ -24,9 +24,10 @@ import ru.hse.android.project.easyenglish.words.PartOfSpeech;
 
 public class TranslateController {
     private static final int TIMEOUT = 1000;
+    private static final int SYNONYMS_TIMEOUT = 2000;
 
-    public static String translate(String word, String languagePair) {
-        DicResult dicResult = translateTotal(word, languagePair);
+    private static String translate(String word, String languagePair, int timeout) {
+        DicResult dicResult = translateTotal(word, languagePair, timeout);
         String result = null;
         if (dicResult != null
                 && dicResult.def != null
@@ -39,12 +40,12 @@ public class TranslateController {
     }
 
     public static List<String> getSynonyms(String word) {
-        String translation = translate(word, "en-ru");
-        return findSynonymsInTranslation(translation, word);
+        String translation = translate(word, "en-ru", SYNONYMS_TIMEOUT);
+        return findSynonymsInTranslation(translation, word, SYNONYMS_TIMEOUT);
     }
 
-    private static List<String> findSynonymsInTranslation(String russian, String english) {
-        DicResult dicResult = translateTotal(russian, "ru-en");
+    private static List<String> findSynonymsInTranslation(String russian, String english, int timeout) {
+        DicResult dicResult = translateTotal(russian, "ru-en", timeout);
         if (dicResult == null) {
             return null;
         }
@@ -66,10 +67,14 @@ public class TranslateController {
     }
 
     public static DicResult translateTotal(String word, String languagePair) {
+        return translateTotal(word, languagePair, TIMEOUT);
+    }
+
+    private static DicResult translateTotal(String word, String languagePair, int timeout) {
         DictionaryTask translatorTask = new DictionaryTask();
         translatorTask.execute(word, languagePair);
         try {
-            return translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
+            return translatorTask.get(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
