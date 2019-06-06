@@ -58,7 +58,11 @@ private static final int EDIT_LIST_CODE = 38;
                 popupMenu.inflate(R.menu.update_menu);
                 popupMenu.setOnMenuItemClickListener(item -> {
                     if (item.getItemId() == R.id.item_update) {
-                        controller.updateRandomWordList();
+                        if (controller.getWordListId(listName) == controller.getRandomWordListId()) {
+                            controller.updateRandomWordList();
+                        } else {
+                            controller.updateDayList();
+                        }
                         notifyDataSetChanged();
                     }
                     return false;
