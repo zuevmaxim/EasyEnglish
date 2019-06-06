@@ -67,17 +67,16 @@
 
         <LinearLayout
             style="@style/InnerLinearLayout"
-            android:layout_weight="0.01"
             android:layout_width="match_parent"
+            android:layout_weight="0.01"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/enter_word"
                 style="@style/EditableText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_weight="0.7"
+                android:layout_height="wrap_content"
                 android:hint="@string/enter_word"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -86,10 +85,10 @@
             <Button
                 android:id="@+id/translate_button"
                 style="@style/GroupedButton"
-                android:layout_weight="wrap_content"
+                android:layout_weight="0.3"
                 android:layout_width="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:layout_height="wrap_content"
+                android:layout_marginEnd="10dp"
                 android:text="@string/translate" />
         </LinearLayout>
 
