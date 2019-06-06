@@ -39,28 +39,28 @@ public class MatchingActivity extends AppCompatActivity {
             russianWords.add(word.getRussian());
         }
 
-        final List<String> shufflesRussiaWords = new ArrayList<>(russianWords);
-        while (russianWords.equals(shufflesRussiaWords)) {
-            Collections.shuffle(shufflesRussiaWords);
+        final List<String> shuffledEnglishWords = new ArrayList<>(englishWords);
+        while (englishWords.equals(shuffledEnglishWords)) {
+            Collections.shuffle(shuffledEnglishWords);
         }
 
         ListView listView = findViewById(R.id.matching_list);
-        DragAndDropAdapter adapter = new DragAndDropAdapter(this, englishWords);
+        DragAndDropAdapter adapter = new DragAndDropAdapter(this, russianWords, R.layout.matching_item);
         listView.setAdapter(adapter);
 
         DragAndDropListView dragListView = findViewById(R.id.matching_drag_and_drop_list);
-        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shufflesRussiaWords);
+        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffledEnglishWords,  R.layout.matching_item);
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             v.setEnabled(false);
-            result = russianWords.equals(shufflesRussiaWords);
+            result = englishWords.equals(shuffledEnglishWords);
             Intent intent = new Intent();
             intent.putExtra("game result", result);
             StringBuilder answer = new StringBuilder();
             for (Word word : words) {
-                answer.append(word.getEnglish()).append(" - ").append(word.getRussian()).append("\n");
+                answer.append(word.getRussian()).append(" - ").append(word.getEnglish()).append("\n");
             }
             intent.putExtra("word", answer.toString());
             setResult(RESULT_OK, intent);

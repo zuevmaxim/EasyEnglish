@@ -9,8 +9,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupMenu;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.List;
@@ -27,6 +27,8 @@ private static final int EDIT_LIST_CODE = 38;
     private final LayoutInflater layoutInflater;
     private final List<String> wordListNames;
     private final Context context;
+    private WordListController wordListController;
+    private int lastSelectedPosition;
 
     public WordListAdapter(Context context, List<String> objects) {
         wordListNames = objects;
@@ -37,6 +39,8 @@ private static final int EDIT_LIST_CODE = 38;
     @NonNull
     @Override
     public WordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        wordListController = MainController.getGameController().getWordListController();
+        lastSelectedPosition = wordListNames.indexOf(wordListController.getCurrentWordList());
         View view = layoutInflater.inflate(R.layout.list_item, parent, false);
         return new WordListAdapter.ViewHolder(view);
     }
@@ -44,7 +48,6 @@ private static final int EDIT_LIST_CODE = 38;
     @Override
     public void onBindViewHolder(@NonNull WordListAdapter.ViewHolder viewHolder, int position) {
         final String listName = wordListNames.get(position);
-
         viewHolder.nameView.setText(listName);
         WordListController controller = MainController.getGameController().getWordListController();
 
@@ -78,9 +81,8 @@ private static final int EDIT_LIST_CODE = 38;
                             try {
                                 MainController.getGameController().getWordListController().deleteWordList(listName);
                                 wordListNames.remove(listName);
-                                notifyDataSetChanged();
-                            } catch (WrongListNameException e) {
-                            }
+                                updateCurrentList(wordListNames.indexOf(wordListController.getCurrentWordList()));
+                            } catch (WrongListNameException ignored) { } //this word list exists for sure
                             break;
                     }
                     return false;
@@ -88,6 +90,7 @@ private static final int EDIT_LIST_CODE = 38;
                 popupMenu.show();
             });
         }
+        viewHolder.selectionState.setChecked(lastSelectedPosition == position);
     }
 
     @Override
@@ -100,13 +103,24 @@ private static final int EDIT_LIST_CODE = 38;
         return wordListNames.size();
     }
 
+    private void updateCurrentList(int position) {
+        lastSelectedPosition = position;
+        notifyDataSetChanged();
+        wordListController.setCurrentWordList(wordListNames.get(lastSelectedPosition));
+    }
+
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView menuButton;
         private final TextView nameView;
+        private RadioButton selectionState;
+
         private ViewHolder(View view){
             super(view);
             menuButton = view.findViewById(R.id.option_menu);
             nameView = view.findViewById(R.id.list_name);
+            selectionState = view.findViewById(R.id.radio_button);
+            selectionState.setOnClickListener(v -> updateCurrentList(getAdapterPosition()));
+            nameView.setOnClickListener(v -> updateCurrentList(getAdapterPosition()));
         }
     }
 }

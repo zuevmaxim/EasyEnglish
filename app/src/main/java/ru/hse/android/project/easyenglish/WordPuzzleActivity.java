@@ -37,7 +37,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
         List<String> words = Arrays.asList(phrase.getEnglish().split(" "));
         List<String> shuffleWords = shuffleWords(words);
         DragAndDropListView dragListView = findViewById(R.id.drag_and_drop_list);
-        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords);
+        DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords, R.layout.word_puzzle_item);
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);

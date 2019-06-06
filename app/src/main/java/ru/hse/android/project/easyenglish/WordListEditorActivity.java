@@ -15,15 +15,12 @@ import ru.hse.android.project.easyenglish.controllers.WordListController;
 
 public class WordListEditorActivity extends AppCompatActivity {
     private static final int ADD_NEW_LIST_CODE = 37;
-    private static final int EDIT_LIST_CODE = 38;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_list_editor);
-
         setUpListView();
-
         Button addNewListButton = findViewById(R.id.add_new_list_button);
         addNewListButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditListActivity.class);
@@ -42,7 +39,7 @@ public class WordListEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_NEW_LIST_CODE || requestCode == EDIT_LIST_CODE) {
+        if (requestCode == ADD_NEW_LIST_CODE) {
             if (resultCode == RESULT_OK) {
                 setUpListView();
             }

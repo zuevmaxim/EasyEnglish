@@ -15,9 +15,11 @@ import ru.hse.android.project.easyenglish.R;
 public class DragAndDropAdapter extends ArrayAdapter<String> {
 
     private Context mContext;
-    public DragAndDropAdapter(Context context, List<String> objects) {
+    private int resource;
+    public DragAndDropAdapter(Context context, List<String> objects,  int resource) {
         super(context, 0, objects);
         this.mContext = context;
+        this.resource = resource;
     }
 
     @Override
@@ -27,9 +29,8 @@ public class DragAndDropAdapter extends ArrayAdapter<String> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-
         View view = convertView;
-        view = LayoutInflater.from(getContext()).inflate(R.layout.custom_item, null);
+        view = LayoutInflater.from(getContext()).inflate(resource, null);
 
         TextView textView = view.findViewById(R.id.name);
         textView.setText(getItem(position));

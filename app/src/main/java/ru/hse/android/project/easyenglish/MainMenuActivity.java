@@ -36,7 +36,7 @@ public class MainMenuActivity extends AppCompatActivity {
 
         Button wordListButton = findViewById(R.id.word_list_button);
         wordListButton.setOnClickListener(v -> {
-            Intent intent = new Intent(this, WordListActivity.class);
+            Intent intent = new Intent(this, WordListEditorActivity.class);
             startActivity(intent);
         });
 
