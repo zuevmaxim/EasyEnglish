@@ -25,6 +25,7 @@
     <LinearLayout
         style="@style/MainLinearLayout"
         android:orientation="vertical"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -33,6 +34,7 @@
         <LinearLayout
             style="@style/InnerLinearLayout"
             android:layout_weight="0.1"
+            android:layout_marginTop="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="0dp"
             android:orientation="horizontal">
@@ -67,16 +69,17 @@
 
         <LinearLayout
             style="@style/InnerLinearLayout"
-            android:layout_width="match_parent"
             android:layout_weight="0.01"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <EditText
                 android:id="@+id/enter_word"
                 style="@style/EditableText"
-                android:layout_weight="0.7"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_weight="0.7"
                 android:hint="@string/enter_word"
                 android:textAlignment="center"
                 android:textSize="18sp"
@@ -88,7 +91,6 @@
                 android:layout_weight="0.3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="10dp"
                 android:text="@string/translate" />
         </LinearLayout>
 

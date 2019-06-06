@@ -28,6 +28,16 @@
         app:layout_constraintTop_toBottomOf="@+id/textView2">
 
 
+        <TextView
+            android:id="@+id/list_name_text"
+            style="@style/GameTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textAllCaps="true"
+            android:textSize="20sp" />
+
+
         <android.support.v4.view.ViewPager
             android:id="@+id/cards_mode_pager"
             android:layout_width="match_parent"

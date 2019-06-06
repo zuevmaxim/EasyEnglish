@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,6 +35,10 @@ public class WordPuzzleActivity extends AppCompatActivity {
 
         PhraseStorage storage = MainController.getGameController().getPhraseStorage();
         Phrase phrase = storage.nextPhrase();
+
+        TextView russianPhraseText = findViewById(R.id.russian_phrase_text);
+        russianPhraseText.setText(phrase.getRussian());
+
         List<String> words = Arrays.asList(phrase.getEnglish().split(" "));
         List<String> shuffleWords = shuffleWords(words);
         DragAndDropListView dragListView = findViewById(R.id.drag_and_drop_list);
