@@ -642,7 +642,7 @@ public class NetworkController extends AppCompatActivity {
     private TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
         @Override
         public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
-            if (turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
+            if (mMatch != null && turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
                 updateMatch(turnBasedMatch);
             }
         }
