@@ -8,18 +8,28 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
-    private List<Pair<String, String>> words;
+    private List<Pair<String, String>> englishPairs;
+    private List<Pair<String, String>> russianPairs = new ArrayList<>();
+    private List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
     private final LayoutInflater layoutInflater;
 
     public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
-        this.words = words;
+        englishPairs = words;
+        for (Pair pair : englishPairs) {
+            String firstRussian = TranslateController.fastTranslate((String) pair.getKey(), "en-ru");
+            String secondRussian = TranslateController.fastTranslate((String) pair.getValue(), "en-ru");
+            russianPairs.add(new Pair<>(firstRussian, secondRussian));
+            switchPairs.add(new Pair<>(true, true));
+        }
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
@@ -32,9 +42,13 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
 
     @Override
     public void onBindViewHolder(@NonNull WordChainHistoryAdapter.ViewHolder viewHolder, int position) {
-        Pair<String, String> word = words.get(position);
-        viewHolder.firstText.setText(word.getKey());
-        viewHolder.secondText.setText(word.getValue());
+        Pair<String, String> englishPair = englishPairs.get(position);
+        Pair<String, String> russianPair = russianPairs.get(position);
+        Pair<Boolean, Boolean> switchPair = switchPairs.get(position);
+        String firstText = switchPair.getKey() ? englishPair.getKey() : russianPair.getKey();
+        String secondText = switchPair.getValue() ? englishPair.getValue() : russianPair.getValue();
+        viewHolder.firstText.setText(firstText);
+        viewHolder.secondText.setText(secondText);
     }
 
     @Override
@@ -44,7 +58,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
 
     @Override
     public int getItemCount() {
-        return words.size();
+        return englishPairs.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -53,7 +67,21 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         private ViewHolder(View view) {
             super(view);
             firstText = view.findViewById(R.id.first_text);
+            firstText.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                Pair<Boolean, Boolean> switchPair = switchPairs.get(position);
+                switchPair.setKey(!switchPair.getKey());
+                switchPairs.set(position, switchPair);
+                notifyDataSetChanged();
+            });
             secondText = view.findViewById(R.id.second_text);
+            secondText.setOnClickListener(v -> {
+                int position = getAdapterPosition();
+                Pair<Boolean, Boolean> switchPair = switchPairs.get(position);
+                switchPair.setValue(!switchPair.getValue());
+                switchPairs.set(position, switchPair);
+                notifyDataSetChanged();
+            });
         }
     }
 }
