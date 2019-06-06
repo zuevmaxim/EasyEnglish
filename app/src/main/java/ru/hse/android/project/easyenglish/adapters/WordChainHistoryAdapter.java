@@ -24,12 +24,12 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
 
     public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
         englishPairs = words;
-        for (Pair pair : englishPairs) {
-            String firstRussian = TranslateController.fastTranslate((String) pair.getKey(), "en-ru");
+        for (Pair<String, String> pair : englishPairs) {
+            String firstRussian = TranslateController.fastTranslate(pair.getKey(), "en-ru");
             if (pair.getKey().equals("-") || firstRussian == null) {
                 firstRussian = "-";
             }
-            String secondRussian = TranslateController.fastTranslate((String) pair.getValue(), "en-ru");
+            String secondRussian = TranslateController.fastTranslate(pair.getValue(), "en-ru");
             if (pair.getValue().equals("-") || secondRussian == null) {
                 secondRussian = "-";
             }
