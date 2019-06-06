@@ -22,7 +22,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
 
     private List<String> shuffleWords(List<String> words) {
         List<String> shuffledWordResult = new ArrayList<>(words);
-        while (words.equals(shuffledWordResult)) {
+        while (words.equals(shuffledWordResult) && shuffledWordResult.size() > 1) {
             Collections.shuffle(shuffledWordResult);
         }
         return shuffledWordResult;
@@ -51,7 +51,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
             result = words.equals(shuffleWords);
             Intent intent = new Intent();
             intent.putExtra("game result", result);
-            intent.putExtra("word", phrase.getEnglish());
+            intent.putExtra("word", phrase.getEnglish() + "\n" + phrase.getRussian());
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -61,7 +61,11 @@ public class WordPuzzleActivity extends AppCompatActivity {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Word puzzle");
-            args.putString("message", phrase.getRussian());
+            if (words.size() >= 2) {
+                args.putString("message", "The second word is " + words.get(1));
+            } else if (words.size() >= 1) {
+                args.putString("message", "The first word is " + words.get(0));
+            }
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
         });
