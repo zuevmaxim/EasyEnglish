@@ -19,10 +19,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".MatchingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WordChainFindOpponentActivity"
-            android:screenOrientation="portrait" />
-        <activity android:name=".WordChainActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".EditListActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".LearnWordsActivity"
@@ -43,7 +39,7 @@
         </activity>
         <activity android:name=".LetterPuzzleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".NetworkController"
+        <activity android:name=".WordChainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".DictionaryActivity"
             android:screenOrientation="portrait" />

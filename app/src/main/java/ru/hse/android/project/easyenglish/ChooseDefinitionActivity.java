@@ -8,6 +8,8 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -98,7 +100,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
     }
 
     /** Check if given answer equals to model and send report to GameController. */
-    private void checkAnswer(int givenAnswer, int modelAnswer, Word answer) {
+    private void checkAnswer(int givenAnswer, int modelAnswer, @NotNull Word answer) {
         boolean result = (givenAnswer == modelAnswer);
         MainController.getGameController().saveWordResult(answer, result);
         Intent intent = new Intent();

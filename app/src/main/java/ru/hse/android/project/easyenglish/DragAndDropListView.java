@@ -15,8 +15,14 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 
+import org.jetbrains.annotations.NotNull;
+
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 
+/**
+ * DragAndDropListView provides an ability to move items in a list.
+ * It is used in Matching and WordPuzzle games.
+ */
 public class DragAndDropListView extends ListView {
 
     private ImageView dragImageView;
@@ -33,14 +39,16 @@ public class DragAndDropListView extends ListView {
     private int upScrollBounce;
     private int downScrollBounce;
 
-    public DragAndDropListView(Context context, AttributeSet attrs) {
+    public DragAndDropListView(@NotNull Context context, AttributeSet attrs) {
         super(context, attrs);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
+    /** X coordinate. */
     private int OFFSET;
 
+    /** Init after touch. */
     @Override
-    public boolean onInterceptTouchEvent(MotionEvent ev) {
+    public boolean onInterceptTouchEvent(@NotNull MotionEvent ev) {
         if(ev.getAction() == MotionEvent.ACTION_DOWN){
             int x = (int)ev.getX();
             int y = (int)ev.getY();
@@ -69,7 +77,7 @@ public class DragAndDropListView extends ListView {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent ev) {
+    public boolean onTouchEvent(@NotNull MotionEvent ev) {
         if (dragImageView != null && dragPosition != INVALID_POSITION) {
             int action = ev.getAction();
             switch(action){
@@ -89,7 +97,8 @@ public class DragAndDropListView extends ListView {
         return super.onTouchEvent(ev);
     }
 
-    private void startDrag(Bitmap bm, int y) {
+    /** Start moving. */
+    private void startDrag(@NotNull Bitmap bm, int y) {
         stopDrag();
 
         windowParams = new WindowManager.LayoutParams();
@@ -112,6 +121,7 @@ public class DragAndDropListView extends ListView {
         dragImageView = imageView;
     }
 
+    /** Stop moving. */
     private void stopDrag() {
         if (dragImageView != null) {
             windowManager.removeView(dragImageView);
@@ -119,6 +129,7 @@ public class DragAndDropListView extends ListView {
         }
     }
 
+    /** Moving item. */
     private void onDrag(int y) {
         if (dragImageView != null) {
             windowParams.alpha = 0.8f;
@@ -142,6 +153,7 @@ public class DragAndDropListView extends ListView {
         }
     }
 
+    /** Dropping item. */
     private void onDrop(int y){
         int tempPosition = pointToPosition(OFFSET, y);
         if (tempPosition != INVALID_POSITION) {

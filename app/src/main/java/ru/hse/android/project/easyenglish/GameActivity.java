@@ -14,6 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -21,18 +23,44 @@ import java.util.Random;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 
+/**
+ * GameActivity is common for all local games.
+ * It starts a game and shows the result.
+ * In case of 10words game, local games comes in random order.
+ */
 public class GameActivity extends AppCompatActivity {
+
+    /** Right answers counter. */
     private int succeedTasks = 0;
+
+    /** Wrong answers counter. */
     private int totalTasks = 0;
+
+    /** Code for starting a game is used in onActivityResult method. */
     private static final int GAME_RESULT_CODE = 42;
+
     private static final Random RANDOM = new Random();
     private final WordListController wordListController = MainController.getGameController().getWordListController();
+
+    /**
+     * In case of 10 words game, day list is set as current automatically.
+     * When finishing the game, prevous list is recovered as current word list.
+     */
     private String previousListName;
 
+    /**
+     * If there is no internet connection Synonyms activity returns such result,
+     * on which this game is removed from games list.
+     */
     public final static int RESULT_REMOVE_SYNONYMS = 999;
 
+    /**
+     * Games list to play.
+     * Contains several games in case of 10 words game, and only one game otherwise.
+     */
     private List<Class<?>> randomGames;
 
+    /** Getting result from a game. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.e("TAG", "onActivityResult");
@@ -85,6 +113,7 @@ public class GameActivity extends AppCompatActivity {
         }
     }
 
+    /** Get game name from intent and start it. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,15 +151,18 @@ public class GameActivity extends AppCompatActivity {
         finishGameButton.setOnClickListener(v -> endGame());
     }
 
+    /** Choose random game. */
     private Class<?> randomGame() {
         return randomGames.get(RANDOM.nextInt(randomGames.size()));
     }
 
-    private void runGame(Class<?> gameClass) {
+    /** Start game activity. */
+    private void runGame(@NotNull Class<?> gameClass) {
         Intent intent = new Intent(this, gameClass);
         startActivityForResult(intent, GAME_RESULT_CODE);
     }
 
+    /** End game and show result. */
     private void endGame() {
         final TextView gameResult = findViewById(R.id.game_result);
         gameResult.setVisibility(View.GONE);
@@ -152,7 +184,9 @@ public class GameActivity extends AppCompatActivity {
         toMenuButton.setOnClickListener(v -> finish());
     }
 
-    private Class<?> chooseGameByName(String gameName) {
+    /** Get class of game by it's name. */
+    @Nullable
+    private Class<?> chooseGameByName(@NotNull String gameName) {
         switch (gameName) {
             case "Letter Puzzle" : return LetterPuzzleActivity.class;
             case "Choose Definition" : return ChooseDefinitionActivity.class;
@@ -163,7 +197,8 @@ public class GameActivity extends AppCompatActivity {
         return null;
     }
 
-    public static void onBackPressed(Activity context) {
+    /** React on back button pressed in local games. */
+    public static void onBackPressed(@NotNull Activity context) {
         new AlertDialog.Builder(context)
                 .setTitle("Exiting game")
                 .setMessage("Are you sure?")
@@ -176,6 +211,7 @@ public class GameActivity extends AppCompatActivity {
                 }).setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
     }
 
+    /** Set previous list as current when finishing. */
     @Override
     public void onStop() {
         if (previousListName != null && isFinishing()) {
