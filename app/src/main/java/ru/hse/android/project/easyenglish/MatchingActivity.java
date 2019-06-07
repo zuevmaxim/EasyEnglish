@@ -16,17 +16,31 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordStorage;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/**
+ * Local game to memorize English words and their definitions.
+ * Rules : You are given words in Russian and their shuffles English translations. Your task match English words with their definitions.
+ */
 public class MatchingActivity extends AppCompatActivity {
 
-    private final Random random = new Random();
-    private boolean result;
+    /** Max number of possible answers(translations) for English task word. */
     private static final int SIZE = 4;
 
+    private final Random random = new Random();
+
+    /** Shuffle words in list until they are not equals. */
+    private List<String> shuffleWords(List<String> words) {
+        final List<String> shuffledWords = new ArrayList<>(words);
+        while (words.equals(shuffledWords)) {
+            Collections.shuffle(shuffledWords);
+        }
+        return shuffledWords;
+    }
+
+    /** Create game screen with list of Russian words and list with shuffled English translations. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_matching);
-
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
         final List<Word> words = wordStorage.getSetOfWords(SIZE);
@@ -39,10 +53,7 @@ public class MatchingActivity extends AppCompatActivity {
             russianWords.add(word.getRussian());
         }
 
-        final List<String> shuffledEnglishWords = new ArrayList<>(englishWords);
-        while (englishWords.equals(shuffledEnglishWords)) {
-            Collections.shuffle(shuffledEnglishWords);
-        }
+        final List<String> shuffledEnglishWords = shuffleWords(englishWords);
 
         ListView listView = findViewById(R.id.matching_list);
         DragAndDropAdapter adapter = new DragAndDropAdapter(this, russianWords, R.layout.matching_item);
@@ -53,19 +64,7 @@ public class MatchingActivity extends AppCompatActivity {
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
-        checkAnswerButton.setOnClickListener(v -> {
-            v.setEnabled(false);
-            result = englishWords.equals(shuffledEnglishWords);
-            Intent intent = new Intent();
-            intent.putExtra("game result", result);
-            StringBuilder answer = new StringBuilder();
-            for (Word word : words) {
-                answer.append(word.getRussian()).append(" - ").append(word.getEnglish()).append("\n");
-            }
-            intent.putExtra("word", answer.toString());
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffledEnglishWords, englishWords, words));
 
         int wrongAnswerNumber = random.nextInt(size);
 
@@ -98,6 +97,21 @@ public class MatchingActivity extends AppCompatActivity {
         });
     }
 
+    /** Check if given answer equals to model and send report to GameActivity. */
+    private void checkAnswer(List<String> givenAnswer, List<String> modelAnswer, List<Word> answer) {
+        boolean result = givenAnswer.equals(modelAnswer);
+        Intent intent = new Intent();
+        intent.putExtra("game result", result);
+        StringBuilder answerText = new StringBuilder();
+        for (Word word : answer) {
+            answerText.append(word.getRussian()).append(" - ").append(word.getEnglish()).append("\n");
+        }
+        intent.putExtra("word", answer.toString());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    /** On back button pressed ask player if he want to end the game. */
     @Override
     public void onBackPressed() {
         GameActivity.onBackPressed(this);

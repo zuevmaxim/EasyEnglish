@@ -12,6 +12,7 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/** Activity to show statistics on words шin current list */
 public class StatisticsActivity extends AppCompatActivity {
 
     @Override
