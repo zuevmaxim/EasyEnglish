@@ -14,6 +14,7 @@ import android.widget.EditText;
 
 import org.jetbrains.annotations.NotNull;
 
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -31,6 +32,8 @@ import ru.hse.android.project.easyenglish.words.Word;
  * The question would the word be auto-translated is described by AUTO_CHANGES enum.
  */
 public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapter.ViewHolder> {
+
+    /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
 
     /** List to show. The second element of pair describes the state of auto-translation. */
@@ -50,7 +53,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         layoutInflater = LayoutInflater.from(context);
     }
 
-    /** Making new ViewHolder. */
+    /** Creating new ViewHolder. */
     @NonNull
     @Override
     public EditWordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -58,7 +61,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         return new EditWordListAdapter.ViewHolder(view);
     }
 
-    /** Setting data into a view holder. */
+    /** Setting data into the view holder. */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         viewHolder.id = position;
@@ -145,6 +148,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
     /** ViewHolderHolder holds the view holder and text watchers. */
     private class ViewHolderHolder {
+
         private ViewHolder viewHolder;
         private TextWatcher englishTextWatcher;
         private TextWatcher russianTextWatcher;

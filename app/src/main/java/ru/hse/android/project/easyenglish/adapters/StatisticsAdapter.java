@@ -16,18 +16,30 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
+/** StatisticsAdapter provides the ability to show statistics on words from list in StatisticActivity. */
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {
 
+    /** List of words to show. */
     private final List<Word> words;
-    private final LayoutInflater layoutInflater;
+
+    /** Context of activity to show list in. */
     private final Context context;
 
+    /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
+    private final LayoutInflater layoutInflater;
+
+    /**
+     * Constructor.
+     * @param context the activity to show list in
+     * @param words list of words to show
+     */
     public StatisticsAdapter(Context context, List<Word> words) {
         this.words = words;
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /** Creating new ViewHolder. */
     @NonNull
     @Override
     public StatisticsAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -35,6 +47,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         return new ViewHolder(view);
     }
 
+    /** Setting data into the view holder. */
     @Override
     public void onBindViewHolder(@NonNull StatisticsAdapter.ViewHolder viewHolder, int position) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
@@ -59,17 +72,15 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         });
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
+    /** Size of the list. */
     @Override
     public int getItemCount() {
         return words.size();
     }
 
+    /** Holds the view elements. */
     class ViewHolder extends RecyclerView.ViewHolder {
+
         private final TextView russianWordText;
         private final TextView englishWordText;
         private final TextView rightScore;

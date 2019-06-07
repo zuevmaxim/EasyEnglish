@@ -11,33 +11,35 @@ import org.jetbrains.annotations.NotNull;
 
 import ru.hse.android.project.easyenglish.words.Word;
 
+/** Card with English, Russian words and translation for viewPager in LearnWordsActivity. */
 public class Card extends Fragment {
-    // Store instance variables
+
+    /** Store instance variables. */
     private String englishWord;
     private String russianWord;
     private String transcription;
 
-    // newInstance constructor for creating fragment with arguments
+    /** Card constructor for creating fragment with arguments. */
     public static Card newInstance(Word word) {
         Card fragmentFirst = new Card();
         Bundle args = new Bundle();
-        args.putString("russian", word.getRussian());
-        args.putString("english", word.getEnglish());
-        args.putString("transcription", word.getTranscription());
+        args.putString("Russian", word.getRussian());
+        args.putString("English", word.getEnglish());
+        args.putString("Transcription", word.getTranscription());
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
 
-    // Store instance variables based on arguments passed
+    /** Store instance variables based on arguments passed. */
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        russianWord = getArguments().getString("russian");
-        englishWord = getArguments().getString("english");
-        transcription = getArguments().getString("transcription");
+        russianWord = getArguments().getString("Russian");
+        englishWord = getArguments().getString("English");
+        transcription = getArguments().getString("Transcription");
     }
 
-    // Inflate the view for the fragment based on layout XML
+    /** Inflate the view for the fragment based on layout XML. */
     @Override
     public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
