@@ -1,4 +1,4 @@
-package ru.hse.android.project.easyenglish;
+package ru.hse.android.project.easyenglish.games;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,6 +11,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import ru.hse.android.project.easyenglish.DragAndDropListView;
+import ru.hse.android.project.easyenglish.GameActivity;
+import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordStorage;

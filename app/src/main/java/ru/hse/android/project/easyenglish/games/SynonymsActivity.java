@@ -1,4 +1,4 @@
-package ru.hse.android.project.easyenglish;
+package ru.hse.android.project.easyenglish.games;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -19,6 +19,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.GameActivity;
+import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 import ru.hse.android.project.easyenglish.controllers.WordStorage;

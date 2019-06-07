@@ -1,4 +1,4 @@
-package ru.hse.android.project.easyenglish;
+package ru.hse.android.project.easyenglish.games;
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -50,7 +50,10 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.Pair;
+import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
+import ru.hse.android.project.easyenglish.games.logic.WordChain;
 
 /**
  * Network game to memorize English words and their spelling.

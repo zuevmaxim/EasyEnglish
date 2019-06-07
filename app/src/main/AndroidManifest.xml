@@ -11,13 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".SynonymsActivity"
+        <activity android:name=".games.SynonymsActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".ChoosePhraseListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WordPuzzleActivity"
+        <activity android:name=".games.WordPuzzleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MatchingActivity"
+        <activity android:name=".games.MatchingActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".EditListActivity"
             android:screenOrientation="portrait" />
@@ -25,7 +25,7 @@
             android:screenOrientation="portrait" />
         <activity android:name=".WordListEditorActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChooseDefinitionActivity"
+        <activity android:name=".games.ChooseDefinitionActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".GameActivity"
             android:screenOrientation="portrait" />
@@ -37,9 +37,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LetterPuzzleActivity"
+        <activity android:name=".games.LetterPuzzleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WordChainActivity"
+        <activity android:name=".games.WordChainActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".DictionaryActivity"
             android:screenOrientation="portrait" />
