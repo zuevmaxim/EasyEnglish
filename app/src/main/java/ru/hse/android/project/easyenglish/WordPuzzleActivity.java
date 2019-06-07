@@ -16,10 +16,17 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.words.Phrase;
 import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
 
+/**
+ * Local game to memorize common English phrases.
+ * Rules : You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.
+ */
 public class WordPuzzleActivity extends AppCompatActivity {
 
-    private boolean result;
-
+    /**
+     * Generate shuffled word list from given until lists are not equals.
+     * @param words list to shuffle
+     * @return shuffled word list
+     */
     private List<String> shuffleWords(List<String> words) {
         List<String> shuffledWordResult = new ArrayList<>(words);
         while (words.equals(shuffledWordResult) && shuffledWordResult.size() > 1) {
@@ -28,6 +35,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
         return shuffledWordResult;
     }
 
+    /** Create game screen with phrase with shuffled words. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,15 +54,7 @@ public class WordPuzzleActivity extends AppCompatActivity {
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
-        checkAnswerButton.setOnClickListener(v -> {
-            v.setEnabled(false);
-            result = words.equals(shuffleWords);
-            Intent intent = new Intent();
-            intent.putExtra("game result", result);
-            intent.putExtra("word", phrase.getEnglish() + "\n" + phrase.getRussian());
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffleWords, words, phrase));
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
@@ -89,6 +89,17 @@ public class WordPuzzleActivity extends AppCompatActivity {
         });
     }
 
+    /** Check if given answer equals to model and send report to GameActivity. */
+    private void checkAnswer(List<String> givenAnswer, List<String> modelAnswer, Phrase answer) {
+        boolean result = givenAnswer.equals(modelAnswer);
+        Intent intent = new Intent();
+        intent.putExtra("game result", result);
+        intent.putExtra("word", answer.getEnglish() + "\n" + answer.getRussian());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    /** On back button pressed ask player if he want to end the game. */
     @Override
     public void onBackPressed() {
         GameActivity.onBackPressed(this);

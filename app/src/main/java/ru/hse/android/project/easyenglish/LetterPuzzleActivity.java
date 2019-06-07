@@ -18,7 +18,11 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class LetterPuzzleActivity extends AppCompatActivity {
 
-    /** Shuffle letters in word until they are not equals. */
+    /**
+     * Generate word with shuffled letters from given until they are not equals.
+     * @param word to shuffle letters
+     * @return word with shuffled letters
+     */
     private String shuffleLetters(String word) {
         List<String> letters = Arrays.asList(word.split(""));
         String shuffledWordResult = word;

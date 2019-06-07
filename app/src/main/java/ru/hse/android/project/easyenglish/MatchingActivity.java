@@ -27,7 +27,11 @@ public class MatchingActivity extends AppCompatActivity {
 
     private final Random random = new Random();
 
-    /** Shuffle words in list until they are not equals. */
+    /**
+     * Generate shuffled word list from given until lists are not equals.
+     * @param words list to shuffle
+     * @return shuffled word list
+     */
     private List<String> shuffleWords(List<String> words) {
         final List<String> shuffledWords = new ArrayList<>(words);
         while (words.equals(shuffledWords)) {

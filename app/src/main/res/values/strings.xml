@@ -93,9 +93,9 @@
     <string name="rules_word_puzzle">Word puzzle rules</string>
     <string name="rules_word_puzzle_text">You are given phrase in English with shuffled words. Your task is to put words in right order and write down the result.</string>
     <string name="rules_synonyms">Synonyms rules</string>
-    <string name="rules_synonyms_text">Your task is to choose all the synonyms of the word from the list.</string>
+    <string name="rules_synonyms_text">You are given a word in English. Your task is to choose all the synonyms of the word from the list.</string>
    <string name="rules_matching">Matching rules</string>
-    <string name="rules_matching_text">Match words with their translations.</string>
+    <string name="rules_matching_text">You are given a list of word in Russian and shuffled list of their translations. Your task is to match words with their translations.</string>
     <string name="Transcription">Transcription</string>
     <string name="A">A</string>
     <string name="history">History</string>

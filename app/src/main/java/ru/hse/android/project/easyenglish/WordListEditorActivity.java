@@ -13,9 +13,13 @@ import ru.hse.android.project.easyenglish.adapters.WordListAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 
+/** Shows list of all word lists to update/edit/delete them and choose current word list */
 public class WordListEditorActivity extends AppCompatActivity {
-    private static final int ADD_NEW_LIST_CODE = 37;
 
+    /** Code used in onActivityResult to return from EDIT_LIST_ACTIVITY. */
+    private static final int EDIT_LIST_ACTIVITY = 37;
+
+    /** Create activity screen. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -24,11 +28,12 @@ public class WordListEditorActivity extends AppCompatActivity {
         Button addNewListButton = findViewById(R.id.add_new_list_button);
         addNewListButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditListActivity.class);
-            startActivityForResult(intent, ADD_NEW_LIST_CODE);
+            startActivityForResult(intent, EDIT_LIST_ACTIVITY);
         });
         setResult(RESULT_OK);
     }
 
+    /** Show list word list names. */
     private void setUpListView() {
         WordListController wordListController = MainController.getGameController().getWordListController();
         List<String> wordListNames = wordListController.getWordLists();
@@ -37,9 +42,10 @@ public class WordListEditorActivity extends AppCompatActivity {
         wordLists.setAdapter(adapter);
     }
 
+    /** Accept result from EditListActivity. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == ADD_NEW_LIST_CODE) {
+        if (requestCode == EDIT_LIST_ACTIVITY) {
             if (resultCode == RESULT_OK) {
                 setUpListView();
             }

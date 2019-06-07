@@ -50,6 +50,10 @@ import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
 
+/**
+ * Network game to memorize English words and their spelling.
+ * Rules : Two players come up with words that begin with the letter or letters that the previous word ended with. Words may not be repeated in the same game.
+ */
 public class WordChainActivity extends AppCompatActivity {
 
     /** Log tag. */
