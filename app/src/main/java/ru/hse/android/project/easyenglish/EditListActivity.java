@@ -33,16 +33,16 @@ public class EditListActivity extends AppCompatActivity {
 
         final RecyclerView newWordView = findViewById(R.id.new_word_list);
         EditText wordListNameText = findViewById(R.id.new_list_name_text);
-        List<Pair<Word, EditWordListAdapter.AUTOCHANGES>> wordPairList = new ArrayList<>();
+        List<Pair<Word, EditWordListAdapter.AUTO_CHANGES>> wordPairList = new ArrayList<>();
         String listName = intent.getStringExtra("list name");
         boolean isNewList = listName == null;
         if (isNewList) {
-            wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTOCHANGES.BOTH));
+            wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTO_CHANGES.BOTH));
         } else {
             wordListNameText.setText(listName);
             List<Word> words = controller.getListWords(listName);
             for (Word word : words) {
-                wordPairList.add(new Pair<>(word, EditWordListAdapter.AUTOCHANGES.NONE));
+                wordPairList.add(new Pair<>(word, EditWordListAdapter.AUTO_CHANGES.NONE));
             }
         }
 
@@ -52,7 +52,7 @@ public class EditListActivity extends AppCompatActivity {
 
         Button addNewWordButton = findViewById(R.id.add_word_button);
         addNewWordButton.setOnClickListener(v -> {
-            wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTOCHANGES.BOTH));
+            wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTO_CHANGES.BOTH));
             adapter.notifyItemInserted(wordPairList.size() - 1);
             newWordView.scrollToPosition(wordPairList.size() - 1);
         });

@@ -149,9 +149,7 @@ public class GameActivity extends AppCompatActivity {
 
         final Button toMenuButton = findViewById(R.id.to_menu_button);
         toMenuButton.setVisibility(View.VISIBLE);
-        toMenuButton.setOnClickListener(v -> {
-            finish();
-        });
+        toMenuButton.setOnClickListener(v -> finish());
     }
 
     private Class<?> chooseGameByName(String gameName) {

@@ -29,7 +29,7 @@ public class DragAndDropListView extends ListView {
     private WindowManager windowManager;
     private WindowManager.LayoutParams windowParams;
 
-    private int scaledTouchSlop;
+    private final int scaledTouchSlop;
     private int upScrollBounce;
     private int downScrollBounce;
 
@@ -89,7 +89,7 @@ public class DragAndDropListView extends ListView {
         return super.onTouchEvent(ev);
     }
 
-    public void startDrag(Bitmap bm ,int y) {
+    private void startDrag(Bitmap bm, int y) {
         stopDrag();
 
         windowParams = new WindowManager.LayoutParams();
@@ -112,14 +112,14 @@ public class DragAndDropListView extends ListView {
         dragImageView = imageView;
     }
 
-    public void stopDrag() {
+    private void stopDrag() {
         if (dragImageView != null) {
             windowManager.removeView(dragImageView);
             dragImageView = null;
         }
     }
 
-    public void onDrag(int y) {
+    private void onDrag(int y) {
         if (dragImageView != null) {
             windowParams.alpha = 0.8f;
             windowParams.y = y - dragPoint + dragOffset;
@@ -142,7 +142,7 @@ public class DragAndDropListView extends ListView {
         }
     }
 
-    public void onDrop(int y){
+    private void onDrop(int y){
         int tempPosition = pointToPosition(OFFSET, y);
         if (tempPosition != INVALID_POSITION) {
             dragPosition = tempPosition;

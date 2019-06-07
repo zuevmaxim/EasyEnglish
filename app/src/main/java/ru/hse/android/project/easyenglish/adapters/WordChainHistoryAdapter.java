@@ -17,9 +17,9 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
-    private List<Pair<String, String>> englishPairs;
-    private List<Pair<String, String>> russianPairs = new ArrayList<>();
-    private List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
+    private final List<Pair<String, String>> englishPairs;
+    private final List<Pair<String, String>> russianPairs = new ArrayList<>();
+    private final List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
     private final LayoutInflater layoutInflater;
 
     public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
@@ -67,7 +67,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         return englishPairs.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView firstText;
         private final TextView secondText;
         private ViewHolder(View view) {

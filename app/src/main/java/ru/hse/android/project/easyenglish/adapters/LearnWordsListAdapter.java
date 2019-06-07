@@ -11,13 +11,11 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class LearnWordsListAdapter extends RecyclerView.Adapter<LearnWordsListAdapter.ViewHolder> {
 
-    private List<Word> words;
+    private final List<Word> words;
     private final LayoutInflater layoutInflater;
 
     public LearnWordsListAdapter(Context context, List<Word> words) {

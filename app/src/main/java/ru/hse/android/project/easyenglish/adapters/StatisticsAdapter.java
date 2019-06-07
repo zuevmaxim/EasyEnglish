@@ -6,10 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -20,7 +18,7 @@ import ru.hse.android.project.easyenglish.words.WordFactory;
 
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {
 
-    private List<Word> words;
+    private final List<Word> words;
     private final LayoutInflater layoutInflater;
     private final Context context;
 
@@ -71,7 +69,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         return words.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView russianWordText;
         private final TextView englishWordText;
         private final TextView rightScore;

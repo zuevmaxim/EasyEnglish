@@ -113,10 +113,10 @@ private static final int EDIT_LIST_CODE = 38;
         wordListController.setCurrentWordList(wordListNames.get(lastSelectedPosition));
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView menuButton;
         private final TextView nameView;
-        private RadioButton selectionState;
+        private final RadioButton selectionState;
 
         private ViewHolder(View view){
             super(view);

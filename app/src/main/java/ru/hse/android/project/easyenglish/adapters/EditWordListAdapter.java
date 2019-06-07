@@ -28,13 +28,13 @@ import ru.hse.android.project.easyenglish.words.Word;
 
 /**
  * EditWordListAdapter provides the ability to edit list of words with automatic translation.
- * The question would the word be auto-translated is described by AUTOCHANGES enum.
+ * The question would the word be auto-translated is described by AUTO_CHANGES enum.
  */
 public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapter.ViewHolder> {
     private final LayoutInflater layoutInflater;
 
     /** List to show. The second element of pair describes the state of auto-translation. */
-    private final List<Pair<Word, AUTOCHANGES>> words;
+    private final List<Pair<Word, AUTO_CHANGES>> words;
 
     /** Each word should have it's own TextWatcher, so they are saved in a HashMap. */
     @SuppressLint("UseSparseArrays")
@@ -45,7 +45,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
      * @param context the activity to show list in
      * @param words list of words to show
      */
-    public EditWordListAdapter(@NotNull Context context, @NotNull List<Pair<Word, AUTOCHANGES>> words) {
+    public EditWordListAdapter(@NotNull Context context, @NotNull List<Pair<Word, AUTO_CHANGES>> words) {
         this.words = words;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -60,7 +60,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
     /** Setting data into a view holder. */
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         viewHolder.id = position;
         final Word word = words.get(viewHolder.getId()).getKey();
 
@@ -73,10 +73,10 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
         viewHolder.russianWordText.setHint("Russian");
         viewHolder.englishWordText.setHint("English");
-        viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcer);
-        viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcer);
-        final AUTOCHANGES type =  words.get(viewHolder.getId()).getValue();
-        words.set(viewHolder.getId(), new Pair<>(word, AUTOCHANGES.SET_UP));
+        viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcher);
+        viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcher);
+        final AUTO_CHANGES type =  words.get(viewHolder.getId()).getValue();
+        words.set(viewHolder.getId(), new Pair<>(word, AUTO_CHANGES.SET_UP));
         viewHolder.russianWordText.setText(word.getRussian());
         viewHolder.englishWordText.setText(word.getEnglish());
         words.set(viewHolder.getId(), new Pair<>(word, type));
@@ -85,8 +85,8 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     /** If a view is recycled, text watcher should be removed. */
     @Override
     public void onViewRecycled(@NonNull ViewHolder holder) {
-        holder.russianWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).russianTextWatcer);
-        holder.englishWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).englishTextWatcer);
+        holder.russianWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).russianTextWatcher);
+        holder.englishWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).englishTextWatcher);
         super.onViewRecycled(holder);
     }
 
@@ -146,15 +146,15 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     /** ViewHolderHolder holds the view holder and text watchers. */
     private class ViewHolderHolder {
         private ViewHolder viewHolder;
-        private TextWatcher englishTextWatcer;
-        private TextWatcher russianTextWatcer;
+        private TextWatcher englishTextWatcher;
+        private TextWatcher russianTextWatcher;
 
         /** Construct watchers if there are none. */
         private void init() {
             Word word = words.get(viewHolder.getId()).getKey();
-            Consumer<AUTOCHANGES> setAutochanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
-            Supplier<AUTOCHANGES> getAutochanges = () -> words.get(viewHolder.getId()).getValue();
-            russianTextWatcer = new TextWatcher() {
+            Consumer<AUTO_CHANGES> setAutoChanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
+            Supplier<AUTO_CHANGES> getAutoChanges = () -> words.get(viewHolder.getId()).getValue();
+            russianTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -162,7 +162,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (getAutochanges.get() == AUTOCHANGES.SET_UP) {
+                    if (getAutoChanges.get() == AUTO_CHANGES.SET_UP) {
                         return;
                     }
                     word.setRussian(s.toString());
@@ -170,47 +170,47 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    switch (getAutochanges.get()) {
+                    switch (getAutoChanges.get()) {
                         case SET_UP:
                             setErrorIfWrongSpelling(viewHolder);
                             return;
                         case BOTH:
                             if (!s.toString().isEmpty()) {
-                                setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                                setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
                             }
                             break;
                         case NONE:
                             if (s.toString().isEmpty()) {
-                                setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                                setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
                             }
                             break;
                         case ENGLISH:
                             if (s.toString().isEmpty()) {
                                 word.setEnglish("");
                                 viewHolder.englishWordText.setText(word.getEnglish());
-                                setAutochanges.accept(AUTOCHANGES.BOTH);
+                                setAutoChanges.accept(AUTO_CHANGES.BOTH);
                             }
                             break;
                         case RUSSIAN:
-                            setAutochanges.accept(AUTOCHANGES.NONE);
+                            setAutoChanges.accept(AUTO_CHANGES.NONE);
                             break;
                     }
-                    if (getAutochanges.get() == AUTOCHANGES.ENGLISH) {
+                    if (getAutoChanges.get() == AUTO_CHANGES.ENGLISH) {
                         word.setEnglish((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.RU_EN)));
                         viewHolder.englishWordText.setText(word.getEnglish());
-                        setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                        setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
                     }
                     setErrorIfWrongSpelling(viewHolder);
                 }
             };
-            englishTextWatcer = new TextWatcher() {
+            englishTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    if (getAutochanges.get() == AUTOCHANGES.SET_UP) {
+                    if (getAutoChanges.get() == AUTO_CHANGES.SET_UP) {
                         return;
                     }
                     word.setEnglish(s.toString());
@@ -218,42 +218,42 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    switch (getAutochanges.get()) {
+                    switch (getAutoChanges.get()) {
                         case SET_UP:
                             setErrorIfWrongSpelling(viewHolder);
                             return;
                         case BOTH:
                             if (!s.toString().isEmpty()) {
-                                setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                                setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
                             }
                             break;
                         case NONE:
                             if (s.toString().isEmpty()) {
-                                setAutochanges.accept(AUTOCHANGES.ENGLISH);
+                                setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
                             }
                             break;
                         case ENGLISH:
-                            setAutochanges.accept(AUTOCHANGES.NONE);
+                            setAutoChanges.accept(AUTO_CHANGES.NONE);
                             break;
                         case RUSSIAN:
                             if (s.toString().isEmpty()) {
                                 word.setRussian("");
                                 viewHolder.russianWordText.setText(word.getRussian());
-                                setAutochanges.accept(AUTOCHANGES.BOTH);
+                                setAutoChanges.accept(AUTO_CHANGES.BOTH);
                             }
                             break;
                     }
-                    if (getAutochanges.get() == AUTOCHANGES.RUSSIAN) {
+                    if (getAutoChanges.get() == AUTO_CHANGES.RUSSIAN) {
                         word.setRussian((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.EN_RU)));
                         viewHolder.russianWordText.setText(word.getRussian());
-                        setAutochanges.accept(AUTOCHANGES.RUSSIAN);
+                        setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
                     }
                     setErrorIfWrongSpelling(viewHolder);
                 }
             };
         }
 
-        public void setViewHolder(@NotNull ViewHolder viewHolder) {
+        private void setViewHolder(@NotNull ViewHolder viewHolder) {
             this.viewHolder = viewHolder;
         }
     }
@@ -273,7 +273,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
      *      ENGLISH -> NONE
      *      NONE    -> ENGLISH (only if English text is empty)
      */
-    public enum AUTOCHANGES {
+    public enum AUTO_CHANGES {
         /** Only Russian should be translated. It is used when user changes only English text. */
         RUSSIAN,
 
