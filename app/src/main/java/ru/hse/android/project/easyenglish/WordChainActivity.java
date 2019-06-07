@@ -790,6 +790,7 @@ public class WordChainActivity extends AppCompatActivity {
         wordChain = null;
         mMatch = null;
         opponentWord = "";
+        upDownState = false;
         changeLayout();
     }
 

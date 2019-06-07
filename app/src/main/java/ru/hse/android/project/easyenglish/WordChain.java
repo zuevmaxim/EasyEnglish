@@ -102,7 +102,7 @@ public class WordChain {
      */
     @NotNull
     List<String> getHint() {
-        List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(0, 1));
+        List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(lastWord.length() - 1));
         return words.stream().filter(s -> isValidMove(s) == RESULT_OK).limit(hintsNumber).collect(Collectors.toList());
     }
 
