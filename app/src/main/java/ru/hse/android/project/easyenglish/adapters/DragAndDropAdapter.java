@@ -1,12 +1,16 @@
 package ru.hse.android.project.easyenglish.adapters;
 
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
@@ -18,9 +22,9 @@ import ru.hse.android.project.easyenglish.R;
  */
 public class DragAndDropAdapter extends ArrayAdapter<String> {
 
-    private int resource;
+    private final int resource;
 
-    public DragAndDropAdapter(Context context, List<String> objects,  int resource) {
+    public DragAndDropAdapter(@NotNull Context context, @NotNull List<String> objects, int resource) {
         super(context, 0, objects);
         this.resource = resource;
     }
@@ -30,9 +34,11 @@ public class DragAndDropAdapter extends ArrayAdapter<String> {
         return super.isEnabled(position);
     }
 
+    @SuppressLint("ViewHolder")
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View view = convertView;
+    @NotNull
+    public View getView(int position, @Nullable View convertView, @NotNull ViewGroup parent) {
+        View view;
         view = LayoutInflater.from(getContext()).inflate(resource, null);
 
         TextView textView = view.findViewById(R.id.name);

@@ -20,7 +20,7 @@ import ru.hse.android.project.easyenglish.words.WordFactory;
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {
 
     /** List of words to show. */
-    private List<Word> words;
+    private final List<Word> words;
 
     /** Context of activity to show list in. */
     private final Context context;
@@ -79,7 +79,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
     }
 
     /** Holds the view elements. */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView russianWordText;
         private final TextView englishWordText;

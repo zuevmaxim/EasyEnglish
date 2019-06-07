@@ -40,11 +40,11 @@ public class DictionaryActivity extends AppCompatActivity {
             String word = enterText.getText().toString();
             String languageFrom = languageFromText.getText().toString();
             String languageTo = languageToText.getText().toString();
-            String languagePair;
+            TranslateController.TranslateDirection languagePair;
             if (languageFrom.equals("RU") && languageTo.equals("EN")) {
-                languagePair = "ru-en";
+                languagePair = TranslateController.TranslateDirection.RU_EN;
             } else {
-                languagePair = "en-ru";
+                languagePair = TranslateController.TranslateDirection.EN_RU;
             }
             TranslateController.DicResult result = TranslateController.translateTotal(word, languagePair);
             if (result == null) {

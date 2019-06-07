@@ -130,10 +130,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     }
 
     /** Holds the view elements. */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView menuButton;
         private final TextView nameView;
-        private RadioButton selectionState;
+        private final RadioButton selectionState;
 
         /** Set listeners to control selection of current word list */
         private ViewHolder(View view){

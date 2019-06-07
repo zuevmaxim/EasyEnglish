@@ -3,13 +3,10 @@ package ru.hse.android.project.easyenglish;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 import ru.hse.android.project.easyenglish.adapters.StatisticsAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;

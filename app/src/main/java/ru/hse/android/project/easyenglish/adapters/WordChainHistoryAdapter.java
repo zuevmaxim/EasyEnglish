@@ -19,16 +19,16 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
     /** List with pairs of Opponent(key) and Player(value) used words in english. */
-    private List<Pair<String, String>> englishPairs;
+    private final List<Pair<String, String>> englishPairs;
 
     /** List with pairs of Opponent(key) and Player(value) used words in russian(translation of english ones from englishPairs). */
-    private List<Pair<String, String>> russianPairs = new ArrayList<>();
+    private final List<Pair<String, String>> russianPairs = new ArrayList<>();
 
     /** List with pairs of Opponent(key) and Player(value) used words view status.
      *  Status = true, if current shown word in list is english
      *  Status = false, if current shown word in list is russian
      */
-    private List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
+    private final List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
 
     /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
@@ -41,11 +41,11 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
     public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
         englishPairs = words;
         for (Pair<String, String> pair : englishPairs) {
-            String firstRussian = TranslateController.fastTranslate(pair.getKey(), "en-ru");
+            String firstRussian = TranslateController.fastTranslate(pair.getKey(), TranslateController.TranslateDirection.EN_RU);
             if (pair.getKey().equals("-") || firstRussian == null) {
                 firstRussian = "-";
             }
-            String secondRussian = TranslateController.fastTranslate(pair.getValue(), "en-ru");
+            String secondRussian = TranslateController.fastTranslate(pair.getValue(), TranslateController.TranslateDirection.EN_RU);
             if (pair.getValue().equals("-") || secondRussian == null) {
                 secondRussian = "-";
             }
@@ -82,7 +82,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
     }
 
     /** Holds the view elements. */
-    public class ViewHolder extends RecyclerView.ViewHolder {
+    class ViewHolder extends RecyclerView.ViewHolder {
 
         private final TextView firstText;
         private final TextView secondText;

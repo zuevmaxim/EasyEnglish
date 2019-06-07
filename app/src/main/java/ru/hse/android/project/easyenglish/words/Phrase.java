@@ -1,8 +1,8 @@
-package ru.hse.android.project.easyenglish.controllers;
+package ru.hse.android.project.easyenglish.words;
 
 public class Phrase {
-    private String russian;
-    private String english;
+    private final String russian;
+    private final String english;
 
     public Phrase(String russian, String english) {
      this.russian = russian;

@@ -17,7 +17,7 @@ import ru.hse.android.project.easyenglish.words.Word;
 public class LearnWordsListAdapter extends RecyclerView.Adapter<LearnWordsListAdapter.ViewHolder> {
 
     /** List of words to show. */
-    private List<Word> words;
+    private final List<Word> words;
 
     /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;

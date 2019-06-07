@@ -78,7 +78,7 @@ public class NetworkController extends AppCompatActivity {
     private final static int RC_LOOK_AT_MATCHES = 44;
 
     // Should I be showing the turn API?
-    public boolean isDoingTurn = false;
+    private boolean isDoingTurn = false;
 
     private boolean isGame = false;
 
@@ -339,9 +339,7 @@ public class NetworkController extends AppCompatActivity {
         return e -> handleException(e, string);
     }
 
-    // Upload your new gamestate, then take a turn, and pass it on to the next
-    // player.
-    public void onDoneClicked() {
+    private void onDoneClicked() {
         String nextParticipantId = getNextParticipantId();
         String word = mDataFirstLetterText.getText().toString().toLowerCase() + mDataView.getText().toString().toLowerCase();
         if (!wordChain.isMyTurn()) {
@@ -375,14 +373,14 @@ public class NetworkController extends AppCompatActivity {
                     wordChain.makeMove(word);
                     wordChain.changeTurn();
                     opponentWord = "";
-                    setGameplayUI();
                     sendAnswerAnimation();
+                    setGamePlayUI();
                     onUpdateMatch(turnBasedMatch);
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
-    public void setGameplayUI() {
+    public void setGamePlayUI() {
         isDoingTurn = true;
         if (opponentWord.length() > 0) {
             String c = opponentWord.substring(opponentWord.length() - 1);
@@ -401,7 +399,7 @@ public class NetworkController extends AppCompatActivity {
      * Start a sign in activity.  To properly handle the result, call tryHandleSignInResult from
      * your Activity's onActivityResult function
      */
-    public void startSignInIntent() {
+    private void startSignInIntent() {
         startActivityForResult(mGoogleSignInClient.getSignInIntent(), RC_SIGN_IN);
     }
 
@@ -410,7 +408,7 @@ public class NetworkController extends AppCompatActivity {
      * <p>
      * If the user has already signed in previously, it will not show dialog.
      */
-    public void signInSilently() {
+    private void signInSilently() {
         Log.d(TAG, "signInSilently()");
 
         mGoogleSignInClient.silentSignIn().addOnCompleteListener(this,
@@ -425,7 +423,7 @@ public class NetworkController extends AppCompatActivity {
                 });
     }
 
-    public void signOut() {
+    private void signOut() {
         Log.d(TAG, "signOut()");
 
         mGoogleSignInClient.signOut().addOnCompleteListener(this,
@@ -526,11 +524,9 @@ public class NetworkController extends AppCompatActivity {
                 return;
             }
 
-            // get the invitee list
             ArrayList<String> invitees = intent
                     .getStringArrayListExtra(Games.EXTRA_PLAYER_IDS);
 
-            // get automatch criteria
             Bundle autoMatchCriteria;
 
             int minAutoMatchPlayers = intent.getIntExtra(Multiplayer.EXTRA_MIN_AUTOMATCH_PLAYERS, 0);
@@ -557,7 +553,7 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    public void guestCreateMatch(TurnBasedMatch match) {
+    private void guestCreateMatch(TurnBasedMatch match) {
         isGame = true;
         changeLayout();
         wordChain = new WordChain();
@@ -565,14 +561,14 @@ public class NetworkController extends AppCompatActivity {
         updateMatch(match);
     }
 
-    public void startMatch(TurnBasedMatch match) {
+    private void startMatch(TurnBasedMatch match) {
         isGame = true;
         changeLayout();
         wordChain = new WordChain();
         wordChain.setTurn(true);
         mMatch = match;
         opponentWord = "";
-        setGameplayUI();
+        setGamePlayUI();
 
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
 
@@ -581,13 +577,13 @@ public class NetworkController extends AppCompatActivity {
                 .addOnSuccessListener(match1 -> {
                     wordChain.changeTurn();
                     updateMatch(match1);
-                    setGameplayUI();
+                    setGamePlayUI();
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
 
-    public String getNextParticipantId() {
+    private String getNextParticipantId() {
         String myParticipantId = mMatch.getParticipantId(mPlayerId);
         ArrayList<String> participantIds = mMatch.getParticipantIds();
         int desiredIndex = - 1;
@@ -608,7 +604,7 @@ public class NetworkController extends AppCompatActivity {
 
     // This is the main function that gets called when players choose a match
     // from the inbox, or else create a match and want to start it.
-    public void updateMatch(TurnBasedMatch match) {
+    private void updateMatch(TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
         String opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mMatch.getParticipantId(mPlayerId))).collect(Collectors.toList()).get(0).getDisplayName();
@@ -644,7 +640,7 @@ public class NetworkController extends AppCompatActivity {
             wordChain.changeTurn();
             Log.d(TAG, "Get data");
             receiveAnswerAnimation();
-            setGameplayUI();
+            setGamePlayUI();
         }
     }
 
@@ -656,7 +652,7 @@ public class NetworkController extends AppCompatActivity {
         startMatch(match);
     }
 
-    public void onUpdateMatch(TurnBasedMatch match) {
+    private void onUpdateMatch(TurnBasedMatch match) {
         isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 
         if (isDoingTurn) {
@@ -664,7 +660,7 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    private InvitationCallback mInvitationCallback = new InvitationCallback() {
+    private final InvitationCallback mInvitationCallback = new InvitationCallback() {
         @Override
         public void onInvitationReceived(@NonNull Invitation invitation) { }
 
@@ -672,7 +668,7 @@ public class NetworkController extends AppCompatActivity {
         public void onInvitationRemoved(@NonNull String invitationId) { }
     };
 
-    private TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
+    private final TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
         @Override
         public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
             if (mMatch != null && turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
@@ -684,7 +680,7 @@ public class NetworkController extends AppCompatActivity {
         public void onTurnBasedMatchRemoved(@NonNull String matchId) { }
     };
 
-    public void showErrorMessage(int stringId) {
+    private void showErrorMessage(int stringId) {
         Log.e(TAG, getResources().getString(stringId));
     }
 
@@ -733,7 +729,7 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    public void cancelMatch() {
+    private void cancelMatch() {
         if (mTurnBasedMultiplayerClient != null && mMatch != null) {
             Log.d(TAG, "Cancel game");
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
@@ -742,7 +738,7 @@ public class NetworkController extends AppCompatActivity {
         }
     }
 
-    public void endGame() {
+    private void endGame() {
         Log.d(TAG, "endGame");
         isGame = false;
         isDoingTurn = false;

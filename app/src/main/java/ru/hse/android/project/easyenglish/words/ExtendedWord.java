@@ -5,8 +5,8 @@ import java.util.List;
 
 public class ExtendedWord {
     private final List<PartOfSpeech> partOfSpeech = new ArrayList<>();
-    private String word;
-    private String transcription;
+    private final String word;
+    private final String transcription;
 
     public ExtendedWord(String word, String transcription, List<PartOfSpeech> partOfSpeech) {
         this.word = word;

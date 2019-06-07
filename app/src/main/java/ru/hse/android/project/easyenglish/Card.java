@@ -1,12 +1,13 @@
 package ru.hse.android.project.easyenglish;
 
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import org.jetbrains.annotations.NotNull;
 
 import ru.hse.android.project.easyenglish.words.Word;
 
@@ -40,7 +41,8 @@ public class Card extends Fragment {
 
     /** Inflate the view for the fragment based on layout XML. */
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.card, container, false);
         TextView russianWordText = view.findViewById(R.id.russian_word_text);
         russianWordText.setText(russianWord);
