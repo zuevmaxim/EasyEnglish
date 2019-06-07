@@ -52,6 +52,7 @@ import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
 import ru.hse.android.project.easyenglish.games.logic.WordChain;
 
@@ -203,6 +204,16 @@ public class WordChainActivity extends AppCompatActivity {
             adb.setPositiveButton("OK", (dialog, which) -> cancelMatch());
             adb.setNegativeButton("Cancel", (dialog, which) -> {});
             adb.show();
+        });
+
+        Button rulesButton = findViewById(R.id.rules_button);
+        rulesButton.setOnClickListener(view -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("title", "Word Chain Rules");
+            args.putString("message", "");
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "message");
         });
 
         Button historyButton = findViewById(R.id.history_button);

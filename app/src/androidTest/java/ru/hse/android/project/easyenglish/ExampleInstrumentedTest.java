@@ -7,6 +7,9 @@ import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import ru.hse.android.project.easyenglish.controllers.MainController;
+import ru.hse.android.project.easyenglish.words.Word;
+
 import static org.junit.Assert.*;
 
 /**
@@ -20,6 +23,8 @@ public class ExampleInstrumentedTest {
     public void useAppContext() {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
+        MainController.init(appContext);
+        assertTrue(MainController.getGameController().getWordFactory().containsWord(new Word("корова" ,"cow")));
 
         assertEquals("ru.hse.android.project.easyenglish", appContext.getPackageName());
     }
