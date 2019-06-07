@@ -2,8 +2,8 @@ package ru.hse.android.project.easyenglish;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +44,6 @@ import com.google.android.gms.tasks.Task;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
@@ -70,6 +69,9 @@ public class NetworkController extends AppCompatActivity {
     private TextView mOpponentLastLetterText;
     private TextView mTurnTextView;
 
+    private LinearLayout opponentLayout;
+    private LinearLayout playerLayout;
+
     // For our intents
     private static final int RC_SIGN_IN = 42;
     private final static int RC_SELECT_PLAYERS = 43;
@@ -85,6 +87,8 @@ public class NetworkController extends AppCompatActivity {
 
     private String opponentWord = "";
     private WordChain wordChain;
+
+    private boolean upDownState = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,17 +138,11 @@ public class NetworkController extends AppCompatActivity {
         });
     }
 
+
     private void initGameLayout() {
         Button sendAnswerButton = findViewById(R.id.send_answer_button);
         sendAnswerButton.setOnClickListener(view -> {
             Log.d(TAG, "send answer button clicked");
-            /*n
-            LinearLayout opponentLayout = findViewById(R.id.opponent_layout);
-            LinearLayout playerLayout = findViewById(R.id.player_layout);
-            Animation animation = AnimationUtils.loadAnimation(this, R.anim.translation);
-            opponentLayout.startAnimation(animation);
-            playerLayout.startAnimation(animation);
-            */
             onDoneClicked();
         });
 
@@ -185,6 +183,9 @@ public class NetworkController extends AppCompatActivity {
         mOpponentText = findViewById(R.id.opponent_word);
         mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
         mTurnTextView = findViewById(R.id.turn_status_text);
+
+        opponentLayout = findViewById(R.id.opponent_layout);
+        playerLayout = findViewById(R.id.player_layout);
 
 
         Button showHintsButton = findViewById(R.id.hints_button);
@@ -227,6 +228,36 @@ public class NetworkController extends AppCompatActivity {
 
             }
         });
+    }
+
+
+    private void sendAnswerAnimation() {
+        if (!upDownState) {
+            upDownState = true;
+            Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_down);
+            Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
+            animationDown.setFillAfter(true);
+            animationUp.setFillAfter(true);
+            mDataView.setEnabled(false);
+            mDataView.setTextColor(Color.BLACK);
+            opponentLayout.startAnimation(animationDown);
+            playerLayout.startAnimation(animationUp);
+        }
+    }
+
+    private void receiveAnswerAnimation() {
+        if (upDownState) {
+            upDownState = false;
+            LinearLayout opponentLayout = findViewById(R.id.opponent_layout);
+            LinearLayout playerLayout = findViewById(R.id.player_layout);
+            Animation animationUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
+            Animation animationDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
+            animationDown.setFillAfter(true);
+            animationUp.setFillAfter(true);
+            mDataView.setEnabled(true);
+            opponentLayout.startAnimation(animationUp);
+            playerLayout.startAnimation(animationDown);
+        }
     }
 
     private void changeLayout() {
@@ -343,13 +374,14 @@ public class NetworkController extends AppCompatActivity {
                     Log.d(TAG, "Send data.");
                     wordChain.makeMove(word);
                     wordChain.changeTurn();
+                    opponentWord = "";
                     setGameplayUI();
+                    sendAnswerAnimation();
                     onUpdateMatch(turnBasedMatch);
                 })
                 .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
     }
 
-    // Switch to gameplay view.
     public void setGameplayUI() {
         isDoingTurn = true;
         if (opponentWord.length() > 0) {
@@ -358,7 +390,7 @@ public class NetworkController extends AppCompatActivity {
             mDataFirstLetterText.setText(c.toUpperCase());
             mOpponentText.setText(opponentWord.substring(0, opponentWord.length() - 1));
         } else {
-            mDataFirstLetterText.setText("");
+            mOpponentLastLetterText.setText("");
             mOpponentText.setText("");
         }
         mTurnTextView.setText(String.format("%s turn", wordChain.isMyTurn() ? "Your" : "Opponent"));
@@ -611,6 +643,7 @@ public class NetworkController extends AppCompatActivity {
             wordChain.makeMove(opponentWord);
             wordChain.changeTurn();
             Log.d(TAG, "Get data");
+            receiveAnswerAnimation();
             setGameplayUI();
         }
     }
