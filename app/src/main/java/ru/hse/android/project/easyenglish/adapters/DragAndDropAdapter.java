@@ -12,13 +12,15 @@ import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
 
+/**
+ * DragAndDropAdapter provides the ability to move elements of a list.
+ * It is used in Matching and WordPuzzle games.
+ */
 public class DragAndDropAdapter extends ArrayAdapter<String> {
 
-    private Context mContext;
     private int resource;
     public DragAndDropAdapter(Context context, List<String> objects,  int resource) {
         super(context, 0, objects);
-        this.mContext = context;
         this.resource = resource;
     }
 

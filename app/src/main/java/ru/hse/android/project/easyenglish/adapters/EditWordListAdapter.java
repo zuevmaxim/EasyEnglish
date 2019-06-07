@@ -23,17 +23,30 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/**
+ * EditWordListAdapter provides the ability to edit list of words with automatic translation.
+ * The question would the word be auto-translated is described by AUTOCHANGES enum.
+ */
 public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapter.ViewHolder> {
     private final LayoutInflater layoutInflater;
+
+    /** List to show. The second element of pair describes the state of auto-translation. */
     private final List<Pair<Word, AUTOCHANGES>> words;
+
+    /** Each word should have it's own TextWatcher, so they are saved in a HashMap. */
     private final HashMap<Integer, ViewHolderHolder> viewHolderHashMap = new HashMap<>();
 
-    @SuppressWarnings("SameParameterValue")
+    /**
+     * Constructor.
+     * @param context the activity to show list in
+     * @param words list of words to show
+     */
     public EditWordListAdapter(Context context, List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
         layoutInflater = LayoutInflater.from(context);
     }
 
+    /** Making new ViewHolder. */
     @NonNull
     @Override
     public EditWordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -41,8 +54,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         return new EditWordListAdapter.ViewHolder(view);
     }
 
-
-
+    /** Setting data into a view holder. */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.id = position;
@@ -66,6 +78,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         words.set(viewHolder.getId(), new Pair<>(word, type));
     }
 
+    /** If a view is recycled, text watcher should be removed. */
     @Override
     public void onViewRecycled(@NonNull ViewHolder holder) {
         holder.russianWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).russianTextWatcer);
@@ -73,6 +86,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         super.onViewRecycled(holder);
     }
 
+    /** Check data in the element and show error if is needed. */
     private void setErrorIfWrongSpelling(ViewHolder viewHolder) {
         try {
             viewHolder.russianWordLayout.setError(null);
@@ -88,17 +102,30 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         }
     }
 
+    /** Size of the list. */
     @Override
     public int getItemCount() {
         return words.size();
     }
 
+    /** Holds the view elements: edit texts and layouts. */
     class ViewHolder extends RecyclerView.ViewHolder {
+        /** Position of the element. */
         private int id;
+
+        /** Russian edit text. */
         private final EditText russianWordText;
+
+        /** English edit text. */
         private final EditText englishWordText;
+
+        /** Russian layout, contains error message. */
         private final TextInputLayout russianWordLayout;
+
+        /** English layout, contains error message. */
         private final TextInputLayout englishWordLayout;
+
+        /** View holder constructor. Find all the elements of the item. */
         private ViewHolder(View view){
             super(view);
             russianWordText = view.findViewById(R.id.russian_word_text);
@@ -112,11 +139,13 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         }
     }
 
+    /** ViewHolderHolder holds the view holder and text watchers. */
     private class ViewHolderHolder {
         private ViewHolder viewHolder;
         private TextWatcher englishTextWatcer;
         private TextWatcher russianTextWatcer;
 
+        /** Construct watchers if there are none. */
         private void init() {
             Word word = words.get(viewHolder.getId()).getKey();
             Consumer<AUTOCHANGES> setAutochanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
@@ -225,11 +254,38 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         }
     }
 
+    /**
+     * This enum describes the state of ability to auto-translate.
+     * Transitions:
+     * on Russian test changed:
+     *      BOTH    -> ENGLISH
+     *      ENGLISH -> BOTH    (only if Russian text is empty)
+     *      RUSSIAN -> NONE
+     *      NONE    -> RUSSIAN (only if Russian text is empty)
+     *
+     * on English test changed:
+     *      BOTH    -> RUSSIAN
+     *      RUSSIAN -> BOTH    (only if English text is empty)
+     *      ENGLISH -> NONE
+     *      NONE    -> ENGLISH (only if English text is empty)
+     */
     public enum AUTOCHANGES {
+        /** Only Russian should be translated. It is used when user changes only English text. */
         RUSSIAN,
+
+        /** Both elements can be translated. It is used when item is empty. */
         BOTH,
+
+        /** None of the elements can be translated. It is used when user changed both texts. */
         NONE,
+
+        /** Only English should be translated. It is used when user changes only Russian text. */
         ENGLISH,
+
+        /**
+         * None of the elements can be translated and no transitions between states are provided.
+         * It is used for programmatically set the text.
+         */
         SET_UP
     }
 }
