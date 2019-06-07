@@ -1,6 +1,8 @@
 package ru.hse.android.project.easyenglish;
 
+/** Container for two ordered elements - key and value. */
 public class Pair<K, V> {
+
     private K key;
     private V value;
 

@@ -21,19 +21,22 @@ import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/** Activity to create and edit word lists. */
 public class EditListActivity extends AppCompatActivity {
 
+    private final WordListController controller = MainController.getGameController().getWordListController();
+
+    /** Create listView with editable text fields to set words in. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_add_new_list);
-
+        setContentView(R.layout.activity_edit_list);
         Intent intent = getIntent();
-        WordListController controller = MainController.getGameController().getWordListController();
 
-        final RecyclerView newWordView = findViewById(R.id.new_word_list);
-        EditText wordListNameText = findViewById(R.id.new_list_name_text);
+        final RecyclerView wordListView = findViewById(R.id.word_list);
+        EditText wordListNameText = findViewById(R.id.list_name_text);
         List<Pair<Word, EditWordListAdapter.AUTO_CHANGES>> wordPairList = new ArrayList<>();
+
         String listName = intent.getStringExtra("list name");
         boolean isNewList = listName == null;
         if (isNewList) {
@@ -47,14 +50,14 @@ public class EditListActivity extends AppCompatActivity {
         }
 
         EditWordListAdapter adapter = new EditWordListAdapter(this, wordPairList);
-        newWordView.setAdapter(adapter);
+        wordListView.setAdapter(adapter);
         Context context = this;
 
         Button addNewWordButton = findViewById(R.id.add_word_button);
         addNewWordButton.setOnClickListener(v -> {
             wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTO_CHANGES.BOTH));
             adapter.notifyItemInserted(wordPairList.size() - 1);
-            newWordView.scrollToPosition(wordPairList.size() - 1);
+            wordListView.scrollToPosition(wordPairList.size() - 1);
         });
 
         Button saveNewListButton = findViewById(R.id.save_list_button);
@@ -85,6 +88,5 @@ public class EditListActivity extends AppCompatActivity {
                 finish();
             }
         });
-
     }
 }

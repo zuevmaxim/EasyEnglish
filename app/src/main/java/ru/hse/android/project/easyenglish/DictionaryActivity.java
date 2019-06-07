@@ -10,8 +10,13 @@ import android.widget.TextView;
 
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
+/**
+ * Application English-Russian and Russian-English translator.
+ * Get all possible translations and synonyms from Yandex translator.
+ */
 public class DictionaryActivity extends AppCompatActivity {
 
+    /** Get word, ask TranslateController for translation and show result. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

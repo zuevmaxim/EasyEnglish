@@ -12,10 +12,13 @@ import java.util.List;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/**
+ * Local game to memorize English words and their spelling.
+ * Rules : You are given word in English with shuffled letters. Your task is to put letters in right order and write down the result.
+ */
 public class LetterPuzzleActivity extends AppCompatActivity {
 
-    private boolean result;
-
+    /** Shuffle letters in word until they are not equals. */
     private String shuffleLetters(String word) {
         List<String> letters = Arrays.asList(word.split(""));
         String shuffledWordResult = word;
@@ -30,32 +33,22 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         return shuffledWordResult;
     }
 
+    /** Create game screen with English word task with shuffled letters. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_letter_puzzle);
 
         final Word word = MainController.getGameController().getWordStorage().nextWord();
-        final String english = word.getEnglish();
-        final String russian = word.getRussian();
-        final String shuffledEnglish = shuffleLetters(english);
+        final String shuffledEnglish = shuffleLetters(word.getEnglish());
 
         final TextView shuffledWordText = findViewById(R.id.word_task_text);
-        shuffledWordText.setText((shuffledEnglish + " - " + russian));
+        shuffledWordText.setText((shuffledEnglish + " - " + word.getRussian()));
+
+        final EditText answerText = findViewById(R.id.answer_text);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
-        checkAnswerButton.setOnClickListener(v -> {
-            final EditText answerText = findViewById(R.id.answer_text);
-            String answer = answerText.getText().toString();
-            v.setEnabled(false);
-            result = answer.equals(english);
-            MainController.getGameController().saveWordResult(word, result);
-            Intent intent = new Intent();
-            intent.putExtra("game result", result);
-            intent.putExtra("word", word.getRussian() + "\n" + word.getEnglish() + "\n" + word.getTranscription());
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        checkAnswerButton.setOnClickListener(v -> checkAnswer(answerText.getText().toString(), word.getEnglish(), word));
 
         Button showRulesButton = findViewById(R.id.rules_button);
         showRulesButton.setOnClickListener(v -> {
@@ -80,12 +73,24 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Letter puzzle");
-            args.putString("message", "The first letter is " + english.charAt(0) + ".");
+            args.putString("message", "The first letter is " + word.getEnglish().charAt(0) + ".");
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
         });
     }
 
+    /** Check if given answer equals to model and send report to GameActivity. */
+    private void checkAnswer(String givenAnswer, String modelAnswer, Word answer) {
+        boolean result = givenAnswer.equals(modelAnswer);
+        MainController.getGameController().saveWordResult(answer, result);
+        Intent intent = new Intent();
+        intent.putExtra("game result", result);
+        intent.putExtra("word", answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
+        setResult(RESULT_OK, intent);
+        finish();
+    }
+
+    /** On back button pressed ask player if he want to end the game. */
     @Override
     public void onBackPressed() {
         GameActivity.onBackPressed(this);

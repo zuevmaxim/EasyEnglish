@@ -19,13 +19,13 @@ import ru.hse.android.project.easyenglish.controllers.WordStorage;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
- * Local game to memorize English words and their translation.
+ * Local game to memorize English words and their definitions.
  * Rules : You are given a word in English. Your task is to choose right Russian definition for it.
  */
 public class ChooseDefinitionActivity extends AppCompatActivity {
 
     /** Max number of possible answers(translations) for English task word. */
-    private final static int ANSWERS_SIZE = 4;
+    private final static int SIZE = 4;
 
     private final Random random = new Random();
 
@@ -36,7 +36,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_choose_definition);
 
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(ANSWERS_SIZE);
+        final List<Word> words = wordStorage.getSetOfWords(SIZE);
         Word answer = words.get(0);
         Collections.shuffle(words);
         int size = words.size();
@@ -99,7 +99,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         return newWrongAnswerNumber;
     }
 
-    /** Check if given answer equals to model and send report to GameController. */
+    /** Check if given answer equals to model and send report to GameActivity. */
     private void checkAnswer(int givenAnswer, int modelAnswer, @NotNull Word answer) {
         boolean result = (givenAnswer == modelAnswer);
         MainController.getGameController().saveWordResult(answer, result);
