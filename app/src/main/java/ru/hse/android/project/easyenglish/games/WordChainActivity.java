@@ -211,7 +211,7 @@ public class WordChainActivity extends AppCompatActivity {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Word Chain Rules");
-            args.putString("message", "");
+            args.putString("message", "Two players come up with words that begin with the letter or letters that the previous word ended with. Words may not be repeated in the same game.");
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
         });
