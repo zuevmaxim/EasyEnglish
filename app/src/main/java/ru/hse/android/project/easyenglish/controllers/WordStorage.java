@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.controllers;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,20 +10,31 @@ import java.util.Random;
 import ru.hse.android.project.easyenglish.words.Word;
 import ru.hse.android.project.easyenglish.words.WordFactory;
 
+/**
+ * WordStorage contains current word list.
+ * Provides the ability to get a random word or a set of words.
+ */
 public class WordStorage {
     private static final Random RANDOM = new Random();
-    WordStorage() {
-    }
 
+    /** Current list of words. */
     private List<Word> words = new ArrayList<>();
+
+    /** Index of the last word. */
     private int i = 0;
 
+    /** Load current word list from a database and shuffle it. */
     void updateStorage() {
         i = 0;
         words = MainController.getGameController().getWordListController().getCurrentListWords();
         Collections.shuffle(words);
     }
 
+    /**
+     * Get next word in a random order.
+     * Chooses random word or a word with the worst statistics.
+     */
+    @NotNull
     public Word nextWord() {
         Word word1 = words.get(i);
         Word word2 = getMinimal();
@@ -40,9 +53,11 @@ public class WordStorage {
     /**
      * Get a list of words of length min(number, maxLength).
      * maxLength -- current size of storage.
+     * The first word in a list is the word with worst statistic.
      * @param number requested length of list
      * @return list of words
      */
+    @NotNull
     public List<Word> getSetOfWords(int number) {
         Word min = nextWord();
         if (number >= words.size()) {
@@ -68,6 +83,8 @@ public class WordStorage {
         return wordList;
     }
 
+    /** Find word with the worst statistics. */
+    @NotNull
     private Word getMinimal() {
         List<Word> shuffled = new ArrayList<>(words);
         Collections.shuffle(shuffled);

@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish.adapters;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.design.widget.TextInputLayout;
@@ -10,6 +11,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.util.HashMap;
 import java.util.List;
@@ -34,6 +37,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     private final List<Pair<Word, AUTOCHANGES>> words;
 
     /** Each word should have it's own TextWatcher, so they are saved in a HashMap. */
+    @SuppressLint("UseSparseArrays")
     private final HashMap<Integer, ViewHolderHolder> viewHolderHashMap = new HashMap<>();
 
     /**
@@ -41,7 +45,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
      * @param context the activity to show list in
      * @param words list of words to show
      */
-    public EditWordListAdapter(Context context, List<Pair<Word, AUTOCHANGES>> words) {
+    public EditWordListAdapter(@NotNull Context context, @NotNull List<Pair<Word, AUTOCHANGES>> words) {
         this.words = words;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -87,7 +91,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     }
 
     /** Check data in the element and show error if is needed. */
-    private void setErrorIfWrongSpelling(ViewHolder viewHolder) {
+    private void setErrorIfWrongSpelling(@NotNull ViewHolder viewHolder) {
         try {
             viewHolder.russianWordLayout.setError(null);
             MainController.getGameController().getWordFactory().checkRussianSpelling(viewHolder.russianWordText.getText().toString());
@@ -126,7 +130,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         private final TextInputLayout englishWordLayout;
 
         /** View holder constructor. Find all the elements of the item. */
-        private ViewHolder(View view){
+        private ViewHolder(@NotNull View view){
             super(view);
             russianWordText = view.findViewById(R.id.russian_word_text);
             englishWordText = view.findViewById(R.id.english_word_text);
@@ -249,7 +253,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
             };
         }
 
-        public void setViewHolder(ViewHolder viewHolder) {
+        public void setViewHolder(@NotNull ViewHolder viewHolder) {
             this.viewHolder = viewHolder;
         }
     }
