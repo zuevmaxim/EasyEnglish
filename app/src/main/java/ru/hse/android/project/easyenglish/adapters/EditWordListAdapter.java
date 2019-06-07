@@ -192,7 +192,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                             break;
                     }
                     if (getAutochanges.get() == AUTOCHANGES.ENGLISH) {
-                        word.setEnglish((TranslateController.fastTranslate(s.toString(), "ru-en")));
+                        word.setEnglish((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.RU_EN)));
                         viewHolder.englishWordText.setText(word.getEnglish());
                         setAutochanges.accept(AUTOCHANGES.ENGLISH);
                     }
@@ -240,7 +240,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                             break;
                     }
                     if (getAutochanges.get() == AUTOCHANGES.RUSSIAN) {
-                        word.setRussian((TranslateController.fastTranslate(s.toString(), "en-ru")));
+                        word.setRussian((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.EN_RU)));
                         viewHolder.russianWordText.setText(word.getRussian());
                         setAutochanges.accept(AUTOCHANGES.RUSSIAN);
                     }

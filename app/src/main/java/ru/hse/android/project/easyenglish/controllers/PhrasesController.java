@@ -8,6 +8,8 @@ import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.hse.android.project.easyenglish.words.Phrase;
+
 public class PhrasesController extends SQLiteAssetHelper {
 
     private static final int DATABASE_VERSION = 2;

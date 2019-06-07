@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import ru.hse.android.project.easyenglish.words.Phrase;
+
 public class PhraseStorage {
     private List<Phrase> phrases = new ArrayList<>();
     private int i = 0;

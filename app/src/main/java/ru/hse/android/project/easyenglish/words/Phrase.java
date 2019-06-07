@@ -1,4 +1,4 @@
-package ru.hse.android.project.easyenglish.controllers;
+package ru.hse.android.project.easyenglish.words;
 
 public class Phrase {
     private String russian;

@@ -13,7 +13,7 @@ import java.util.List;
 
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
-import ru.hse.android.project.easyenglish.controllers.Phrase;
+import ru.hse.android.project.easyenglish.words.Phrase;
 import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
 
 public class WordPuzzleActivity extends AppCompatActivity {

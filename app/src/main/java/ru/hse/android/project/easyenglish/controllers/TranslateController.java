@@ -22,11 +22,17 @@ import java.util.regex.Pattern;
 import ru.hse.android.project.easyenglish.words.ExtendedWord;
 import ru.hse.android.project.easyenglish.words.PartOfSpeech;
 
+/**
+ * Translate controller provides different translations functions.
+ * Uses Yandex.Translate API and Yandex.Dictionary API.
+ */
 public class TranslateController {
+    /** Timeout for requests. All methods could return null if an error occurred or timeout. */
     private static final int TIMEOUT = 1000;
+    /** Timeout for synonyms game. It is longer in order to load game. */
     private static final int SYNONYMS_TIMEOUT = 2000;
 
-    private static String translate(String word, String languagePair, int timeout) {
+    private static String translate(String word, TranslateDirection languagePair, int timeout) {
         DicResult dicResult = translateTotal(word, languagePair, timeout);
         String result = null;
         if (dicResult != null
@@ -40,12 +46,12 @@ public class TranslateController {
     }
 
     public static List<String> getSynonyms(String word) {
-        String translation = translate(word, "en-ru", SYNONYMS_TIMEOUT);
+        String translation = translate(word, TranslateDirection.EN_RU, SYNONYMS_TIMEOUT);
         return findSynonymsInTranslation(translation, word, SYNONYMS_TIMEOUT);
     }
 
     private static List<String> findSynonymsInTranslation(String russian, String english, int timeout) {
-        DicResult dicResult = translateTotal(russian, "ru-en", timeout);
+        DicResult dicResult = translateTotal(russian, TranslateDirection.RU_EN, timeout);
         if (dicResult == null) {
             return null;
         }
@@ -66,13 +72,20 @@ public class TranslateController {
         return result;
     }
 
-    public static DicResult translateTotal(String word, String languagePair) {
+    public static DicResult translateTotal(String word, TranslateDirection languagePair) {
         return translateTotal(word, languagePair, TIMEOUT);
     }
 
-    private static DicResult translateTotal(String word, String languagePair, int timeout) {
+    private static DicResult translateTotal(String word, TranslateDirection languagePair, int timeout) {
         DictionaryTask translatorTask = new DictionaryTask();
-        translatorTask.execute(word, languagePair);
+        switch (languagePair) {
+            case EN_RU:
+                translatorTask.execute(word, "en-ru");
+                break;
+            case RU_EN:
+                translatorTask.execute(word, "ru-en");
+                break;
+        }
         try {
             return translatorTask.get(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException e) {
@@ -109,7 +122,7 @@ public class TranslateController {
     }
 
     public static ExtendedWord wordInfo(String word) {
-        DicResult dicResult = translateTotal(word, "en-ru");
+        DicResult dicResult = translateTotal(word, TranslateDirection.EN_RU);
         String transcription = "";
         List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
         if (dicResult != null
@@ -209,9 +222,16 @@ public class TranslateController {
         }
     }
 
-    public static String fastTranslate(String word, String languagePair) {
+    public static String fastTranslate(String word, TranslateDirection languagePair) {
         TranslatorTask translatorTask = new TranslatorTask();
-        translatorTask.execute(word, languagePair);
+        switch (languagePair) {
+            case EN_RU:
+                translatorTask.execute(word, "en-ru");
+                break;
+            case RU_EN:
+                translatorTask.execute(word, "ru-en");
+                break;
+        }
         String result = null;
         try {
             result = translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -263,5 +283,10 @@ public class TranslateController {
             }
             return null;
         }
+    }
+
+    public enum TranslateDirection {
+        RU_EN,
+        EN_RU
     }
 }
