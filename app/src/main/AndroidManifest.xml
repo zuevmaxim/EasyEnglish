@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.hse.android.project.easyenglish">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/easy_english"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name=".SynonymsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChoosePhraseListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordPuzzleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MatchingActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".EditListActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LearnWordsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordListEditorActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".ChooseDefinitionActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GameActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".MainMenuActivity"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".LetterPuzzleActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".WordChainActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".DictionaryActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".StatisticsActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".LocalGamesMenuActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name=".GamesMenuActivity"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="com.google.android.gms.games.APP_ID"
+            android:value="@string/app_id" />
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+    </application>
+
+</manifest>
