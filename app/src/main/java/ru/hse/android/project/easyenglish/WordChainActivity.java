@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -88,6 +90,7 @@ public class WordChainActivity extends AppCompatActivity {
 
     private LinearLayout opponentLayout;
     private LinearLayout playerLayout;
+    private ProgressBar progressBar;
 
     /** Sign in code for onActivityResult. */
     private static final int RC_SIGN_IN = 42;
@@ -223,6 +226,8 @@ public class WordChainActivity extends AppCompatActivity {
         mOpponentText = findViewById(R.id.opponent_word);
         mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
         mTurnTextView = findViewById(R.id.turn_status_text);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         opponentLayout = findViewById(R.id.opponent_layout);
         playerLayout = findViewById(R.id.player_layout);
@@ -287,6 +292,7 @@ public class WordChainActivity extends AppCompatActivity {
             mDataView.setTextColor(Color.BLACK);
             opponentLayout.startAnimation(animationOpponentDown);
             playerLayout.startAnimation(animationPlayerUp);
+            new Handler().postDelayed(() -> progressBar.setVisibility(View.VISIBLE), 1000);
         }
     }
 
@@ -294,6 +300,7 @@ public class WordChainActivity extends AppCompatActivity {
     private void receiveAnswerAnimation() {
         if (upDownState) {
             upDownState = false;
+            progressBar.setVisibility(View.INVISIBLE);
             LinearLayout opponentLayout = findViewById(R.id.opponent_layout);
             LinearLayout playerLayout = findViewById(R.id.player_layout);
             animationPlayerDown.setFillAfter(true);
