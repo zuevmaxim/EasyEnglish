@@ -110,7 +110,7 @@ public class MatchingActivity extends AppCompatActivity {
         for (Word word : answer) {
             answerText.append(word.getRussian()).append(" - ").append(word.getEnglish()).append("\n");
         }
-        intent.putExtra("word", answer.toString());
+        intent.putExtra("word", answerText.toString());
         setResult(RESULT_OK, intent);
         finish();
     }

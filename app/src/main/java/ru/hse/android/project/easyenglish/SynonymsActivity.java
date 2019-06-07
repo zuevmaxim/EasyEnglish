@@ -88,8 +88,6 @@ public class SynonymsActivity extends AppCompatActivity {
         String wrongAnswer = boxedWords.get(size - 1);
         Collections.shuffle(boxedWords);
 
-        boxedSynonyms.forEach(System.out::println);
-
         LinearLayout checkBoxesLayout = findViewById(R.id.check_boxes_layout);
         final CheckBox[] checkBoxes = new CheckBox[size];
         for (int i = 0; i < size; i++) {
@@ -138,8 +136,6 @@ public class SynonymsActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkAnswer(List<String> givenAnswer, List<String> modelAnswer, Word wordTask) {
         boolean result = givenAnswer.size() == modelAnswer.size();
-        givenAnswer.forEach(System.out::println);
-        modelAnswer.forEach(System.out::println);
         for (String word : givenAnswer) {
             result &= modelAnswer.contains(word);
         }
