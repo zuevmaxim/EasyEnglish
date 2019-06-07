@@ -36,6 +36,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         final WordStorage wordStorage = MainController.getGameController().getWordStorage();
         final List<Word> words = wordStorage.getSetOfWords(ANSWERS_SIZE);
         Word answer = words.get(0);
+        Collections.shuffle(words);
         int size = words.size();
 
         final int answerNumber = words.indexOf(answer);
@@ -44,7 +45,6 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         final TextView taskWordText = findViewById(R.id.word_task_text);
         taskWordText.setText(String.format("%s\t\t%s", answer.getEnglish(), answer.getTranscription()));
 
-        Collections.shuffle(words);
         RadioGroup radioGroup = findViewById(R.id.answers_radio_group);
         final RadioButton[] radioButtons = new RadioButton[size];
 
@@ -56,22 +56,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             radioGroup.addView(radioButtons[i]);
         }
 
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case 0:
-                    checkAnswer(0, answerNumber, answer);
-                    break;
-                case 1:
-                    checkAnswer(1, answerNumber, answer);
-                    break;
-                case 2:
-                    checkAnswer(2, answerNumber, answer);
-                    break;
-                case 3:
-                    checkAnswer(3, answerNumber, answer);
-                    break;
-            }
-        });
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> checkAnswer(checkedId, answerNumber, answer));
 
         Button rulesButton = findViewById(R.id.rules_button);
         rulesButton.setOnClickListener(v -> {
