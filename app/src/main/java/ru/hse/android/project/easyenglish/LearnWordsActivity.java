@@ -21,12 +21,13 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 import ru.hse.android.project.easyenglish.words.Word;
 
+/** Activity shows cards with words to learn them. */
 public class LearnWordsActivity extends FragmentActivity {
 
-    static final String TAG = "myLogs";
-    static int PAGE_COUNT;
+    /** List of words to learn. */
     private List<Word> words;
 
+    /** Create activity screen and list of cards. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,48 +36,31 @@ public class LearnWordsActivity extends FragmentActivity {
         TextView listNameText = findViewById(R.id.list_name_text);
         listNameText.setText(wordListController.getCurrentWordList().toUpperCase());
         words = wordListController.getCurrentListWords();
-        PAGE_COUNT = words.size();
-        ViewPager pager = findViewById(R.id.cards_mode_pager);
+        ViewPager pager = findViewById(R.id.cards_pager);
         PagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
-
-        pager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.d(TAG, "onPageSelected, position = " + position);
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Code goes here
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
     }
 
+    /** Adapter for CardsViewList */
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
         public MyFragmentPagerAdapter(FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
-        // Returns total number of pages
+        /** Total number of pages. */
         @Override
         public int getCount() {
-            return PAGE_COUNT;
+            return words.size();
         }
 
-        // Returns the fragment to display for that page
+        /** Get the fragment to display for that page. */
         @Override
         public Fragment getItem(int position) {
             return Card.newInstance(words.get(position));
         }
 
-        // Returns the page title for the top indicator
+        /** Get the page title for the top indicator. */
         @Override
         public CharSequence getPageTitle(int position) {
             return words.get(position).getEnglish();

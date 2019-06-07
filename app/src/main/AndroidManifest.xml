@@ -51,8 +51,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".LocalGamesMenuActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ErrorActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".GamesMenuActivity"
             android:screenOrientation="portrait" />
 
