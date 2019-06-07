@@ -112,6 +112,18 @@ public class WordChainActivity extends AppCompatActivity {
     /** It is true iff player's layout is located in the up. */
     private boolean upDownState = false;
 
+    /** Putting opponent's layout down. */
+    private Animation animationOpponentDown;
+
+    /** Putting player's layout up. */
+    private Animation animationPlayerUp;
+
+    /** Putting opponent's layout up. */
+    private Animation animationOpponentUp;
+
+    /** Putting player's layout down. */
+    private Animation animationPlayerDown;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,26 +222,33 @@ public class WordChainActivity extends AppCompatActivity {
 
         opponentLayout = findViewById(R.id.opponent_layout);
         playerLayout = findViewById(R.id.player_layout);
+        animationOpponentDown = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_down);
+        animationPlayerUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
+        animationOpponentUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
+        animationPlayerDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
 
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
             Log.d(TAG, "hints button clicked");
-
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
+            if (wordChain == null) {
+                adb.setTitle("Hints")
+                        .setMessage("No hints available.")
+                        .setPositiveButton("OK", (dialog, which) -> { })
+                        .show();
+                return;
+            }
+            if (!wordChain.isMyTurn()) {
+                Toast.makeText(this, "Not your turn.", Toast.LENGTH_LONG).show();
+                return;
+            }
             if (wordChain.getHintsNumber() == 0) {
                 adb.setTitle("Hints")
                         .setMessage("All hints had been used.")
                         .setPositiveButton("OK", (dialog, which) -> { })
                         .show();
             } else {
-                if (wordChain == null) {
-                    adb.setTitle("Hints")
-                            .setMessage("No hints available.")
-                            .setPositiveButton("OK", (dialog, which) -> { })
-                            .show();
-                    return;
-                }
                 List<String> hints = wordChain.getHint();
                 int availableHints = Math.min(wordChain.getHintsNumber(), hints.size());
                 if (availableHints == 0) {
@@ -254,12 +273,6 @@ public class WordChainActivity extends AppCompatActivity {
         });
     }
 
-    /** Putting opponent's layout down. */
-    private final Animation animationOpponentDown = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_down);
-
-    /** Putting player's layout up. */
-    private final Animation animationPlayerUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
-
     /** Show animation when sending answer. */
     private void sendAnswerAnimation() {
         if (!upDownState) {
@@ -272,12 +285,6 @@ public class WordChainActivity extends AppCompatActivity {
             playerLayout.startAnimation(animationPlayerUp);
         }
     }
-
-    /** Putting opponent's layout up. */
-    private final Animation animationOpponentUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
-
-    /** Putting player's layout down. */
-    private final Animation animationPlayerDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
 
     /** Show animation when getting answer. */
     private void receiveAnswerAnimation() {
