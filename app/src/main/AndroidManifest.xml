@@ -31,8 +31,6 @@
             android:screenOrientation="portrait" />
         <activity android:name=".ChooseDefinitionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WordListActivity"
-            android:screenOrientation="portrait" />
         <activity android:name=".GameActivity"
             android:screenOrientation="portrait" />
         <activity android:name=".MainMenuActivity"

@@ -28,6 +28,8 @@ import ru.hse.android.project.easyenglish.words.Word;
  * The question would the word be auto-translated is described by AUTOCHANGES enum.
  */
 public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapter.ViewHolder> {
+
+    /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
 
     /** List to show. The second element of pair describes the state of auto-translation. */
@@ -46,7 +48,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         layoutInflater = LayoutInflater.from(context);
     }
 
-    /** Making new ViewHolder. */
+    /** Creating new ViewHolder. */
     @NonNull
     @Override
     public EditWordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -54,7 +56,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         return new EditWordListAdapter.ViewHolder(view);
     }
 
-    /** Setting data into a view holder. */
+    /** Setting data into the view holder. */
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
         viewHolder.id = position;
@@ -69,8 +71,8 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
         viewHolder.russianWordText.setHint("Russian");
         viewHolder.englishWordText.setHint("English");
-        viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcer);
-        viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcer);
+        viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcher);
+        viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcher);
         final AUTOCHANGES type =  words.get(viewHolder.getId()).getValue();
         words.set(viewHolder.getId(), new Pair<>(word, AUTOCHANGES.SET_UP));
         viewHolder.russianWordText.setText(word.getRussian());
@@ -81,8 +83,8 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     /** If a view is recycled, text watcher should be removed. */
     @Override
     public void onViewRecycled(@NonNull ViewHolder holder) {
-        holder.russianWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).russianTextWatcer);
-        holder.englishWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).englishTextWatcer);
+        holder.russianWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).russianTextWatcher);
+        holder.englishWordText.removeTextChangedListener(viewHolderHashMap.get(holder.getId()).englishTextWatcher);
         super.onViewRecycled(holder);
     }
 
@@ -141,16 +143,17 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
     /** ViewHolderHolder holds the view holder and text watchers. */
     private class ViewHolderHolder {
+
         private ViewHolder viewHolder;
-        private TextWatcher englishTextWatcer;
-        private TextWatcher russianTextWatcer;
+        private TextWatcher englishTextWatcher;
+        private TextWatcher russianTextWatcher;
 
         /** Construct watchers if there are none. */
         private void init() {
             Word word = words.get(viewHolder.getId()).getKey();
             Consumer<AUTOCHANGES> setAutochanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
             Supplier<AUTOCHANGES> getAutochanges = () -> words.get(viewHolder.getId()).getValue();
-            russianTextWatcer = new TextWatcher() {
+            russianTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -199,7 +202,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                     setErrorIfWrongSpelling(viewHolder);
                 }
             };
-            englishTextWatcer = new TextWatcher() {
+            englishTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }

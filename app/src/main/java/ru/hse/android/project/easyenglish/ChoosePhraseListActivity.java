@@ -13,16 +13,18 @@ import java.util.List;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.PhrasesController;
 
+/** In this activity player choose theme of phrases which he wants to train in WordPuzzleActivity. */
 public class ChoosePhraseListActivity extends AppCompatActivity {
+
+    /** Current chosen theme. */
     private String currentTheme;
 
+    /** Create activity screen and set starter for game. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_phrase_list);
-
         setUpListView();
-
         Button startGameButton = findViewById(R.id.start_game_button);
         startGameButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
@@ -31,6 +33,7 @@ public class ChoosePhraseListActivity extends AppCompatActivity {
         });
     }
 
+    /** Create view to show list with theme of phrases. */
     private void setUpListView() {
         final PhrasesController phrasesController = MainController.getGameController().getPhrasesController();
         final List<String> themes = phrasesController.getThemesList();
@@ -51,6 +54,5 @@ public class ChoosePhraseListActivity extends AppCompatActivity {
                 phrasesController.setCurrentTheme(currentTheme);
             }
         });
-
     }
 }

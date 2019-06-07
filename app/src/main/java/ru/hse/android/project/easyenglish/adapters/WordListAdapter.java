@@ -21,21 +21,38 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 
+/** WordListAdapter provides the ability to show list with all word list names, edit/update/delete them and choose current word list. */
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {
 
-private static final int EDIT_LIST_CODE = 38;
+    /** Code used in onActivityResult to return from EditListActivity. */
+    private static final int EDIT_LIST_CODE = 38;
+
+    /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
+
+    /** List of word list names to show. */
     private final List<String> wordListNames;
+
+    /** Context of activity to show list in. */
     private final Context context;
-    private WordListController wordListController;
+
+    /** Position with name of last selected current word list name*/
     private int lastSelectedPosition;
 
-    public WordListAdapter(Context context, List<String> objects) {
-        wordListNames = objects;
-        layoutInflater = LayoutInflater.from(context);
+    private WordListController wordListController;
+
+    /**
+     * Constructor.
+     * @param context the activity to show list in
+     * @param wordListNames list with word list names to show
+     */
+    public WordListAdapter(Context context, List<String> wordListNames) {
+        this.wordListNames = wordListNames;
         this.context = context;
+        layoutInflater = LayoutInflater.from(context);
     }
 
+    /** Creating new ViewHolder. */
     @NonNull
     @Override
     public WordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -45,12 +62,14 @@ private static final int EDIT_LIST_CODE = 38;
         return new WordListAdapter.ViewHolder(view);
     }
 
+    /** Setting data into the view holder. */
     @Override
     public void onBindViewHolder(@NonNull WordListAdapter.ViewHolder viewHolder, int position) {
         final String listName = wordListNames.get(position);
         viewHolder.nameView.setText(listName);
         WordListController controller = MainController.getGameController().getWordListController();
 
+        /* random word list and day list player can not edit and delete, only can update it */
         if (controller.getWordListId(listName) == controller.getRandomWordListId()
                 || controller.getWordListId(listName) == controller.getDayListId()) {
             viewHolder.menuButton.setOnClickListener(v -> {
@@ -97,27 +116,26 @@ private static final int EDIT_LIST_CODE = 38;
         viewHolder.selectionState.setChecked(lastSelectedPosition == position);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
+    /** Size of the list. */
     @Override
     public int getItemCount() {
         return wordListNames.size();
     }
 
+    /** Update current word list and set last selected position to current word list */
     private void updateCurrentList(int position) {
         lastSelectedPosition = position;
         notifyDataSetChanged();
         wordListController.setCurrentWordList(wordListNames.get(lastSelectedPosition));
     }
 
+    /** Holds the view elements. */
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView menuButton;
         private final TextView nameView;
         private RadioButton selectionState;
 
+        /** Set listeners to control selection of current word list */
         private ViewHolder(View view){
             super(view);
             menuButton = view.findViewById(R.id.option_menu);

@@ -15,13 +15,29 @@ import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
+/** WordChainHistoryAdapter provides the ability to show list of used words from list in WordChainActivity. */
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
+    /** List with pairs of Opponent(key) and Player(value) used words in english. */
     private List<Pair<String, String>> englishPairs;
+
+    /** List with pairs of Opponent(key) and Player(value) used words in russian(translation of english ones from englishPairs). */
     private List<Pair<String, String>> russianPairs = new ArrayList<>();
+
+    /** List with pairs of Opponent(key) and Player(value) used words view status.
+     *  Status = true, if current shown word in list is english
+     *  Status = false, if current shown word in list is russian
+     */
     private List<Pair<Boolean, Boolean>> switchPairs = new ArrayList<>();
+
+    /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
 
+    /**
+     * Constructor.
+     * @param context the activity to show list in
+     * @param words list with pairs words to show
+     */
     public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
         englishPairs = words;
         for (Pair<String, String> pair : englishPairs) {
@@ -39,6 +55,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
+    /** Creating new ViewHolder. */
     @NonNull
     @Override
     public WordChainHistoryAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -46,6 +63,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         return new WordChainHistoryAdapter.ViewHolder(view);
     }
 
+    /** Setting data into the view holder. */
     @Override
     public void onBindViewHolder(@NonNull WordChainHistoryAdapter.ViewHolder viewHolder, int position) {
         Pair<String, String> englishPair = englishPairs.get(position);
@@ -57,19 +75,19 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         viewHolder.secondText.setText(secondText);
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return position;
-    }
-
+    /** Size of the list. */
     @Override
     public int getItemCount() {
         return englishPairs.size();
     }
 
+    /** Holds the view elements. */
     public class ViewHolder extends RecyclerView.ViewHolder {
+
         private final TextView firstText;
         private final TextView secondText;
+
+        /** Set onClickListener on words in list to show translation on click */
         private ViewHolder(View view) {
             super(view);
             firstText = view.findViewById(R.id.first_text);

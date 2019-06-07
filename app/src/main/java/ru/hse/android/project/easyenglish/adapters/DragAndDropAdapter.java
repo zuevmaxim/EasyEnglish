@@ -19,6 +19,7 @@ import ru.hse.android.project.easyenglish.R;
 public class DragAndDropAdapter extends ArrayAdapter<String> {
 
     private int resource;
+
     public DragAndDropAdapter(Context context, List<String> objects,  int resource) {
         super(context, 0, objects);
         this.resource = resource;
