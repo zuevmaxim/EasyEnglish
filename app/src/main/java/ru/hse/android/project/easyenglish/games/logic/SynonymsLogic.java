@@ -1,8 +1,5 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
-import android.content.Intent;
-import android.widget.TextView;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
