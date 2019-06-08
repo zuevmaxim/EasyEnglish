@@ -8,60 +8,45 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import ru.hse.android.project.easyenglish.GameActivity;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ShowInfoActivity;
-import ru.hse.android.project.easyenglish.controllers.MainController;
-import ru.hse.android.project.easyenglish.controllers.WordStorage;
+import ru.hse.android.project.easyenglish.games.logic.ChooseDefinitionLogic;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
- * Local game to memorize English words and their definitions.
- * Rules : You are given a word in English. Your task is to choose right Russian definition for it.
+ * Activity for ChooseDefinition game with logic described in ChooseDefinitionLogic.
  */
 public class ChooseDefinitionActivity extends AppCompatActivity {
 
-    /** Max number of possible answers(translations) for English task word. */
-    private final static int SIZE = 4;
-
-    private final Random random = new Random();
+    private final ChooseDefinitionLogic logic = new ChooseDefinitionLogic();
 
     /** Create game screen with English word task and group of possible Russian translations. */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_choose_definition);
+        logic.update();
 
-        final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(SIZE);
-        Word answer = words.get(0);
-        Collections.shuffle(words);
-        int size = words.size();
-
-        final int answerNumber = words.indexOf(answer);
-        final int wrongAnswerNumber = setHint(size, answerNumber);
+        List<Word> possibleAnswers = logic.getPossibleAnswers();
+        Word answer = logic.getAnswer();
 
         final TextView taskWordText = findViewById(R.id.word_task_text);
         taskWordText.setText(String.format("%s\t\t%s", answer.getEnglish(), answer.getTranscription()));
 
         RadioGroup radioGroup = findViewById(R.id.answers_radio_group);
-        final RadioButton[] radioButtons = new RadioButton[size];
-
-        for (int i = 0; i < size; i++) {
+        final RadioButton[] radioButtons = new RadioButton[possibleAnswers.size()];
+        for (int i = 0; i < possibleAnswers.size(); i++) {
             radioButtons[i]  = new RadioButton(this);
-            radioButtons[i].setText(words.get(i).getRussian());
+            radioButtons[i].setText(possibleAnswers.get(i).getRussian());
             radioButtons[i].setTextSize(18);
             radioButtons[i].setId(i);
             radioGroup.addView(radioButtons[i]);
         }
 
-        radioGroup.setOnCheckedChangeListener((group, checkedId) -> checkAnswer(checkedId, answerNumber, answer));
+        radioGroup.setOnCheckedChangeListener((group, checkedId) -> checkAnswer(possibleAnswers.get(checkedId), answer));
 
         Button rulesButton = findViewById(R.id.rules_button);
         rulesButton.setOnClickListener(v -> {
@@ -78,8 +63,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", this.getString(R.string.hints_choose_definitions));
-            args.putString("message", words.get(wrongAnswerNumber).getRussian() + " "
-                    + this.getString(R.string.is_wrong_answer));
+            args.putString("message", logic.getHint().getRussian() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });
@@ -93,23 +77,13 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         });
     }
 
-    /** Choose word for hint. */
-    private int setHint(int size, int answerNumber) {
-        int newWrongAnswerNumber = random.nextInt(size);
-        while (newWrongAnswerNumber == answerNumber) {
-            newWrongAnswerNumber = random.nextInt(size);
-        }
-        return newWrongAnswerNumber;
-    }
-
-    /** Check if given answer equals to model and send report to GameActivity. */
-    private void checkAnswer(int givenAnswer, int modelAnswer, @NotNull Word answer) {
-        boolean result = (givenAnswer == modelAnswer);
-        MainController.getGameController().saveWordResult(answer, result);
+    /** Check answer and send report to GameActivity. */
+    private void checkAnswer(Word givenAnswer, Word answer) {
+        boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian()
-                + "\n" + answer.getEnglish() + "\n"
+        intent.putExtra("word", answer.getRussian() + "\n"
+                + answer.getEnglish() + "\n"
                 + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();

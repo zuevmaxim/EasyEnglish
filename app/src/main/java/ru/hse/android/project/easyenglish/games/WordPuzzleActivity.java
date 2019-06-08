@@ -17,6 +17,8 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
+import ru.hse.android.project.easyenglish.games.logic.MatchingLogic;
+import ru.hse.android.project.easyenglish.games.logic.WordPuzzleLogic;
 import ru.hse.android.project.easyenglish.words.Phrase;
 import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
 
@@ -26,18 +28,7 @@ import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
  */
 public class WordPuzzleActivity extends AppCompatActivity {
 
-    /**
-     * Generate shuffled word list from given until lists are not equals.
-     * @param words list to shuffle
-     * @return shuffled word list
-     */
-    private List<String> shuffleWords(List<String> words) {
-        List<String> shuffledWordResult = new ArrayList<>(words);
-        while (words.equals(shuffledWordResult) && shuffledWordResult.size() > 1) {
-            Collections.shuffle(shuffledWordResult);
-        }
-        return shuffledWordResult;
-    }
+    private final WordPuzzleLogic logic = new WordPuzzleLogic();
 
     /** Create game screen with phrase with shuffled words. */
     @Override
@@ -45,30 +36,26 @@ public class WordPuzzleActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_word_puzzle);
 
-        PhraseStorage storage = MainController.getGameController().getPhraseStorage();
-        Phrase phrase = storage.nextPhrase();
+        logic.update();
 
-        TextView russianPhraseText = findViewById(R.id.russian_phrase_text);
-        russianPhraseText.setText(phrase.getRussian());
+        List<String> shuffleWords = logic.getShuffledAnswer();
 
-        List<String> words = Arrays.asList(phrase.getEnglish().split(" "));
-        List<String> shuffleWords = shuffleWords(words);
         DragAndDropListView dragListView = findViewById(R.id.drag_and_drop_list);
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords, R.layout.word_puzzle_item);
         dragListView.setAdapter(dragListAdapter);
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
-        checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffleWords, words, phrase));
+        checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffleWords));
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", "Word puzzle");
-            if (words.size() >= 2) {
-                args.putString("message", "The second word is " + words.get(1));
-            } else if (words.size() >= 1) {
-                args.putString("message", "The first word is " + words.get(0));
+            if (shuffleWords.size() >= 2) {
+                args.putString("message", "The second word is " + logic.getHint(1));
+            } else if (shuffleWords.size() >= 1) {
+                args.putString("message", "The first word is " +logic.getHint(0));
             }
             rules.setArguments(args);
             rules.show(getSupportFragmentManager(), "message");
@@ -94,8 +81,9 @@ public class WordPuzzleActivity extends AppCompatActivity {
     }
 
     /** Check if given answer equals to model and send report to GameActivity. */
-    private void checkAnswer(List<String> givenAnswer, List<String> modelAnswer, Phrase answer) {
-        boolean result = givenAnswer.equals(modelAnswer);
+    private void checkAnswer(List<String> givenAnswer) {
+        boolean result = logic.checkAnswer(givenAnswer);
+        Phrase answer = logic.getAnswer();
         Intent intent = new Intent();
         intent.putExtra("game result", result);
         intent.putExtra("word", answer.getEnglish() + "\n" + answer.getRussian());

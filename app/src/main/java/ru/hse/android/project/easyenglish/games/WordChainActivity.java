@@ -54,7 +54,7 @@ import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
-import ru.hse.android.project.easyenglish.games.logic.WordChain;
+import ru.hse.android.project.easyenglish.games.logic.WordChainLogic;
 
 /**
  * Network game to memorize English words and their spelling.
@@ -118,7 +118,7 @@ public class WordChainActivity extends AppCompatActivity {
     private String opponentWord = "";
 
     /** Logic part of the game. */
-    private WordChain wordChain;
+    private WordChainLogic wordChain;
 
     /** It is true iff player's layout is located in the up. */
     private boolean upDownState = false;
@@ -421,19 +421,19 @@ public class WordChainActivity extends AppCompatActivity {
             return;
         }
         int code = wordChain.isValidMove(word);
-        if (code != WordChain.RESULT_OK) {
+        if (code != WordChainLogic.RESULT_OK) {
             String message = "Error.";
             switch (code) {
-                case WordChain.RESULT_REPETITION:
+                case WordChainLogic.RESULT_REPETITION:
                     message = "Such word had been used.";
                     break;
-                case WordChain.RESULT_NOT_A_NOUN:
+                case WordChainLogic.RESULT_NOT_A_NOUN:
                     message = "Word is not a noun.";
                     break;
-                case WordChain.RESULT_EMPTY:
+                case WordChainLogic.RESULT_EMPTY:
                     message = "Word is empty";
                     break;
-                case WordChain.RESULT_WRONG_FIRST_LETTER:
+                case WordChainLogic.RESULT_WRONG_FIRST_LETTER:
                     message = "Wrong first letter.";
                     break;
             }
@@ -622,7 +622,7 @@ public class WordChainActivity extends AppCompatActivity {
     private void guestCreateMatch(TurnBasedMatch match) {
         isGame = true;
         changeLayout();
-        wordChain = new WordChain();
+        wordChain = new WordChainLogic();
         wordChain.setTurn(false);
         updateMatch(match);
     }
@@ -631,7 +631,7 @@ public class WordChainActivity extends AppCompatActivity {
     private void startMatch(TurnBasedMatch match) {
         isGame = true;
         changeLayout();
-        wordChain = new WordChain();
+        wordChain = new WordChainLogic();
         wordChain.setTurn(true);
         mMatch = match;
         opponentWord = "";

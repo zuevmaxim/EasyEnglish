@@ -17,4 +17,13 @@ public class Phrase {
     public String getEnglish() {
         return english;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Phrase) {
+            Phrase other = (Phrase) obj;
+            return russian.equals(other.russian) && english.equals(other.english);
+        }
+        return false;
+    }
 }

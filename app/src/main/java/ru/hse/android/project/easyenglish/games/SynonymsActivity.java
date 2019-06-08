@@ -25,6 +25,8 @@ import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 import ru.hse.android.project.easyenglish.controllers.WordStorage;
+import ru.hse.android.project.easyenglish.games.logic.MatchingLogic;
+import ru.hse.android.project.easyenglish.games.logic.SynonymsLogic;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
@@ -33,10 +35,9 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class SynonymsActivity extends AppCompatActivity {
 
-    /** Max number of possible answers(synonyms) for English task word. */
-    private static final int SIZE = 5;
+    private final SynonymsLogic logic = new SynonymsLogic();
 
-    private final Random random = new Random();
+    private Word wordTask;
 
     /** Create game screen with with English word task and list of possible synonyms. */
     @RequiresApi(api = Build.VERSION_CODES.O)
@@ -45,57 +46,23 @@ public class SynonymsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_synonims);
 
-        final WordStorage wordStorage = MainController.getGameController().getWordStorage();
-        final List<Word> words = wordStorage.getSetOfWords(SIZE);
-
-        Word wordTask = words.remove(0);
-        final TextView wordTaskText = findViewById(R.id.word_task_text);
-        wordTaskText.setText(wordTask.getEnglish());
-
-        final List<String> synonyms = TranslateController.getSynonyms(wordTask.getEnglish());
-        final List<String> notSynonyms = new ArrayList<>();
-
-        if (synonyms == null) {
+        if (!logic.update()) {
             Intent intent = new Intent();
             setResult(GameActivity.RESULT_REMOVE_SYNONYMS, intent);
             finish();
             return;
         }
 
-        for (Word word : words) {
-            if (!synonyms.contains(word.getEnglish())) {
-                notSynonyms.add(word.getEnglish());
-            }
-        }
+        wordTask = logic.getWordTask();
+        final TextView wordTaskText = findViewById(R.id.word_task_text);
+        wordTaskText.setText(wordTask.getEnglish());
 
-        final List<String> boxedWords = new ArrayList<>();
-        final List<String> boxedSynonyms = new ArrayList<>();
-
-        int synonymsCounter = random.nextInt(3) + 1;
-        while (synonyms.size() > 0 && synonymsCounter > 0) {
-            int nextSynonym = random.nextInt(synonyms.size());
-            String synonym = synonyms.remove(nextSynonym);
-            boxedSynonyms.add(synonym);
-            boxedWords.add(synonym);
-            synonymsCounter--;
-        }
-
-        int notSynonymsCounter = SIZE - boxedWords.size();
-        while (notSynonyms.size() > 0 && notSynonymsCounter > 0) {
-            int nextNotSynonym = random.nextInt(notSynonyms.size());
-            boxedWords.add(notSynonyms.remove(nextNotSynonym));
-            notSynonymsCounter--;
-        }
-
-        int size = boxedWords.size();
-        String wrongAnswer = boxedWords.get(size - 1);
-        Collections.shuffle(boxedWords);
-
+        final List<String> possibleAnswers = logic.getPossibleAnswers();
         LinearLayout checkBoxesLayout = findViewById(R.id.check_boxes_layout);
-        final CheckBox[] checkBoxes = new CheckBox[size];
-        for (int i = 0; i < size; i++) {
+        final CheckBox[] checkBoxes = new CheckBox[possibleAnswers.size()];
+        for (int i = 0; i < possibleAnswers.size(); i++) {
             checkBoxes[i]  = new CheckBox(this);
-            checkBoxes[i].setText(boxedWords.get(i));
+            checkBoxes[i].setText(possibleAnswers.get(i));
             checkBoxes[i].setTextColor(Color.parseColor("#CB000000"));
             checkBoxesLayout.addView(checkBoxes[i]);
         }
@@ -103,7 +70,7 @@ public class SynonymsActivity extends AppCompatActivity {
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
             List<String> checkedSynonyms = Arrays.stream(checkBoxes).filter(CompoundButton::isChecked).map(checkBox -> checkBox.getText().toString()).collect(Collectors.toList());
-            checkAnswer(checkedSynonyms, boxedSynonyms, wordTask);
+            checkAnswer(checkedSynonyms);
         });
 
         Button rulesButton = findViewById(R.id.rules_button);
@@ -121,7 +88,7 @@ public class SynonymsActivity extends AppCompatActivity {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
             args.putString("title", this.getString(R.string.synonyms));
-            args.putString("message", wrongAnswer + " " + this.getString(R.string.is_wrong_answer));
+            args.putString("message", logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
             hints.show(getSupportFragmentManager(), "hints");
         });
@@ -137,21 +104,19 @@ public class SynonymsActivity extends AppCompatActivity {
 
     /** Check if given answer equals to model and send report to GameActivity. */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void checkAnswer(List<String> givenAnswer, List<String> modelAnswer, Word wordTask) {
-        boolean result = givenAnswer.size() == modelAnswer.size();
-        for (String word : givenAnswer) {
-            result &= modelAnswer.contains(word);
-        }
+    private void checkAnswer(List<String> givenAnswer) {
+        boolean result = logic.checkAnswer(givenAnswer);
+        List<String> answer = logic.getAnswer();
         MainController.getGameController().saveWordResult(wordTask, result);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
-        String answer;
-        if (modelAnswer.size() == 0) {
-            answer = "There was no synonyms for word " + wordTask.getEnglish() + ".";
+        String answerText;
+        if (answer.size() == 0) {
+            answerText = "There was no synonyms for word " + wordTask.getEnglish() + ".";
         } else {
-            answer = wordTask.getEnglish() + " - " + String.join(", ", modelAnswer);
+            answerText = wordTask.getEnglish() + " - " + String.join(", ", answer);
         }
-        intent.putExtra("word", answer);
+        intent.putExtra("word", answerText);
         setResult(RESULT_OK, intent);
         finish();
     }
