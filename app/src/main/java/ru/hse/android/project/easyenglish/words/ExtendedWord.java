@@ -3,9 +3,19 @@ package ru.hse.android.project.easyenglish.words;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This is a word with extra information: transcription and part of speech.
+ * Appears in the wordInfo TranslateController method.
+ */
 public class ExtendedWord {
+
+    /** List of available parts of speech. */
     private final List<PartOfSpeech> partOfSpeech = new ArrayList<>();
+
+    /** The word itself. */
     private final String word;
+
+    /** Word's transcription. */
     private final String transcription;
 
     public ExtendedWord(String word, String transcription, List<PartOfSpeech> partOfSpeech) {
@@ -22,6 +32,7 @@ public class ExtendedWord {
         return transcription;
     }
 
+    /** Check if word could be a noun. */
     public boolean isNoun() {
         return partOfSpeech.contains(PartOfSpeech.NOUN);
     }

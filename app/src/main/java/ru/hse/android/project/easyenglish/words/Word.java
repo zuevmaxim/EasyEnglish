@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish.words;
 
+/** Word contains information about Russian and English writing and transcription. */
 public class Word {
     private String russian;
     private String english;
