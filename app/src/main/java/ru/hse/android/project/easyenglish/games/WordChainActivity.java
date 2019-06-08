@@ -1,10 +1,11 @@
-package ru.hse.android.project.easyenglish;
+package ru.hse.android.project.easyenglish.games;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -16,6 +17,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -48,7 +50,11 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.Pair;
+import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;
+import ru.hse.android.project.easyenglish.games.logic.WordChain;
 
 /**
  * Network game to memorize English words and their spelling.
@@ -88,6 +94,7 @@ public class WordChainActivity extends AppCompatActivity {
 
     private LinearLayout opponentLayout;
     private LinearLayout playerLayout;
+    private ProgressBar progressBar;
 
     /** Sign in code for onActivityResult. */
     private static final int RC_SIGN_IN = 42;
@@ -199,6 +206,16 @@ public class WordChainActivity extends AppCompatActivity {
             adb.show();
         });
 
+        Button rulesButton = findViewById(R.id.rules_button);
+        rulesButton.setOnClickListener(view -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString("title", "Word Chain Rules");
+            args.putString("message", getString(R.string.rules_word_chain_text));
+            rules.setArguments(args);
+            rules.show(getSupportFragmentManager(), "message");
+        });
+
         Button historyButton = findViewById(R.id.history_button);
         historyButton.setOnClickListener(view -> {
             AlertDialog.Builder adb = new AlertDialog.Builder(WordChainActivity.this);
@@ -223,6 +240,8 @@ public class WordChainActivity extends AppCompatActivity {
         mOpponentText = findViewById(R.id.opponent_word);
         mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
         mTurnTextView = findViewById(R.id.turn_status_text);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
 
         opponentLayout = findViewById(R.id.opponent_layout);
         playerLayout = findViewById(R.id.player_layout);
@@ -287,6 +306,7 @@ public class WordChainActivity extends AppCompatActivity {
             mDataView.setTextColor(Color.BLACK);
             opponentLayout.startAnimation(animationOpponentDown);
             playerLayout.startAnimation(animationPlayerUp);
+            new Handler().postDelayed(() -> progressBar.setVisibility(View.VISIBLE), 1000);
         }
     }
 
@@ -294,6 +314,7 @@ public class WordChainActivity extends AppCompatActivity {
     private void receiveAnswerAnimation() {
         if (upDownState) {
             upDownState = false;
+            progressBar.setVisibility(View.INVISIBLE);
             LinearLayout opponentLayout = findViewById(R.id.opponent_layout);
             LinearLayout playerLayout = findViewById(R.id.player_layout);
             animationPlayerDown.setFillAfter(true);

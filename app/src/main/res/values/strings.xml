@@ -108,5 +108,6 @@
     <string name="You">You</string>
     <string name="Opponent">Opponent</string>
     <string name="menu_option">⋮</string>
+    <string name="rules_word_chain_text">Two players come up with words that begin with the letter or letters that the previous word ended with. Words may not be repeated in the same game.</string>
 
 </resources>

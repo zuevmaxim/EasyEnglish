@@ -22,6 +22,11 @@ import java.util.Random;
 
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.games.ChooseDefinitionActivity;
+import ru.hse.android.project.easyenglish.games.LetterPuzzleActivity;
+import ru.hse.android.project.easyenglish.games.MatchingActivity;
+import ru.hse.android.project.easyenglish.games.SynonymsActivity;
+import ru.hse.android.project.easyenglish.games.WordPuzzleActivity;
 
 /**
  * GameActivity is common for all local games.
