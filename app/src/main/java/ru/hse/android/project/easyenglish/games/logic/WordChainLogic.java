@@ -11,7 +11,7 @@ import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 /** Word chain game logic. */
-public class WordChain {
+public class WordChainLogic {
     /** Turn == 1 iff it is player's turn. */
     private int turn = 0;
 
@@ -30,7 +30,7 @@ public class WordChain {
     /** Result word has been used. */
     public static final int RESULT_REPETITION = 1;
 
-    /** Result word is not a noun(or bad internet connection)*/
+    /** Result word is not a noun(or bad internet connection). */
     public static final int RESULT_NOT_A_NOUN = 2;
 
     /** Result empty word. */
