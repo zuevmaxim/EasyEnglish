@@ -62,6 +62,7 @@ public class LocalGamesTests {
     @Test
     public void chooseDefinitionTest() {
         ChooseDefinitionLogic game = new ChooseDefinitionLogic();
+        game.update();
         List<Word> possibleAnswers = game.getPossibleAnswers();
 
         for (Word word : possibleAnswers) {
@@ -85,6 +86,7 @@ public class LocalGamesTests {
     @Test
     public void letterPuzzleTest() {
         LetterPuzzleLogic game = new LetterPuzzleLogic();
+        game.update();
         Word answer = game.getAnswer();
         String shuffled = game.getShuffledAnswer();
         char hint = game.getHint();
@@ -106,6 +108,7 @@ public class LocalGamesTests {
     @Test
     public void matchingTest() {
         MatchingLogic game = new MatchingLogic();
+        game.update();
         List<Word> answer = game.getAnswer();
         Word hint = game.getHint();
         List<String> english = game.getShuffledEnglishWords();
@@ -117,6 +120,7 @@ public class LocalGamesTests {
     @Test
     public void wordPuzzleTest() {
         WordPuzzleLogic game = new WordPuzzleLogic();
+        game.update();
         Phrase answer = game.getAnswer();
         assertTrue(MainController.getGameController().getPhrasesController().getCurrentThemeList().contains(answer));
         List<String> shuffled = game.getShuffledAnswer();

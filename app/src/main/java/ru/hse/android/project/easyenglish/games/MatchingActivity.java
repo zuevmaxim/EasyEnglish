@@ -21,7 +21,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class MatchingActivity extends AppCompatActivity {
 
-    private final static MatchingLogic logic = new MatchingLogic();
+    private final MatchingLogic logic = new MatchingLogic();
 
     /** Create game screen with list of Russian words and list with shuffled English translations. */
     @Override

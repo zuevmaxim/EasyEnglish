@@ -21,7 +21,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class ChooseDefinitionActivity extends AppCompatActivity {
 
-    private final static ChooseDefinitionLogic logic = new ChooseDefinitionLogic();
+    private final ChooseDefinitionLogic logic = new ChooseDefinitionLogic();
 
     /** Create game screen with English word task and group of possible Russian translations. */
     @Override

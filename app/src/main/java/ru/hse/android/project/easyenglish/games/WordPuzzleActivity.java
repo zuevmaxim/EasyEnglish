@@ -28,7 +28,7 @@ import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
  */
 public class WordPuzzleActivity extends AppCompatActivity {
 
-    private final static WordPuzzleLogic logic = new WordPuzzleLogic();
+    private final WordPuzzleLogic logic = new WordPuzzleLogic();
 
     /** Create game screen with phrase with shuffled words. */
     @Override

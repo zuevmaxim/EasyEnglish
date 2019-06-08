@@ -30,11 +30,7 @@ public class MatchingLogic {
 
     private final Random random = new Random();
 
-    private final static WordStorage wordStorage = MainController.getGameController().getWordStorage();
-
-    public MatchingLogic() {
-        update();
-    }
+    private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
     /** Choose pairs of words and generate task. */
     public void update() {
@@ -66,14 +62,14 @@ public class MatchingLogic {
 
     /** Check if given answer is a right matching. */
     public boolean checkAnswer(List<String> givenAnswer) {
-        return (givenAnswer.equals(answer.stream().map(Word::getEnglish).collect(Collectors.toList())));
+        return givenAnswer.equals(answer.stream().map(Word::getEnglish).collect(Collectors.toList()));
     }
 
     /** Generate shuffled word list from given until lists are not equals. */
     private List<String> shuffleEnglishWords() {
         final List<String> englishWords = answer.stream().map(Word::getEnglish).collect(Collectors.toList());
         final List<String> shuffledEnglishWords = new ArrayList<>(englishWords);
-        while (englishWords.equals(shuffledEnglishWords)) {
+        while (englishWords.equals(shuffledEnglishWords) && englishWords.size() > 1) {
             Collections.shuffle(shuffledEnglishWords);
         }
         return shuffledEnglishWords;

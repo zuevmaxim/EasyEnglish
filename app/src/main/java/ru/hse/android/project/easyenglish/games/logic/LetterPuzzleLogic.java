@@ -22,10 +22,6 @@ public class LetterPuzzleLogic {
     /** Hint for this game - first letter. */
     private char hint;
 
-    public LetterPuzzleLogic() {
-        update();
-    }
-
     /** Get new answer. */
     public void update() {
         answer = MainController.getGameController().getWordStorage().nextWord();
@@ -68,7 +64,7 @@ public class LetterPuzzleLogic {
 
     /** Check if given answer equals to model and set statistic. */
     public boolean checkAnswer(String givenAnswer) {
-        boolean result = (givenAnswer.equals(answer.getEnglish()));
+        boolean result = givenAnswer.equals(answer.getEnglish());
         MainController.getGameController().saveWordResult(answer, result);
         return result;
     }

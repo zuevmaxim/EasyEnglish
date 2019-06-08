@@ -24,11 +24,7 @@ public class WordPuzzleLogic {
     /** Shuffled words in phrase task. */
     private List<String> shuffledAnswer;
 
-    private final static PhraseStorage storage = MainController.getGameController().getPhraseStorage();
-
-    public WordPuzzleLogic() {
-        update();
-    }
+    private final PhraseStorage storage = MainController.getGameController().getPhraseStorage();
 
     /** Choose new phrase and generate task. */
     public void update() {

@@ -35,7 +35,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class SynonymsActivity extends AppCompatActivity {
 
-    private final static SynonymsLogic logic = new SynonymsLogic();
+    private final SynonymsLogic logic = new SynonymsLogic();
 
     private Word wordTask;
 

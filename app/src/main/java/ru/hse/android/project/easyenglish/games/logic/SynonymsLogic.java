@@ -29,11 +29,7 @@ public class SynonymsLogic {
 
     private final Random random = new Random();
 
-    private final static WordStorage wordStorage = MainController.getGameController().getWordStorage();
-
-    public SynonymsLogic() {
-        update();
-    }
+    private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
     /** Choose new word and possible answers for it. */
     public boolean update() {

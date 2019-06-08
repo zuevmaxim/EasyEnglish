@@ -30,10 +30,6 @@ public class ChooseDefinitionLogic {
 
     private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
-    public ChooseDefinitionLogic() {
-        update();
-    }
-
     /** Choose new word and possible answers for it. */
     public void update() {
         possibleAnswers = wordStorage.getSetOfWords(SIZE);
@@ -65,7 +61,7 @@ public class ChooseDefinitionLogic {
 
     /** Check if given answer equals to actual answer and set statistics. */
     public boolean checkAnswer(Word givenAnswer) {
-        boolean result = (givenAnswer.equals(answer));
+        boolean result = givenAnswer.equals(answer);
         MainController.getGameController().saveWordResult(answer, result);
         return result;
     }

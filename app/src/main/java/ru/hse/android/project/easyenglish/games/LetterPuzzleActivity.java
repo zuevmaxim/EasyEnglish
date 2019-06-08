@@ -17,7 +17,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class LetterPuzzleActivity extends AppCompatActivity {
 
-    private final static LetterPuzzleLogic logic = new LetterPuzzleLogic();
+    private final LetterPuzzleLogic logic = new LetterPuzzleLogic();
 
     private Word answer;
 
