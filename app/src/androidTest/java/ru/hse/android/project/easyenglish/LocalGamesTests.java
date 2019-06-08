@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.controllers.GameController;
@@ -35,6 +36,11 @@ import static org.junit.Assert.*;
 @RunWith(AndroidJUnit4.class)
 public class LocalGamesTests {
 
+    private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
+    private static final Random RANDOM = new Random();
+    private String suffix = "";
+    private static final int SUFFIX_LENGTH = 20;
+
     private List<Word> testList;
     private static final String TEST_LIST = "LocalGameTest";
 
@@ -42,14 +48,17 @@ public class LocalGamesTests {
     public void initMainController() throws WrongListNameException, WrongWordException {
         Context appContext = InstrumentationRegistry.getTargetContext();
         MainController.init(appContext);
+        for (int i = 0; i < SUFFIX_LENGTH; i++) {
+            suffix += LETTERS.charAt(RANDOM.nextInt(LETTERS.length()));
+        }
 
         testList = new ArrayList<>(Arrays.asList(
-                new Word ("первоеслово", "firstword"),
-                new Word ("второеслово", "secondword"),
-                new Word ("третьеслово", "thirdword"),
-                new Word ("четвертоеслово", "fourthword"),
-                new Word ("пятоеслово", "fifthword"),
-                new Word ("шестоеслово", "sixthword")));
+                new Word ("первоеслово", "firstword" + suffix),
+                new Word ("второеслово", "secondword" + suffix),
+                new Word ("третьеслово", "thirdword" + suffix),
+                new Word ("четвертоеслово", "fourthword" + suffix),
+                new Word ("пятоеслово", "fifthword" + suffix),
+                new Word ("шестоеслово", "sixthword" + suffix)));
         MainController.getGameController().getWordListController().addNewWordList(TEST_LIST, testList);
         MainController.getGameController().getWordListController().setCurrentWordList(TEST_LIST);
     }
@@ -57,6 +66,10 @@ public class LocalGamesTests {
     @After
     public void deleteTestList() throws WrongListNameException {
         MainController.getGameController().getWordListController().deleteWordList(TEST_LIST);
+        for (Word word : testList) {
+            MainController.getGameController().getWordFactory().deleteWord(word);
+            assertFalse(MainController.getGameController().getWordFactory().containsWord(word));
+        }
     }
 
     @Test

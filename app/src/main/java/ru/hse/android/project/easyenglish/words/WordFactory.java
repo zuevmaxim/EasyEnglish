@@ -248,4 +248,10 @@ public class WordFactory extends SQLiteAssetHelper {
         cursor.close();
         return result;
     }
+
+    public void deleteWord(Word word) {
+        try {
+            getWritableDatabase().execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordId(word));
+        } catch (WrongWordException ignore) { }
+    }
 }
