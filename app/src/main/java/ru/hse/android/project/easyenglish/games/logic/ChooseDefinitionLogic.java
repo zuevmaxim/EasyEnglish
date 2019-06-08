@@ -28,7 +28,7 @@ public class ChooseDefinitionLogic {
 
     private final Random random = new Random();
 
-    private final static WordStorage wordStorage = MainController.getGameController().getWordStorage();
+    private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
     public ChooseDefinitionLogic() {
         update();

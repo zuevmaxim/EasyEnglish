@@ -41,12 +41,11 @@ public class SynonymsLogic {
         wordTask = words.remove(0);
 
         answer = TranslateController.getSynonyms(wordTask.getEnglish());
-        answer = answer.subList(0, Math.min(random.nextInt(3) + 1, answer.size()));
-        possibleAnswers = new ArrayList<>(answer);
-
         if (answer == null) {
             return false;
         }
+        answer = answer.subList(0, Math.min(random.nextInt(3) + 1, answer.size()));
+        possibleAnswers = new ArrayList<>(answer);
 
         for (Word word : words) {
             if (possibleAnswers.size() > SIZE) {
