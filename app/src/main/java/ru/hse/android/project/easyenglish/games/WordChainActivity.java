@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -50,7 +51,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.adapters.WordChainHistoryAdapter;

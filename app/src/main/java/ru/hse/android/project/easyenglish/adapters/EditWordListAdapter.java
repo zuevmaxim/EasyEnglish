@@ -7,6 +7,7 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +21,6 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import ru.hse.android.project.easyenglish.Pair;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
@@ -65,7 +65,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, @SuppressLint("RecyclerView") int position) {
         viewHolder.id = position;
-        final Word word = words.get(viewHolder.getId()).getKey();
+        final Word word = words.get(viewHolder.getId()).first;
 
         if (!viewHolderHashMap.containsKey(viewHolder.getId())) {
             viewHolderHashMap.put(viewHolder.getId(), new ViewHolderHolder());
@@ -78,7 +78,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         viewHolder.englishWordText.setHint("English");
         viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcher);
         viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcher);
-        final AUTO_CHANGES type =  words.get(viewHolder.getId()).getValue();
+        final AUTO_CHANGES type =  words.get(viewHolder.getId()).second;
         words.set(viewHolder.getId(), new Pair<>(word, AUTO_CHANGES.SET_UP));
         viewHolder.russianWordText.setText(word.getRussian());
         viewHolder.englishWordText.setText(word.getEnglish());
@@ -155,9 +155,9 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
         /** Construct watchers if there are none. */
         private void init() {
-            Word word = words.get(viewHolder.getId()).getKey();
+            Word word = words.get(viewHolder.getId()).first;
             Consumer<AUTO_CHANGES> setAutoChanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
-            Supplier<AUTO_CHANGES> getAutoChanges = () -> words.get(viewHolder.getId()).getValue();
+            Supplier<AUTO_CHANGES> getAutoChanges = () -> words.get(viewHolder.getId()).second;
             russianTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
