@@ -1,11 +1,10 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -30,10 +29,19 @@ import ru.hse.android.project.easyenglish.words.PartOfSpeech;
  * Uses Yandex.Translate API and Yandex.Dictionary API.
  */
 public class TranslateController {
+
     /** Timeout for requests. All methods could return null if an error occurred or timeout. */
     private static final int TIMEOUT = 1000;
+
     /** Timeout for synonyms game. It is longer in order to load game. */
     private static final int SYNONYMS_TIMEOUT = 2000;
+
+    /** English to russian translation. */
+    private static final String englishToRussian = "en-ru";
+
+    /** English to russian translation. */
+    private static final String russianToEnglish = "ru-en";
+
 
     /**
      * Simple translation method. Takes first translation from yandex list.
@@ -43,7 +51,7 @@ public class TranslateController {
      * @return translation or null if error occurred
      */
     @Nullable
-    private static String translate(@NotNull String word, @NotNull TranslateDirection languagePair, int timeout) {
+    private static String translate(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DicResult dicResult = translateTotal(word, languagePair, timeout);
         String result = null;
         if (dicResult != null
@@ -64,7 +72,7 @@ public class TranslateController {
      * @return list of synonyms
      */
     @Nullable
-    public static List<String> getSynonyms(@NotNull String word) {
+    public static List<String> getSynonyms(@NonNull String word) {
         String translation = translate(word, TranslateDirection.EN_RU, SYNONYMS_TIMEOUT);
         if (translation == null) {
             return null;
@@ -77,7 +85,7 @@ public class TranslateController {
      * @return list of synonyms of English word
      */
     @Nullable
-    private static List<String> findSynonymsInTranslation(@NotNull String russian, @NotNull String english, int timeout) {
+    private static List<String> findSynonymsInTranslation(@NonNull String russian, @NonNull String english, int timeout) {
         DicResult dicResult = translateTotal(russian, TranslateDirection.RU_EN, timeout);
         if (dicResult == null) {
             return null;
@@ -101,20 +109,20 @@ public class TranslateController {
 
     /** Get total request for a word. */
     @Nullable
-    public static DicResult translateTotal(@NotNull String word, @NotNull TranslateDirection languagePair) {
+    public static DicResult translateTotal(@NonNull String word, @NonNull TranslateDirection languagePair) {
         return translateTotal(word, languagePair, TIMEOUT);
     }
 
     /** Get total request for a word. */
     @Nullable
-    private static DicResult translateTotal(@NotNull String word, @NotNull TranslateDirection languagePair, int timeout) {
+    private static DicResult translateTotal(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DictionaryTask translatorTask = new DictionaryTask();
         switch (languagePair) {
             case EN_RU:
-                translatorTask.execute(word, "en-ru");
+                translatorTask.execute(word, englishToRussian);
                 break;
             case RU_EN:
-                translatorTask.execute(word, "ru-en");
+                translatorTask.execute(word, russianToEnglish);
                 break;
         }
         try {
@@ -151,8 +159,8 @@ public class TranslateController {
     }
 
     /** Get word transcription and part of speech. */
-    @NotNull
-    public static ExtendedWord wordInfo(@NotNull String word) {
+    @NonNull
+    public static ExtendedWord wordInfo(@NonNull String word) {
         DicResult dicResult = translateTotal(word, TranslateDirection.EN_RU);
         String transcription = "";
         List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
@@ -173,6 +181,30 @@ public class TranslateController {
             }
         }
         return new ExtendedWord(word, transcription, partOfSpeechList);
+    }
+
+    /**
+     * Translate method uses Yandex.Translate API.
+     * It is faster than getting the whole word information from Yandex.Dictionary.
+     */
+    @NonNull
+    public static String fastTranslate(@NonNull String word, @NonNull TranslateDirection languagePair) {
+        TranslatorTask translatorTask = new TranslatorTask();
+        switch (languagePair) {
+            case EN_RU:
+                translatorTask.execute(word, "en-ru");
+                break;
+            case RU_EN:
+                translatorTask.execute(word, "ru-en");
+                break;
+        }
+        String result = null;
+        try {
+            result = translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
+        } catch (InterruptedException | ExecutionException | TimeoutException e) {
+            e.printStackTrace();
+        }
+        return result == null ? "" : result;
     }
 
     /** Task for making request to Yandex.Dictionary. */
@@ -219,67 +251,6 @@ public class TranslateController {
         }
     }
 
-    /** Dictionary result as it presented in Yandex.Dictionary answer. */
-    public static class DicResult {
-        public Definition[] def ;
-
-        public static class Definition {
-            public String text;
-            public String pos;
-            public String ts;
-            public String gen;
-            public Translation[] tr;
-        }
-
-        public static class Translation {
-            public String pos;
-            public String gen;
-            public String text;
-            public Synonym[] syn;
-            public Meaning[] mean;
-            public Example[] ex;
-        }
-
-        public static class Synonym {
-            public String text;
-            public String pos;
-            public String gen;
-        }
-
-        public static class Meaning {
-            public String text;
-        }
-
-        public static class Example {
-            public String text;
-            public Translation[] tr;
-        }
-    }
-
-    /**
-     * Translate method uses Yandex.Translate API.
-     * It is faster than getting the whole word information from Yandex.Dictionary.
-     */
-    @Nullable
-    public static String fastTranslate(@NotNull String word, @NotNull TranslateDirection languagePair) {
-        TranslatorTask translatorTask = new TranslatorTask();
-        switch (languagePair) {
-            case EN_RU:
-                translatorTask.execute(word, "en-ru");
-                break;
-            case RU_EN:
-                translatorTask.execute(word, "ru-en");
-                break;
-        }
-        String result = null;
-        try {
-            result = translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
-        } catch (InterruptedException | ExecutionException | TimeoutException e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     /** Task for making request to Yandex.Translate. */
     static class TranslatorTask extends AsyncTask<String, Void, String> {
         @Nullable
@@ -319,6 +290,43 @@ public class TranslateController {
                 return result.substring(2, result.length() - 2);
             }
             return null;
+        }
+    }
+
+    /** Dictionary result as it presented in Yandex.Dictionary answer. */
+    public static class DicResult {
+        public Definition[] def ;
+
+        public static class Definition {
+            public String text;
+            public String pos;
+            public String ts;
+            public String gen;
+            public Translation[] tr;
+        }
+
+        public static class Translation {
+            public String pos;
+            public String gen;
+            public String text;
+            public Synonym[] syn;
+            public Meaning[] mean;
+            public Example[] ex;
+        }
+
+        public static class Synonym {
+            public String text;
+            public String pos;
+            public String gen;
+        }
+
+        public static class Meaning {
+            public String text;
+        }
+
+        public static class Example {
+            public String text;
+            public Translation[] tr;
         }
     }
 

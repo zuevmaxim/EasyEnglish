@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".games.MatchingActivity">
+    tools:context=".ui.games.MatchingActivity">
 
     <TextView
         android:id="@+id/textView"
@@ -46,7 +46,7 @@
                 android:layout_weight="1"
                 tools:ignore="NestedWeights" />
 
-            <ru.hse.android.project.easyenglish.DragAndDropListView
+            <ru.hse.android.project.easyenglish.ui.views.DragAndDropListView
                 android:layout_marginTop="15dp"
                 android:id="@+id/matching_drag_and_drop_list"
                 android:layout_width="match_parent"

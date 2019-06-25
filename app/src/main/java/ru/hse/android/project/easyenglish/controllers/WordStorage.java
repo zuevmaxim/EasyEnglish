@@ -1,6 +1,6 @@
 package ru.hse.android.project.easyenglish.controllers;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
 
 /**
  * WordStorage contains current word list.
@@ -16,6 +15,11 @@ import ru.hse.android.project.easyenglish.words.WordFactory;
  */
 public class WordStorage {
     private static final Random RANDOM = new Random();
+
+    /** Words for error Word with error text. */
+    private static final String russianErrorText = "ошибка";
+    private static final String englishErrorText = "error";
+
 
     /** Current list of words. */
     private List<Word> words = new ArrayList<>();
@@ -34,7 +38,7 @@ public class WordStorage {
      * Get next word in a random order.
      * Chooses random word or a word with the worst statistics.
      */
-    @NotNull
+    @NonNull
     public Word nextWord() {
         Word word1 = words.get(i);
         Word word2 = getMinimal();
@@ -57,7 +61,7 @@ public class WordStorage {
      * @param number requested length of list
      * @return list of words
      */
-    @NotNull
+    @NonNull
     public List<Word> getSetOfWords(int number) {
         Word min = nextWord();
         if (number >= words.size()) {
@@ -84,7 +88,7 @@ public class WordStorage {
     }
 
     /** Find word with the worst statistics. */
-    @NotNull
+    @NonNull
     private Word getMinimal() {
         List<Word> shuffled = new ArrayList<>(words);
         Collections.shuffle(shuffled);
@@ -102,6 +106,6 @@ public class WordStorage {
             }
             double result = errorA / totalA - errorB / totalB;
             return result == 0 ? 0 : (result < 0 ? -1 : 1);
-        }).orElse(new Word("ошибка", "error"));
+        }).orElse(new Word(russianErrorText, englishErrorText));
     }
 }

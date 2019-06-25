@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.words;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,16 +20,18 @@ public class ExtendedWord {
     /** Word's transcription. */
     private final String transcription;
 
-    public ExtendedWord(String word, String transcription, List<PartOfSpeech> partOfSpeech) {
+    public ExtendedWord(@NonNull String word, @NonNull String transcription, @NonNull List<PartOfSpeech> partOfSpeech) {
         this.word = word;
         this.transcription = transcription;
         this.partOfSpeech.addAll(partOfSpeech);
     }
 
+    @NonNull
     public String getWord() {
         return word;
     }
 
+    @NonNull
     public String getTranscription() {
         return transcription;
     }

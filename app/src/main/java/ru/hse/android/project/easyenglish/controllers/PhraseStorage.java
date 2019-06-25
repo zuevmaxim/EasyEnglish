@@ -1,6 +1,6 @@
 package ru.hse.android.project.easyenglish.controllers;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +27,7 @@ public class PhraseStorage {
     }
 
     /** Get next phrase. */
-    @NotNull
+    @NonNull
     public Phrase nextPhrase() {
         Phrase phrase = phrases.get(i);
         i++;

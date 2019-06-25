@@ -11,25 +11,25 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".games.SynonymsActivity"
+        <activity android:name=".ui.games.SynonymsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".ChoosePhraseListActivity"
+        <activity android:name=".ui.ChoosePhraseListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".games.WordPuzzleActivity"
+        <activity android:name=".ui.games.WordPuzzleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".games.MatchingActivity"
+        <activity android:name=".ui.games.MatchingActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".EditListActivity"
+        <activity android:name=".ui.EditListActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".LearnWordsActivity"
+        <activity android:name=".ui.LearnWordsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".WordListEditorActivity"
+        <activity android:name=".ui.WordListEditorActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".games.ChooseDefinitionActivity"
+        <activity android:name=".ui.games.ChooseDefinitionActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GameActivity"
+        <activity android:name=".ui.GameActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".MainMenuActivity"
+        <activity android:name=".ui.menues.MainMenuActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,17 +37,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".games.LetterPuzzleActivity"
+        <activity android:name=".ui.games.LetterPuzzleActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".games.WordChainActivity"
+        <activity android:name=".ui.games.WordChainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".DictionaryActivity"
+        <activity android:name=".ui.DictionaryActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".StatisticsActivity"
+        <activity android:name=".ui.StatisticsActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".LocalGamesMenuActivity"
+        <activity android:name=".ui.menues.LocalGamesMenuActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GamesMenuActivity"
+        <activity android:name=".ui.menues.GamesMenuActivity"
             android:screenOrientation="portrait" />
 
         <meta-data

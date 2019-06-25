@@ -2,10 +2,9 @@ package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,14 +31,14 @@ public class PhrasesController extends SQLiteAssetHelper {
      * Constructor loads database if needed
      * and upgrade it if application reinstalled and database version has changed.
      */
-    PhrasesController(@NotNull Context context) {
+    PhrasesController(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         setForcedUpgrade();
         updateCurrentTheme();
     }
 
     /** Get the name of the current phrases list. */
-    @NotNull
+    @NonNull
     public String getCurrentTheme() {
         return currentTheme;
     }
@@ -59,7 +58,7 @@ public class PhrasesController extends SQLiteAssetHelper {
     }
 
     /** Set new current theme. And update phrases storage. */
-    public void setCurrentTheme(@NotNull String theme) {
+    public void setCurrentTheme(@NonNull String theme) {
         getWritableDatabase().execSQL("UPDATE " + THEMES_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentTheme + "'");
         getWritableDatabase().execSQL("UPDATE " + THEMES_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + theme + "'");
         currentTheme = theme;
@@ -67,7 +66,7 @@ public class PhrasesController extends SQLiteAssetHelper {
     }
 
     /** Get a list of phrases from current list. */
-    @NotNull
+    @NonNull
     public List<Phrase> getCurrentThemeList() {
         List<Phrase> result = new ArrayList<>();
         String[] columns = {RUSSIAN_COLUMN, ENGLISH_COLUMN};
@@ -84,7 +83,7 @@ public class PhrasesController extends SQLiteAssetHelper {
     }
 
     /** Get a list of names of phrases lists. */
-    @NotNull
+    @NonNull
     public List<String> getThemesList() {
         List<String> result = new ArrayList<>();
         String[] columns = {NAME_COLUMN};
