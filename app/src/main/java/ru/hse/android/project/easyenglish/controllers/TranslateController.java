@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish.controllers;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -21,6 +22,7 @@ import java.util.concurrent.TimeoutException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.words.ExtendedWord;
 import ru.hse.android.project.easyenglish.words.PartOfSpeech;
 
@@ -35,6 +37,23 @@ public class TranslateController {
 
     /** Timeout for synonyms game. It is longer in order to load game. */
     private static final int SYNONYMS_TIMEOUT = 2000;
+
+    /** Yandex.Dictionary key for requests. */
+    private static String dictionaryKey;
+
+    /** Yandex.Translate key for requests. */
+    private static String translateKey;
+
+    static void init(Context context) throws IllegalStateException {
+        dictionaryKey = context.getString(R.string.yandex_dictionary_key);
+        translateKey = context.getString(R.string.yandex_translate_key);
+        if (dictionaryKey.startsWith("YOUR_")) {
+            throw new IllegalStateException(context.getString(R.string.dictionary_key_error));
+        }
+        if (translateKey.startsWith("YOUR_")) {
+            throw new IllegalStateException(context.getString(R.string.translate_key_error));
+        }
+    }
 
     /**
      * Simple translation method. Takes first translation from yandex list.
@@ -200,9 +219,8 @@ public class TranslateController {
             if (textToBeTranslated.isEmpty()) {
                 return null;
             }
-            String yandexKey = "dict.1.1.20190518T080755Z.a6b5a273366a623b.3a3d0f3248d904cd51a43d31e4d86bb7890822a1";
             String yandexUrl = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
-                    + "?key=" + yandexKey
+                    + "?key=" + dictionaryKey
                     + "&lang=" + languagePair
                     + "&text=" + textToBeTranslated;
             StringBuilder stringBuilder = new StringBuilder();
@@ -240,9 +258,9 @@ public class TranslateController {
             if (textToBeTranslated.isEmpty()) {
                 return "";
             }
-            String yandexKey = "trnsl.1.1.20190312T113058Z.7f00768b72b9448a.44608f0910349bb5b3217137b8e605101fa2e17d";
+
             String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate"
-                    + "?key=" + yandexKey
+                    + "?key=" + translateKey
                     + "&text=" + textToBeTranslated
                     + "&lang=" + languagePair;
             StringBuilder stringBuilder = new StringBuilder();
