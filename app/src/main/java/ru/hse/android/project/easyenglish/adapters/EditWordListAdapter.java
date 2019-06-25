@@ -12,9 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 
-import org.jetbrains.annotations.NotNull;
-
-
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Consumer;
@@ -48,7 +45,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
      * @param context the activity to show list in
      * @param words list of words to show
      */
-    public EditWordListAdapter(@NotNull Context context, @NotNull List<Pair<Word, AUTO_CHANGES>> words) {
+    public EditWordListAdapter(@NonNull Context context, @NonNull List<Pair<Word, AUTO_CHANGES>> words) {
         this.words = words;
         layoutInflater = LayoutInflater.from(context);
     }
@@ -94,7 +91,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
     }
 
     /** Check data in the element and show error if is needed. */
-    private void setErrorIfWrongSpelling(@NotNull ViewHolder viewHolder) {
+    private void setErrorIfWrongSpelling(@NonNull ViewHolder viewHolder) {
         try {
             viewHolder.russianWordLayout.setError(null);
             MainController.getGameController().getWordFactory().checkRussianSpelling(viewHolder.russianWordText.getText().toString());
@@ -133,7 +130,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         private final TextInputLayout englishWordLayout;
 
         /** View holder constructor. Find all the elements of the item. */
-        private ViewHolder(@NotNull View view){
+        private ViewHolder(@NonNull View view){
             super(view);
             russianWordText = view.findViewById(R.id.russian_word_text);
             englishWordText = view.findViewById(R.id.english_word_text);
@@ -257,7 +254,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
             };
         }
 
-        private void setViewHolder(@NotNull ViewHolder viewHolder) {
+        private void setViewHolder(@NonNull ViewHolder viewHolder) {
             this.viewHolder = viewHolder;
         }
     }

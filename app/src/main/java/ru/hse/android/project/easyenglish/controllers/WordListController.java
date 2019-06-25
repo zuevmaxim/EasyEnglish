@@ -4,10 +4,9 @@ package ru.hse.android.project.easyenglish.controllers;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
 
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
-import org.jetbrains.annotations.NotNull;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -51,7 +50,7 @@ public class WordListController extends SQLiteAssetHelper {
      * Constructor loads database if needed
      * and upgrade it if application reinstalled and database version has changed.
      */
-    WordListController(@NotNull Context context) {
+    WordListController(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         setForcedUpgrade();
     }
@@ -61,7 +60,7 @@ public class WordListController extends SQLiteAssetHelper {
      * @param name list name
      * @return list id or 0 if no such list exists
      */
-    public int getWordListId(@NotNull String name) {
+    public int getWordListId(@NonNull  String name) {
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
@@ -92,8 +91,8 @@ public class WordListController extends SQLiteAssetHelper {
      * @param wordListName list name
      * @return table name
      */
-    @NotNull
-    private String getTableName(@NotNull String wordListName) {
+    @NonNull
+    private String getTableName(@NonNull String wordListName) {
         return TABLE + getWordListId(wordListName);
     }
 
@@ -174,7 +173,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Get a list of names of word lists. */
-    @NotNull
+    @NonNull
     public List<String> getWordLists() {
         List<String> lists = new ArrayList<>();
         String[] columns = {NAME_COLUMN};
@@ -188,14 +187,14 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Get words of the current word list. */
-    @NotNull
+    @NonNull
     public List<Word> getCurrentListWords() {
         return getListWords(getCurrentWordList());
     }
 
     /** Get words of the specified word list. */
-    @NotNull
-    public List<Word> getListWords(@NotNull String wordListName) {
+    @NonNull
+    public List<Word> getListWords(@NonNull String wordListName) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> words = new ArrayList<>();
         String[] columns = {WORD_ID_COLUMN};
@@ -210,7 +209,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Get name of the current word list. */
-    @NotNull
+    @NonNull
     public String getCurrentWordList() {
         String[] columns = {NAME_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -227,7 +226,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Set new current word list. */
-    public void setCurrentWordList(@NotNull String newListName) {
+    public void setCurrentWordList(@NonNull String newListName) {
         String currentListName = getCurrentWordList();
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newListName + "'");
@@ -240,7 +239,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Check if database contains such a list. */
-    private boolean containsWordList(@NotNull String listName) {
+    private boolean containsWordList(@NonNull String listName) {
         boolean result = false;
         Cursor cursor = getReadableDatabase()
                 .query(WORD_LISTS_TABLE_NAME,
@@ -260,7 +259,7 @@ public class WordListController extends SQLiteAssetHelper {
      * @param name list name to check
      * @throws WrongListNameException if list name is illegal
      */
-    private void checkListNameSpelling(@NotNull String name)throws WrongListNameException {
+    private void checkListNameSpelling(@NonNull String name)throws WrongListNameException {
        if (name.isEmpty()) {
             throw new WrongListNameException("Enter list name.");
        } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
@@ -269,7 +268,7 @@ public class WordListController extends SQLiteAssetHelper {
     }
 
     /** Add new list into database. */
-    private void addNewWordList(@NotNull String name) {
+    private void addNewWordList(@NonNull String name) {
         getWritableDatabase().execSQL(
                 "INSERT INTO " + WORD_LISTS_TABLE_NAME +
                         "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + name + "', 0)");
@@ -283,7 +282,7 @@ public class WordListController extends SQLiteAssetHelper {
      * Add new word into a list. Inserts a word into word database.
      * @throws WrongWordException if word is illegal
      */
-    private void addNewWordIntoList(@NotNull String listName, @NotNull Word word) throws WrongWordException {
+    private void addNewWordIntoList(@NonNull String listName, @NonNull Word word) throws WrongWordException {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         int wordId = wordFactory.addNewWord(word);
         getWritableDatabase().execSQL(
@@ -296,7 +295,7 @@ public class WordListController extends SQLiteAssetHelper {
      * @throws WrongListNameException if list name is illegal or such list already exists
      * @throws WrongWordException if some words in the list are illegal
      */
-    public void addNewWordList(@NotNull String listName, @NotNull List<Word> wordList) throws WrongListNameException, WrongWordException {
+    public void addNewWordList(@NonNull String listName, @NonNull  List<Word> wordList) throws WrongListNameException, WrongWordException {
         if (containsWordList(listName)) {
             throw new WrongListNameException("Such list already exists.");
         }
@@ -313,7 +312,7 @@ public class WordListController extends SQLiteAssetHelper {
      * If a list was current then random word list becomes current list.
      * @throws WrongListNameException if there is no such list
      */
-    public void deleteWordList(@NotNull String name) throws WrongListNameException {
+    public void deleteWordList(@NonNull String name) throws WrongListNameException {
         if (!containsWordList(name)) {
             throw new WrongListNameException("No such word list.");
         }
@@ -329,9 +328,9 @@ public class WordListController extends SQLiteAssetHelper {
      * @throws WrongWordException if some words in the list are illegal
      * @throws WrongListNameException if no such list exists or new list name is illegal
      */
-    public void changeWordList(@NotNull String name,
-                               @NotNull String newName,
-                               @NotNull List<Word> newWords)
+    public void changeWordList(@NonNull String name,
+                               @NonNull String newName,
+                               @NonNull List<Word> newWords)
             throws WrongWordException, WrongListNameException {
         if (!containsWordList(name)) {
             throw new WrongListNameException("No such word list " + name + ".");
@@ -354,7 +353,7 @@ public class WordListController extends SQLiteAssetHelper {
      * Check if word in a list a not illegal.
      * @throws WrongWordException if some words in the list are illegal
      */
-    private void checkWordsToAdd(@NotNull List<Word> words) throws WrongWordException {
+    private void checkWordsToAdd(@NonNull List<Word> words) throws WrongWordException {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> listWithoutDuplicates = words.stream().distinct().collect(Collectors.toList());
         if (!words.equals(listWithoutDuplicates)) {

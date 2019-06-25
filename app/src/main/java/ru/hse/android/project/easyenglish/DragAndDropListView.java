@@ -4,6 +4,7 @@ package ru.hse.android.project.easyenglish;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.PixelFormat;
+import android.support.annotation.NonNull;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -14,8 +15,6 @@ import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-
-import org.jetbrains.annotations.NotNull;
 
 import ru.hse.android.project.easyenglish.adapters.DragAndDropAdapter;
 
@@ -39,7 +38,7 @@ public class DragAndDropListView extends ListView {
     private int upScrollBounce;
     private int downScrollBounce;
 
-    public DragAndDropListView(@NotNull Context context, AttributeSet attrs) {
+    public DragAndDropListView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
@@ -48,7 +47,7 @@ public class DragAndDropListView extends ListView {
 
     /** Init after touch. */
     @Override
-    public boolean onInterceptTouchEvent(@NotNull MotionEvent ev) {
+    public boolean onInterceptTouchEvent(@NonNull MotionEvent ev) {
         if(ev.getAction() == MotionEvent.ACTION_DOWN){
             int x = (int)ev.getX();
             int y = (int)ev.getY();
@@ -77,7 +76,7 @@ public class DragAndDropListView extends ListView {
     }
 
     @Override
-    public boolean onTouchEvent(@NotNull MotionEvent ev) {
+    public boolean onTouchEvent(@NonNull MotionEvent ev) {
         if (dragImageView != null && dragPosition != INVALID_POSITION) {
             int action = ev.getAction();
             switch(action){
@@ -98,7 +97,7 @@ public class DragAndDropListView extends ListView {
     }
 
     /** Start moving. */
-    private void startDrag(@NotNull Bitmap bm, int y) {
+    private void startDrag(@NonNull Bitmap bm, int y) {
         stopDrag();
 
         windowParams = new WindowManager.LayoutParams();

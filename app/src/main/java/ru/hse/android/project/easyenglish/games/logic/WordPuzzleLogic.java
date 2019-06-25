@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -33,24 +35,28 @@ public class WordPuzzleLogic {
         shuffledAnswer = shuffleAnswer();
     }
 
+    @NonNull
     public List<String> getShuffledAnswer() {
         return shuffledAnswer;
     }
 
+    @NonNull
     public String getHint(int position) {
         return answer.get(position);
     }
 
+    @NonNull
     public Phrase getAnswer() {
         return phrase;
     }
 
     /** Check if words in given answer are in right order. */
-    public boolean checkAnswer(List<String> givenAnswer) {
+    public boolean checkAnswer(@NonNull List<String> givenAnswer) {
         return givenAnswer.equals(answer);
     }
 
     /** Generate shuffled word list from given until lists are not equals. */
+    @NonNull
     private List<String> shuffleAnswer() {
         List<String> shuffledWordResult = new ArrayList<>(answer);
         while (answer.equals(shuffledWordResult) && shuffledWordResult.size() > 1) {

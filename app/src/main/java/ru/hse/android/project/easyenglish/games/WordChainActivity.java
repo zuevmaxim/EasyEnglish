@@ -43,8 +43,6 @@ import com.google.android.gms.games.multiplayer.turnbased.TurnBasedMatchUpdateCa
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 
-import org.jetbrains.annotations.NotNull;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -407,8 +405,8 @@ public class WordChainActivity extends AppCompatActivity {
         changeLayout();
     }
 
-    @NotNull
-    private OnFailureListener createFailureListener(@NotNull final String string) {
+    @NonNull
+    private OnFailureListener createFailureListener(@NonNull final String string) {
         return e -> handleException(e, string);
     }
 
@@ -507,7 +505,7 @@ public class WordChainActivity extends AppCompatActivity {
     }
 
     /** Handle exception, show error. */
-    private void handleException(Exception exception, String details) {
+    private void handleException(Exception exception, @NonNull String details) {
         int status = 0;
 
         if (exception instanceof TurnBasedMultiplayerClient.MatchOutOfDateApiException) {
@@ -619,7 +617,7 @@ public class WordChainActivity extends AppCompatActivity {
     }
 
     /** Initiate game if match has been started by another user. */
-    private void guestCreateMatch(TurnBasedMatch match) {
+    private void guestCreateMatch(@NonNull TurnBasedMatch match) {
         isGame = true;
         changeLayout();
         wordChain = new WordChainLogic();
@@ -628,7 +626,7 @@ public class WordChainActivity extends AppCompatActivity {
     }
 
     /** Start match first time. */
-    private void startMatch(TurnBasedMatch match) {
+    private void startMatch(@NonNull TurnBasedMatch match) {
         isGame = true;
         changeLayout();
         wordChain = new WordChainLogic();
@@ -664,7 +662,7 @@ public class WordChainActivity extends AppCompatActivity {
      * Check match status and get answer.
      * Player wins, if opponent cancelled a match.
      */
-    private void updateMatch(TurnBasedMatch match) {
+    private void updateMatch(@NonNull TurnBasedMatch match) {
         Log.d(TAG, "Update match.");
         mMatch = match;
         String opDisplayName = mMatch.getParticipants().stream().filter(participant -> !participant.getParticipantId().equals(mMatch.getParticipantId(mPlayerId))).collect(Collectors.toList()).get(0).getDisplayName();
@@ -704,7 +702,7 @@ public class WordChainActivity extends AppCompatActivity {
     }
 
     /** Init match after connecting. */
-    private void onInitiateMatch(TurnBasedMatch match) {
+    private void onInitiateMatch(@NonNull TurnBasedMatch match) {
         if (match.getData() != null) {
             updateMatch(match);
             return;
@@ -712,7 +710,7 @@ public class WordChainActivity extends AppCompatActivity {
         startMatch(match);
     }
 
-    private void onUpdateMatch(TurnBasedMatch match) {
+    private void onUpdateMatch(@NonNull TurnBasedMatch match) {
         isDoingTurn = (match.getTurnStatus() == TurnBasedMatch.MATCH_TURN_STATUS_MY_TURN);
 
         if (isDoingTurn) {

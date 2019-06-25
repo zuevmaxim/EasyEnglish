@@ -33,7 +33,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
      * @param context the activity to show list in
      * @param words list of words to show
      */
-    public StatisticsAdapter(Context context, List<Word> words) {
+    public StatisticsAdapter(@NonNull Context context, @NonNull List<Word> words) {
         this.words = words;
         this.context = context;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -86,7 +86,7 @@ public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.Vi
         private final TextView rightScore;
         private final TextView wrongScore;
         private final TextView menuButton;
-        private ViewHolder(View view) {
+        private ViewHolder(@NonNull View view) {
             super(view);
             russianWordText = view.findViewById(R.id.russian_word_column);
             englishWordText = view.findViewById(R.id.english_word_column);

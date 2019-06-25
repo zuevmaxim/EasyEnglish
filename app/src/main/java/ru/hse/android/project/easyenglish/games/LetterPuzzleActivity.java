@@ -1,5 +1,6 @@
 package ru.hse.android.project.easyenglish.games;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Button;
@@ -69,7 +70,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
     }
 
     /** Check given answer and send report to GameActivity. */
-    private void checkAnswer(String givenAnswer) {
+    private void checkAnswer(@NonNull String givenAnswer) {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
         intent.putExtra("game result", result);

@@ -1,8 +1,7 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
-
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import ru.hse.android.project.easyenglish.words.Word;
 
@@ -10,7 +9,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  * Game controller contains all the other controllers(for databases) and storages.
  */
 public class GameController {
-    GameController(@NotNull Context context) {
+    GameController(@NonNull Context context) {
         wordFactory = new WordFactory(context);
         wordStorage = new WordStorage();
         wordListController = new WordListController(context);
@@ -45,36 +44,36 @@ public class GameController {
      * @param word word to update statistics
      * @param result game result
      */
-    public void saveWordResult(@NotNull Word word, boolean result) {
+    public void saveWordResult(@NonNull Word word, boolean result) {
         wordFactory.saveWordStatistic(word, result);
     }
 
     /** Reset all the statistics of the word. */
-    public void resetStatistics(@NotNull Word word) {
+    public void resetStatistics(@NonNull Word word) {
         wordFactory.resetStatistics(word);
     }
 
-    @NotNull
+    @NonNull
     public PhraseStorage getPhraseStorage() {
         return phaseStorage;
     }
 
-    @NotNull
+    @NonNull
     public PhrasesController getPhrasesController() {
         return phrasesController;
     }
 
-    @NotNull
+    @NonNull
     public WordFactory getWordFactory() {
         return wordFactory;
     }
 
-    @NotNull
+    @NonNull
     public WordListController getWordListController() {
         return wordListController;
     }
 
-    @NotNull
+    @NonNull
     public WordStorage getWordStorage() {
         return wordStorage;
     }

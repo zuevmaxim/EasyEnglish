@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
+import android.support.annotation.NonNull;
+
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -29,10 +31,12 @@ public class LetterPuzzleLogic {
         hint = generateHint();
     }
 
+    @NonNull
     public Word getAnswer() {
         return answer;
     }
 
+    @NonNull
     public String getShuffledAnswer() {
         return shuffledAnswer;
     }
@@ -42,6 +46,7 @@ public class LetterPuzzleLogic {
     }
 
     /** Generate word with shuffled letters from given until they are not equals. */
+    @NonNull
     private String shuffleLetters() {
         String word = answer.getEnglish();
         List<String> letters = Arrays.asList(word.split(""));
@@ -63,7 +68,7 @@ public class LetterPuzzleLogic {
     }
 
     /** Check if given answer equals to model and set statistic. */
-    public boolean checkAnswer(String givenAnswer) {
+    public boolean checkAnswer(@NonNull String givenAnswer) {
         boolean result = givenAnswer.equals(answer.getEnglish());
         MainController.getGameController().saveWordResult(answer, result);
         return result;

@@ -27,7 +27,7 @@ public class LearnWordsListAdapter extends RecyclerView.Adapter<LearnWordsListAd
      * @param context the activity to show list in
      * @param words list of words to show
      */
-    public LearnWordsListAdapter(Context context, List<Word> words) {
+    public LearnWordsListAdapter(@NonNull Context context, @NonNull List<Word> words) {
         this.words = words;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -61,7 +61,7 @@ public class LearnWordsListAdapter extends RecyclerView.Adapter<LearnWordsListAd
         private final TextView russianWordText;
         private final TextView englishWordText;
         private final TextView transcriptionText;
-        private ViewHolder(View view) {
+        private ViewHolder(@NonNull View view) {
             super(view);
             russianWordText = view.findViewById(R.id.russian_word_text);
             englishWordText = view.findViewById(R.id.english_word_text);

@@ -46,7 +46,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
      * @param context the activity to show list in
      * @param wordListNames list with word list names to show
      */
-    public WordListAdapter(Context context, List<String> wordListNames) {
+    public WordListAdapter(@NonNull Context context, @NonNull List<String> wordListNames) {
         this.wordListNames = wordListNames;
         this.context = context;
         layoutInflater = LayoutInflater.from(context);
@@ -136,7 +136,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         private final RadioButton selectionState;
 
         /** Set listeners to control selection of current word list */
-        private ViewHolder(View view){
+        private ViewHolder(@NonNull View view){
             super(view);
             menuButton = view.findViewById(R.id.option_menu);
             nameView = view.findViewById(R.id.list_name);

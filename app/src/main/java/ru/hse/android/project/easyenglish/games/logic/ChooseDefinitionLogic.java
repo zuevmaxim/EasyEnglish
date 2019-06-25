@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
+import android.support.annotation.NonNull;
+
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
@@ -38,19 +40,23 @@ public class ChooseDefinitionLogic {
         hint = generateHint();
     }
 
+    @NonNull
     public Word getAnswer() {
         return answer;
     }
 
+    @NonNull
     public List<Word> getPossibleAnswers() {
         return possibleAnswers;
     }
 
+    @NonNull
     public Word getHint() {
         return hint;
     }
 
     /** Generate hint - odd word. */
+    @NonNull
     private Word generateHint() {
         Word hint = possibleAnswers.get(0);
         while (!hint.equals(answer)) {
@@ -60,7 +66,7 @@ public class ChooseDefinitionLogic {
     }
 
     /** Check if given answer equals to actual answer and set statistics. */
-    public boolean checkAnswer(Word givenAnswer) {
+    public boolean checkAnswer(@NonNull Word givenAnswer) {
         boolean result = givenAnswer.equals(answer);
         MainController.getGameController().saveWordResult(answer, result);
         return result;

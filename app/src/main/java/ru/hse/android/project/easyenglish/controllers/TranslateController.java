@@ -1,11 +1,10 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.os.AsyncTask;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 
 import com.alibaba.fastjson.JSON;
-
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -43,7 +42,7 @@ public class TranslateController {
      * @return translation or null if error occurred
      */
     @Nullable
-    private static String translate(@NotNull String word, @NotNull TranslateDirection languagePair, int timeout) {
+    private static String translate(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DicResult dicResult = translateTotal(word, languagePair, timeout);
         String result = null;
         if (dicResult != null
@@ -64,7 +63,7 @@ public class TranslateController {
      * @return list of synonyms
      */
     @Nullable
-    public static List<String> getSynonyms(@NotNull String word) {
+    public static List<String> getSynonyms(@NonNull String word) {
         String translation = translate(word, TranslateDirection.EN_RU, SYNONYMS_TIMEOUT);
         if (translation == null) {
             return null;
@@ -77,7 +76,7 @@ public class TranslateController {
      * @return list of synonyms of English word
      */
     @Nullable
-    private static List<String> findSynonymsInTranslation(@NotNull String russian, @NotNull String english, int timeout) {
+    private static List<String> findSynonymsInTranslation(@NonNull String russian, @NonNull String english, int timeout) {
         DicResult dicResult = translateTotal(russian, TranslateDirection.RU_EN, timeout);
         if (dicResult == null) {
             return null;
@@ -101,13 +100,13 @@ public class TranslateController {
 
     /** Get total request for a word. */
     @Nullable
-    public static DicResult translateTotal(@NotNull String word, @NotNull TranslateDirection languagePair) {
+    public static DicResult translateTotal(@NonNull String word, @NonNull TranslateDirection languagePair) {
         return translateTotal(word, languagePair, TIMEOUT);
     }
 
     /** Get total request for a word. */
     @Nullable
-    private static DicResult translateTotal(@NotNull String word, @NotNull TranslateDirection languagePair, int timeout) {
+    private static DicResult translateTotal(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DictionaryTask translatorTask = new DictionaryTask();
         switch (languagePair) {
             case EN_RU:
@@ -151,8 +150,8 @@ public class TranslateController {
     }
 
     /** Get word transcription and part of speech. */
-    @NotNull
-    public static ExtendedWord wordInfo(@NotNull String word) {
+    @NonNull
+    public static ExtendedWord wordInfo(@NonNull String word) {
         DicResult dicResult = translateTotal(word, TranslateDirection.EN_RU);
         String transcription = "";
         List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
@@ -260,8 +259,8 @@ public class TranslateController {
      * Translate method uses Yandex.Translate API.
      * It is faster than getting the whole word information from Yandex.Dictionary.
      */
-    @Nullable
-    public static String fastTranslate(@NotNull String word, @NotNull TranslateDirection languagePair) {
+    @NonNull
+    public static String fastTranslate(@NonNull String word, @NonNull TranslateDirection languagePair) {
         TranslatorTask translatorTask = new TranslatorTask();
         switch (languagePair) {
             case EN_RU:
@@ -277,7 +276,7 @@ public class TranslateController {
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
             e.printStackTrace();
         }
-        return result;
+        return result == null ? "" : result;
     }
 
     /** Task for making request to Yandex.Translate. */

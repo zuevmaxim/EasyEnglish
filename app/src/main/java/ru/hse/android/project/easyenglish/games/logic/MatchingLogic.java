@@ -1,5 +1,7 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
+import android.support.annotation.NonNull;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -39,33 +41,39 @@ public class MatchingLogic {
         hint = generateHint();
     }
 
+    @NonNull
     public List<String> getRussianWords() {
         return answer.stream().map(Word::getRussian).collect(Collectors.toList());
     }
 
+    @NonNull
     public List<String> getShuffledEnglishWords() {
         return shuffledEnglishWords;
     }
 
+    @NonNull
     public Word getHint() {
         return hint;
     }
 
+    @NonNull
     public List<Word> getAnswer() {
         return answer;
     }
 
     /** Generate hint - right matched pair. */
+    @NonNull
     private Word generateHint() {
         return answer.get(random.nextInt(answer.size()));
     }
 
     /** Check if given answer is a right matching. */
-    public boolean checkAnswer(List<String> givenAnswer) {
+    public boolean checkAnswer(@NonNull List<String> givenAnswer) {
         return givenAnswer.equals(answer.stream().map(Word::getEnglish).collect(Collectors.toList()));
     }
 
     /** Generate shuffled word list from given until lists are not equals. */
+    @NonNull
     private List<String> shuffleEnglishWords() {
         final List<String> englishWords = answer.stream().map(Word::getEnglish).collect(Collectors.toList());
         final List<String> shuffledEnglishWords = new ArrayList<>(englishWords);

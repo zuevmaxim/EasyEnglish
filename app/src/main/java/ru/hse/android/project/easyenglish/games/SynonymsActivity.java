@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
@@ -59,6 +60,7 @@ public class SynonymsActivity extends AppCompatActivity {
 
         final List<String> possibleAnswers = logic.getPossibleAnswers();
         LinearLayout checkBoxesLayout = findViewById(R.id.check_boxes_layout);
+        assert possibleAnswers != null;
         final CheckBox[] checkBoxes = new CheckBox[possibleAnswers.size()];
         for (int i = 0; i < possibleAnswers.size(); i++) {
             checkBoxes[i]  = new CheckBox(this);
@@ -104,13 +106,14 @@ public class SynonymsActivity extends AppCompatActivity {
 
     /** Check if given answer equals to model and send report to GameActivity. */
     @RequiresApi(api = Build.VERSION_CODES.O)
-    private void checkAnswer(List<String> givenAnswer) {
+    private void checkAnswer(@NonNull List<String> givenAnswer) {
         boolean result = logic.checkAnswer(givenAnswer);
         List<String> answer = logic.getAnswer();
         MainController.getGameController().saveWordResult(wordTask, result);
         Intent intent = new Intent();
         intent.putExtra("game result", result);
         String answerText;
+        assert answer != null;
         if (answer.size() == 0) {
             answerText = "There was no synonyms for word " + wordTask.getEnglish() + ".";
         } else {

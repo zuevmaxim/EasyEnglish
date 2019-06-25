@@ -2,6 +2,7 @@ package ru.hse.android.project.easyenglish.games;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.ListView;
@@ -76,7 +77,7 @@ public class MatchingActivity extends AppCompatActivity {
     }
 
     /** Check if given answer equals to model and send report to GameActivity. */
-    private void checkAnswer(List<String> givenAnswer) {
+    private void checkAnswer(@NonNull List<String> givenAnswer) {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
         intent.putExtra("game result", result);

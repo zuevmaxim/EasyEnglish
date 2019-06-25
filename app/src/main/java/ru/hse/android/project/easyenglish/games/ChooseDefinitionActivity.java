@@ -2,6 +2,7 @@ package ru.hse.android.project.easyenglish.games;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.RadioButton;
@@ -78,7 +79,7 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
     }
 
     /** Check answer and send report to GameActivity. */
-    private void checkAnswer(Word givenAnswer, Word answer) {
+    private void checkAnswer(@NonNull Word givenAnswer, @NonNull Word answer) {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
         intent.putExtra("game result", result);

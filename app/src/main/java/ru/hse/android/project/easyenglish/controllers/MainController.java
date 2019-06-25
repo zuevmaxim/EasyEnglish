@@ -1,8 +1,7 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
-
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 /**
  * MainController contains GameController.
@@ -13,13 +12,13 @@ public class MainController {
 
     private MainController() { }
 
-    @NotNull
+    @NonNull
     public static GameController getGameController() {
         return gameController;
     }
 
     /** Create GameController and init it. */
-    public static void init(@NotNull Context context) {
+    public static void init(@NonNull Context context) {
         gameController = new GameController(context);
         gameController.init();
     }

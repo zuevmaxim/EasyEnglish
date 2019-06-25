@@ -38,15 +38,15 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
      * @param context the activity to show list in
      * @param words list with pairs words to show
      */
-    public WordChainHistoryAdapter(Context context, List<Pair<String, String>> words) {
+    public WordChainHistoryAdapter(@NonNull Context context, @NonNull List<Pair<String, String>> words) {
         englishPairs = words;
         for (Pair<String, String> pair : englishPairs) {
             String firstRussian = TranslateController.fastTranslate(pair.getKey(), TranslateController.TranslateDirection.EN_RU);
-            if (pair.getKey().equals("-") || firstRussian == null) {
+            if (pair.getKey().equals("-") || firstRussian.isEmpty()) {
                 firstRussian = "-";
             }
             String secondRussian = TranslateController.fastTranslate(pair.getValue(), TranslateController.TranslateDirection.EN_RU);
-            if (pair.getValue().equals("-") || secondRussian == null) {
+            if (pair.getValue().equals("-") || secondRussian.isEmpty()) {
                 secondRussian = "-";
             }
             russianPairs.add(new Pair<>(firstRussian, secondRussian));
@@ -88,7 +88,7 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         private final TextView secondText;
 
         /** Set onClickListener on words in list to show translation on click */
-        private ViewHolder(View view) {
+        private ViewHolder(@NonNull View view) {
             super(view);
             firstText = view.findViewById(R.id.first_text);
             firstText.setOnClickListener(v -> {

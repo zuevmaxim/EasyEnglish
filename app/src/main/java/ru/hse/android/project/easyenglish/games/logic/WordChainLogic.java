@@ -1,6 +1,6 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashSet;
@@ -40,7 +40,7 @@ public class WordChainLogic {
     public static final int RESULT_WRONG_FIRST_LETTER = 4;
 
     /** Get history of the game. */
-    @NotNull
+    @NonNull
     public LinkedHashSet<String> getPreviousWords() {
         return previousWords;
     }
@@ -61,7 +61,7 @@ public class WordChainLogic {
     }
 
     /** Check if word is a valid next move. */
-    public int isValidMove(@NotNull String word) {
+    public int isValidMove(@NonNull String word) {
         if (previousWords.contains(word)) {
             return RESULT_REPETITION;
         } else if (word.isEmpty()) {
@@ -76,7 +76,7 @@ public class WordChainLogic {
     }
 
     /** Make a move in a game. */
-    public void makeMove(@NotNull String word) {
+    public void makeMove(@NonNull String word) {
         previousWords.add(word);
         if (!isMyTurn()) {
             lastWord = word;
@@ -84,14 +84,14 @@ public class WordChainLogic {
     }
 
     /** Hash a word in oder to send. */
-    @NotNull
-    public byte[] hash(String word) {
+    @NonNull
+    public byte[] hash(@NonNull String word) {
         return word.getBytes(StandardCharsets.UTF_8);
     }
 
     /** Unhash a word after receiving. */
-    @NotNull
-    public String unhash(@NotNull byte[] message) {
+    @NonNull
+    public String unhash(@NonNull byte[] message) {
         return new String(message, StandardCharsets.UTF_8);
     }
 
@@ -100,7 +100,7 @@ public class WordChainLogic {
      * List may be empty if internet connection is bad.
      * @return hints list
      */
-    @NotNull
+    @NonNull
     public List<String> getHint() {
         List<String> words = MainController.getGameController().getWordFactory().getEnglishWordsStartsWithChar(lastWord.substring(lastWord.length() - 1));
         return words.stream().filter(s -> isValidMove(s) == RESULT_OK).limit(hintsNumber).collect(Collectors.toList());

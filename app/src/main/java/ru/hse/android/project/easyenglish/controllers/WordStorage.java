@@ -1,6 +1,6 @@
 package ru.hse.android.project.easyenglish.controllers;
 
-import org.jetbrains.annotations.NotNull;
+import android.support.annotation.NonNull;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,7 +33,7 @@ public class WordStorage {
      * Get next word in a random order.
      * Chooses random word or a word with the worst statistics.
      */
-    @NotNull
+    @NonNull
     public Word nextWord() {
         Word word1 = words.get(i);
         Word word2 = getMinimal();
@@ -56,7 +56,7 @@ public class WordStorage {
      * @param number requested length of list
      * @return list of words
      */
-    @NotNull
+    @NonNull
     public List<Word> getSetOfWords(int number) {
         Word min = nextWord();
         if (number >= words.size()) {
@@ -83,7 +83,7 @@ public class WordStorage {
     }
 
     /** Find word with the worst statistics. */
-    @NotNull
+    @NonNull
     private Word getMinimal() {
         List<Word> shuffled = new ArrayList<>(words);
         Collections.shuffle(shuffled);

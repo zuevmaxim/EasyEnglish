@@ -1,6 +1,7 @@
 package ru.hse.android.project.easyenglish;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
@@ -39,7 +40,7 @@ public class LearnWordsActivity extends FragmentActivity {
     /** Adapter for CardsViewList */
     private class MyFragmentPagerAdapter extends FragmentPagerAdapter {
 
-        public MyFragmentPagerAdapter(FragmentManager fragmentManager) {
+        public MyFragmentPagerAdapter(@NonNull FragmentManager fragmentManager) {
             super(fragmentManager);
         }
 
@@ -51,12 +52,14 @@ public class LearnWordsActivity extends FragmentActivity {
 
         /** Get the fragment to display for that page. */
         @Override
+        @NonNull
         public Fragment getItem(int position) {
             return Card.newInstance(words.get(position));
         }
 
         /** Get the page title for the top indicator. */
         @Override
+        @NonNull
         public CharSequence getPageTitle(int position) {
             return words.get(position).getEnglish();
         }

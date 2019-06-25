@@ -2,6 +2,8 @@ package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.support.annotation.NonNull;
+
 import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.util.ArrayList;
@@ -22,7 +24,6 @@ public class WordFactory extends SQLiteAssetHelper {
     private static final String RUSSIAN_COLUMN = "Russian";
     private static final String ENGLISH_COLUMN = "English";
     private static final String TRANSCRIPTION_COLUMN = "transcription";
-    //private static final String DATE_COLUMN = "date";
     private static final String ERRORS_NUMBER_COLUMN = "errors";
     private static final String TOTAL_NUMBER_COLUMN = "total";
     private static final String PERCENT_COLUMN = "percent";
@@ -32,7 +33,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * Constructor loads database if needed
      * and upgrade it if application reinstalled and database version has changed.
      */
-    public WordFactory(Context context) {
+    public WordFactory(@NonNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         this.context = context;
         setForcedUpgrade();
@@ -44,6 +45,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Get a random set of words of specified length. */
+    @NonNull
     public List<Integer> nextWordIds(int length) {
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -63,6 +65,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * @param length length of the list
      * @param newWordsLength preference number of new words
      */
+    @NonNull
     public List<Integer> generateDayList(int length, int newWordsLength) {
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -87,6 +90,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Get a word by it's id. */
+    @NonNull
     public Word getWordById(int id) {
         String[] columns = {RUSSIAN_COLUMN, ENGLISH_COLUMN, TRANSCRIPTION_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -104,7 +108,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Set word's statistics to zero. */
-    public void resetStatistics(Word word) {
+    public void resetStatistics(@NonNull Word word) {
         getWritableDatabase().execSQL("UPDATE " + TABLE_NAME + " SET " +
                 ERRORS_NUMBER_COLUMN + " = 0, " +
                 TOTAL_NUMBER_COLUMN + " = 0, " +
@@ -114,7 +118,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Get number of errors for the word. */
-    public int getWordErrorNumber(Word word) {
+    public int getWordErrorNumber(@NonNull Word word) {
         int errorNumber = 0;
         String[] columns = {ERRORS_NUMBER_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -131,7 +135,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Get totatl number of tests for the word. */
-    public int getWordTotalNumber(Word word) {
+    public int getWordTotalNumber(@NonNull Word word) {
         int totalNumber = 0;
         String[] columns = {TOTAL_NUMBER_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -151,7 +155,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * Save result of a game for the word.
      * @param result true iff was given a correct answer
      */
-    public void saveWordStatistic(Word word, boolean result) {
+    public void saveWordStatistic(@NonNull Word word, boolean result) {
         int previousErrorResult = getWordErrorNumber(word);
         int previousTotalResult = getWordTotalNumber(word);
         double percent = 1 - (result ? previousErrorResult : previousErrorResult + 1) / (1.0 + previousTotalResult);
@@ -168,7 +172,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * Check that word's spelling is legal.
      * @throws WrongWordException if spelling is illegal
      */
-    public void checkWordSpelling(Word word) throws WrongWordException {
+    public void checkWordSpelling(@NonNull Word word) throws WrongWordException {
         checkEnglishSpelling(word.getEnglish());
         checkRussianSpelling(word.getRussian());
     }
@@ -179,7 +183,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * Word should not be empty.
      * @throws WrongWordException if spelling is illegal
      */
-    public void checkRussianSpelling(String russianWord) throws WrongWordException {
+    public void checkRussianSpelling(@NonNull String russianWord) throws WrongWordException {
         if (russianWord.isEmpty()) {
             throw new WrongWordException(context.getString(R.string.error_empty_word));
         } else if (!russianWord.matches("[А-Яа-я,.!?\\-\\s]+")) {
@@ -193,7 +197,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * Word should not be empty.
      * @throws WrongWordException if spelling is illegal
      */
-    public void checkEnglishSpelling(String englishWord) throws WrongWordException {
+    public void checkEnglishSpelling(@NonNull String englishWord) throws WrongWordException {
         if (englishWord.isEmpty()) {
             throw new WrongWordException(context.getString(R.string.error_empty_word));
         }
@@ -208,7 +212,7 @@ public class WordFactory extends SQLiteAssetHelper {
      * @return word's id in the database
      * @throws WrongWordException if spelling is illegal
      */
-    public int addNewWord(Word word) throws WrongWordException {
+    public int addNewWord(@NonNull Word word) throws WrongWordException {
         String russianWord = word.getRussian();
         String englishWord = word.getEnglish();
         checkWordSpelling(word);
@@ -244,7 +248,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Get word's id. */
-    public int getWordId(Word word) throws WrongWordException {
+    public int getWordId(@NonNull Word word) throws WrongWordException {
         int wordId;
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -263,7 +267,7 @@ public class WordFactory extends SQLiteAssetHelper {
     }
 
     /** Check if the database already contains such word. */
-    public boolean containsWord(Word word) {
+    public boolean containsWord(@NonNull Word word) {
         boolean result = false;
         String[] columns = {ID_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -283,7 +287,8 @@ public class WordFactory extends SQLiteAssetHelper {
      * Get a list of words, which start with specified prefix.
      * It is used in WordChain hints.
      */
-    public List<String> getEnglishWordsStartsWithChar(String prefix) {
+    @NonNull
+    public List<String> getEnglishWordsStartsWithChar(@NonNull String prefix) {
         List<String> result = new ArrayList<>();
         String[] columns = {ENGLISH_COLUMN};
         Cursor cursor = getReadableDatabase()
@@ -299,7 +304,7 @@ public class WordFactory extends SQLiteAssetHelper {
         return result;
     }
 
-    public void deleteWord(Word word) {
+    public void deleteWord(@NonNull Word word) {
         try {
             getWritableDatabase().execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordId(word));
         } catch (WrongWordException ignore) { }

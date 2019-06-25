@@ -1,5 +1,8 @@
 package ru.hse.android.project.easyenglish.games.logic;
 
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,23 +60,28 @@ public class SynonymsLogic {
         return true;
     }
 
+    @Nullable
     public List<String> getPossibleAnswers() {
         return possibleAnswers;
     }
 
+    @NonNull
     public Word getWordTask() {
         return wordTask;
     }
 
+    @Nullable
     public String getHint() {
         return hint;
     }
 
+    @Nullable
     public List<String> getAnswer() {
         return answer;
     }
 
     /** Generate hint - odd word in possible answer list. */
+    @Nullable
     private String generateHint() {
         for (String word : possibleAnswers) {
             if (!answer.contains(word)) {
@@ -84,7 +92,7 @@ public class SynonymsLogic {
     }
 
     /** Check if given list or words are synonyms to word task and set statistics. */
-    public boolean checkAnswer(List<String> givenAnswer) {
+    public boolean checkAnswer(@NonNull List<String> givenAnswer) {
         boolean result = givenAnswer.size() == answer.size();
         for (String word : givenAnswer) {
             result &= answer.contains(word);
