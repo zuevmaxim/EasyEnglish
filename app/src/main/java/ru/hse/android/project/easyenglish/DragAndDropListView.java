@@ -37,13 +37,14 @@ public class DragAndDropListView extends ListView {
     private final int scaledTouchSlop;
     private int upScrollBounce;
     private int downScrollBounce;
+    /** X coordinate. */
+    private int OFFSET;
 
     public DragAndDropListView(@NonNull Context context, AttributeSet attrs) {
         super(context, attrs);
         scaledTouchSlop = ViewConfiguration.get(context).getScaledTouchSlop();
     }
-    /** X coordinate. */
-    private int OFFSET;
+
 
     /** Init after touch. */
     @Override

@@ -133,6 +133,33 @@ public class WordChainActivity extends AppCompatActivity {
     /** Putting player's layout down. */
     private Animation animationPlayerDown;
 
+    /** Player's name. */
+    private String mDisplayName;
+
+    /** Player's id. */
+    private String mPlayerId;
+
+    private final InvitationCallback mInvitationCallback = new InvitationCallback() {
+        @Override
+        public void onInvitationReceived(@NonNull Invitation invitation) { }
+
+        @Override
+        public void onInvitationRemoved(@NonNull String invitationId) { }
+    };
+
+    /** Update match while playing. */
+    private final TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
+        @Override
+        public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
+            if (mMatch != null && turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
+                updateMatch(turnBasedMatch);
+            }
+        }
+
+        @Override
+        public void onTurnBasedMatchRemoved(@NonNull String matchId) { }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -350,12 +377,6 @@ public class WordChainActivity extends AppCompatActivity {
         Log.d(TAG, "onResume()");
         signInSilently();
     }
-
-    /** Player's name. */
-    private String mDisplayName;
-
-    /** Player's id. */
-    private String mPlayerId;
 
     /** Init when got connection. */
     private void onConnected(GoogleSignInAccount googleSignInAccount) {
@@ -717,27 +738,6 @@ public class WordChainActivity extends AppCompatActivity {
             updateMatch(match);
         }
     }
-
-    private final InvitationCallback mInvitationCallback = new InvitationCallback() {
-        @Override
-        public void onInvitationReceived(@NonNull Invitation invitation) { }
-
-        @Override
-        public void onInvitationRemoved(@NonNull String invitationId) { }
-    };
-
-    /** Update match while playing. */
-    private final TurnBasedMatchUpdateCallback mMatchUpdateCallback = new TurnBasedMatchUpdateCallback() {
-        @Override
-        public void onTurnBasedMatchReceived(@NonNull TurnBasedMatch turnBasedMatch) {
-            if (mMatch != null && turnBasedMatch.getMatchId().equals(mMatch.getMatchId())) {
-                updateMatch(turnBasedMatch);
-            }
-        }
-
-        @Override
-        public void onTurnBasedMatchRemoved(@NonNull String matchId) { }
-    };
 
     /** Log error. */
     private void showErrorMessage(int stringId) {

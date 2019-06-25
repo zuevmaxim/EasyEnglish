@@ -9,6 +9,13 @@ import ru.hse.android.project.easyenglish.words.Word;
  * Game controller contains all the other controllers(for databases) and storages.
  */
 public class GameController {
+
+    private final WordStorage wordStorage;
+    private final WordFactory wordFactory;
+    private final WordListController wordListController;
+    private final PhrasesController phrasesController;
+    private final PhraseStorage phaseStorage;
+
     GameController(@NonNull Context context) {
         wordFactory = new WordFactory(context);
         wordStorage = new WordStorage();
@@ -32,12 +39,6 @@ public class GameController {
         wordStorage.updateStorage();
         phaseStorage.updateStorage();
     }
-
-    private final WordStorage wordStorage;
-    private final WordFactory wordFactory;
-    private final WordListController wordListController;
-    private final PhrasesController phrasesController;
-    private final PhraseStorage phaseStorage;
 
     /**
      * Save statistics about a word result in a game.
