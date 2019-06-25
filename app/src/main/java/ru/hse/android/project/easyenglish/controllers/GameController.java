@@ -5,7 +5,6 @@ import android.content.Context;
 import org.jetbrains.annotations.NotNull;
 
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
 
 /**
  * Game controller contains all the other controllers(for databases) and storages.

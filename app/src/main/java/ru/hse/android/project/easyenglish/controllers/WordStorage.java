@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Random;
 
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
 
 /**
  * WordStorage contains current word list.

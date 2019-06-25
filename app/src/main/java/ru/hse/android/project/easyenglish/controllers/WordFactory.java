@@ -1,4 +1,4 @@
-package ru.hse.android.project.easyenglish.words;
+package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -9,6 +9,7 @@ import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
+import ru.hse.android.project.easyenglish.words.Word;
 
 /** A database for holding words and statistics. */
 public class WordFactory extends SQLiteAssetHelper {

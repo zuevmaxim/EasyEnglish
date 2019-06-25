@@ -14,7 +14,7 @@ import java.util.List;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
+import ru.hse.android.project.easyenglish.controllers.WordFactory;
 
 /** StatisticsAdapter provides the ability to show statistics on words from list in StatisticActivity. */
 public class StatisticsAdapter extends RecyclerView.Adapter<StatisticsAdapter.ViewHolder> {

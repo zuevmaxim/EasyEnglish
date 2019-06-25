@@ -17,7 +17,6 @@ import java.util.stream.Collectors;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
-import ru.hse.android.project.easyenglish.words.WordFactory;
 
 /**
  * A database contains word lists.
