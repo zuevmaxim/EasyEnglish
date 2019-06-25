@@ -16,15 +16,14 @@ import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
-import ru.hse.android.project.easyenglish.controllers.GameController;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
-import ru.hse.android.project.easyenglish.games.logic.ChooseDefinitionLogic;
-import ru.hse.android.project.easyenglish.games.logic.LetterPuzzleLogic;
-import ru.hse.android.project.easyenglish.games.logic.MatchingLogic;
-import ru.hse.android.project.easyenglish.games.logic.SynonymsLogic;
-import ru.hse.android.project.easyenglish.games.logic.WordPuzzleLogic;
+import ru.hse.android.project.easyenglish.logic.ChooseDefinitionLogic;
+import ru.hse.android.project.easyenglish.logic.LetterPuzzleLogic;
+import ru.hse.android.project.easyenglish.logic.MatchingLogic;
+import ru.hse.android.project.easyenglish.logic.SynonymsLogic;
+import ru.hse.android.project.easyenglish.logic.WordPuzzleLogic;
 import ru.hse.android.project.easyenglish.words.Phrase;
 import ru.hse.android.project.easyenglish.words.Word;
 
@@ -69,6 +68,14 @@ public class LocalGamesTests {
         for (Word word : testList) {
             MainController.getGameController().getWordFactory().deleteWord(word);
             assertFalse(MainController.getGameController().getWordFactory().containsWord(word));
+        }
+    }
+
+    @Test
+    public void initListTest() {
+        assertEquals(TEST_LIST, MainController.getGameController().getWordListController().getCurrentWordList());
+        for (Word word : testList) {
+            assertTrue(MainController.getGameController().getWordFactory().containsWord(word));
         }
     }
 
