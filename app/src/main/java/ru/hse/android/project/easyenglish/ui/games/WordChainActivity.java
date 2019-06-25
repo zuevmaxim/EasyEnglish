@@ -50,9 +50,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.logic.WordChainLogic;
 import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.ui.views.adapters.WordChainHistoryAdapter;
-import ru.hse.android.project.easyenglish.logic.WordChainLogic;
 
 /**
  * Network game to memorize English words and their spelling.

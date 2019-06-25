@@ -6,11 +6,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.ui.DictionaryActivity;
 import ru.hse.android.project.easyenglish.ui.LearnWordsActivity;
 import ru.hse.android.project.easyenglish.ui.StatisticsActivity;
 import ru.hse.android.project.easyenglish.ui.WordListEditorActivity;
-import ru.hse.android.project.easyenglish.controllers.MainController;
 
 /** Main menu. */
 public class MainMenuActivity extends AppCompatActivity {

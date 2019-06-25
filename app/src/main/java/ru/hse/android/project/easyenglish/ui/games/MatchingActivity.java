@@ -10,11 +10,11 @@ import android.widget.ListView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.logic.MatchingLogic;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
 import ru.hse.android.project.easyenglish.ui.views.DragAndDropListView;
 import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.ui.views.adapters.DragAndDropAdapter;
-import ru.hse.android.project.easyenglish.logic.MatchingLogic;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**

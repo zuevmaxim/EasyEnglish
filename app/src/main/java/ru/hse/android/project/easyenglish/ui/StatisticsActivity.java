@@ -8,9 +8,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.ui.views.adapters.StatisticsAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.ui.views.adapters.StatisticsAdapter;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /** Activity to show statistics on words шin current list */
