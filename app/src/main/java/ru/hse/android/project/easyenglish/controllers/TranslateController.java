@@ -44,6 +44,12 @@ public class TranslateController {
     /** Yandex.Translate key for requests. */
     private static String translateKey;
 
+    /** A template string for dictionary request. Key, translate direction and text should be specified. */
+    private static final String DICTIONARY_REQUEST = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup?key=%s&lang=%s&text=%s";
+
+    /** A template string for translate request. Key, translate direction and text should be specified. */
+    private static final String TRANSLATE_REQUEST = "https://translate.yandex.net/api/v1.5/tr.json/translate?key=%s&lang=%s&text=%s";
+
     static void init(Context context) throws IllegalStateException {
         dictionaryKey = context.getString(R.string.yandex_dictionary_key);
         translateKey = context.getString(R.string.yandex_translate_key);
@@ -219,10 +225,7 @@ public class TranslateController {
             if (textToBeTranslated.isEmpty()) {
                 return null;
             }
-            String yandexUrl = "https://dictionary.yandex.net/api/v1/dicservice.json/lookup"
-                    + "?key=" + dictionaryKey
-                    + "&lang=" + languagePair
-                    + "&text=" + textToBeTranslated;
+            String yandexUrl = String.format(DICTIONARY_REQUEST, dictionaryKey, languagePair, textToBeTranslated);
             StringBuilder stringBuilder = new StringBuilder();
 
             try {
@@ -259,10 +262,7 @@ public class TranslateController {
                 return "";
             }
 
-            String yandexUrl = "https://translate.yandex.net/api/v1.5/tr.json/translate"
-                    + "?key=" + translateKey
-                    + "&text=" + textToBeTranslated
-                    + "&lang=" + languagePair;
+            String yandexUrl = String.format(TRANSLATE_REQUEST, translateKey, languagePair, textToBeTranslated);
             StringBuilder stringBuilder = new StringBuilder();
             try {
                 URL yandexTranslateURL = new URL(yandexUrl);
