@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.TextView;
 
 import java.util.List;
 
@@ -33,6 +34,9 @@ public class WordPuzzleActivity extends AppCompatActivity {
         logic.update();
 
         List<String> shuffleWords = logic.getShuffledAnswer();
+
+        TextView russianText = findViewById(R.id.russian_phrase_text);
+        russianText.setText(logic.getAnswer().getRussian());
 
         DragAndDropListView dragListView = findViewById(R.id.drag_and_drop_list);
         DragAndDropAdapter dragListAdapter = new DragAndDropAdapter(this, shuffleWords, R.layout.word_puzzle_item);

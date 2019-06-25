@@ -9,6 +9,8 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
 import ru.hse.android.project.easyenglish.ui.games.WordChainActivity;
 
+import static ru.hse.android.project.easyenglish.ui.GameActivity.Game.TEN_WORDS;
+
 /** Menu for games. */
 public class GamesMenuActivity extends AppCompatActivity {
 
@@ -20,7 +22,7 @@ public class GamesMenuActivity extends AppCompatActivity {
         Button words10Button = findViewById(R.id._10words_button);
         words10Button.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "10 Words");
+            intent.putExtra(GameActivity.GAME_NAME, TEN_WORDS);
             startActivity(intent);
         });
 

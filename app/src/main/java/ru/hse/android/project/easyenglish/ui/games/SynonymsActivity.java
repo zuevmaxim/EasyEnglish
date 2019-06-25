@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -59,7 +60,7 @@ public class SynonymsActivity extends AppCompatActivity {
         for (int i = 0; i < possibleAnswers.size(); i++) {
             checkBoxes[i]  = new CheckBox(this);
             checkBoxes[i].setText(possibleAnswers.get(i));
-            checkBoxes[i].setTextColor(Color.parseColor("#CB000000")); //TODO
+            checkBoxes[i].setTextColor(ContextCompat.getColor(this, R.color.colorDark));
             checkBoxesLayout.addView(checkBoxes[i]);
         }
 

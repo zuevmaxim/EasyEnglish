@@ -26,6 +26,9 @@ import ru.hse.android.project.easyenglish.words.Word;
 /** Activity to create and edit word lists. */
 public class EditListActivity extends AppCompatActivity {
 
+    /** Tag to put extra list name to intent. */
+    public static final String LIST_NAME_TAG = "list name";
+
     private final WordListController controller = MainController.getGameController().getWordListController();
 
     /** Create listView with editable text fields to set words in. */
@@ -39,7 +42,7 @@ public class EditListActivity extends AppCompatActivity {
         EditText wordListNameText = findViewById(R.id.list_name_text);
         List<Pair<Word, EditWordListAdapter.AUTO_CHANGES>> wordPairList = new ArrayList<>();
 
-        String listName = intent.getStringExtra("list name"); //TODO
+        String listName = intent.getStringExtra(LIST_NAME_TAG);
         boolean isNewList = listName == null;
         if (isNewList) {
             wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTO_CHANGES.BOTH));
