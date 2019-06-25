@@ -18,10 +18,10 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.ui.GameActivity;
-import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.logic.SynonymsLogic;
+import ru.hse.android.project.easyenglish.ui.GameActivity;
+import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**

@@ -20,13 +20,13 @@ import java.util.List;
 import java.util.Random;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.controllers.MainController;
+import ru.hse.android.project.easyenglish.controllers.WordListController;
 import ru.hse.android.project.easyenglish.ui.games.ChooseDefinitionActivity;
 import ru.hse.android.project.easyenglish.ui.games.LetterPuzzleActivity;
 import ru.hse.android.project.easyenglish.ui.games.MatchingActivity;
 import ru.hse.android.project.easyenglish.ui.games.SynonymsActivity;
 import ru.hse.android.project.easyenglish.ui.games.WordPuzzleActivity;
-import ru.hse.android.project.easyenglish.controllers.MainController;
-import ru.hse.android.project.easyenglish.controllers.WordListController;
 
 /**
  * GameActivity is common for all local games.

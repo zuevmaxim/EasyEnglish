@@ -10,9 +10,9 @@ import android.widget.Button;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.ui.views.adapters.WordListAdapter;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.ui.views.adapters.WordListAdapter;
 
 /** Shows list of all word lists to update/edit/delete them and choose current word list */
 public class WordListEditorActivity extends AppCompatActivity {

@@ -12,9 +12,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.logic.ChooseDefinitionLogic;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
 import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
-import ru.hse.android.project.easyenglish.logic.ChooseDefinitionLogic;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**

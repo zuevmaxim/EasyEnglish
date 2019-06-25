@@ -9,9 +9,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.logic.LetterPuzzleLogic;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
 import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
-import ru.hse.android.project.easyenglish.logic.LetterPuzzleLogic;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**

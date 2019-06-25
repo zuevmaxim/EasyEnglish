@@ -16,10 +16,10 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.ui.EditListActivity;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
+import ru.hse.android.project.easyenglish.ui.EditListActivity;
 
 /** WordListAdapter provides the ability to show list with all word list names, edit/update/delete them and choose current word list. */
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHolder> {

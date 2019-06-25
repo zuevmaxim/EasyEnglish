@@ -13,9 +13,9 @@ import android.widget.TextView;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
-import ru.hse.android.project.easyenglish.ui.views.Card;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.WordListController;
+import ru.hse.android.project.easyenglish.ui.views.Card;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /** Activity shows cards with words to learn them. */

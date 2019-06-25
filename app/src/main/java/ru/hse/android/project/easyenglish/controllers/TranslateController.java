@@ -36,13 +36,6 @@ public class TranslateController {
     /** Timeout for synonyms game. It is longer in order to load game. */
     private static final int SYNONYMS_TIMEOUT = 2000;
 
-    /** English to russian translation. */
-    private static final String englishToRussian = "en-ru";
-
-    /** English to russian translation. */
-    private static final String russianToEnglish = "ru-en";
-
-
     /**
      * Simple translation method. Takes first translation from yandex list.
      * @param word word to translate
@@ -117,14 +110,7 @@ public class TranslateController {
     @Nullable
     private static DicResult translateTotal(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DictionaryTask translatorTask = new DictionaryTask();
-        switch (languagePair) {
-            case EN_RU:
-                translatorTask.execute(word, englishToRussian);
-                break;
-            case RU_EN:
-                translatorTask.execute(word, russianToEnglish);
-                break;
-        }
+        translatorTask.execute(word, languagePair.value);
         try {
             return translatorTask.get(timeout, TimeUnit.MILLISECONDS);
         } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -190,14 +176,7 @@ public class TranslateController {
     @NonNull
     public static String fastTranslate(@NonNull String word, @NonNull TranslateDirection languagePair) {
         TranslatorTask translatorTask = new TranslatorTask();
-        switch (languagePair) {
-            case EN_RU:
-                translatorTask.execute(word, "en-ru");
-                break;
-            case RU_EN:
-                translatorTask.execute(word, "ru-en");
-                break;
-        }
+        translatorTask.execute(word, languagePair.value);
         String result = null;
         try {
             result = translatorTask.get(TIMEOUT, TimeUnit.MILLISECONDS);
@@ -333,9 +312,15 @@ public class TranslateController {
     /** Translate direction. */
     public enum TranslateDirection {
         /** From Russian to English. */
-        RU_EN,
+        RU_EN("ru-en"),
 
         /** From English to Russian. */
-        EN_RU
+        EN_RU("en-ru");
+
+        private final String value;
+
+        TranslateDirection(String value) {
+            this.value = value;
+        }
     }
 }
