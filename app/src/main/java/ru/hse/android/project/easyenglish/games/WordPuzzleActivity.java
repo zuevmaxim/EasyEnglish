@@ -28,6 +28,12 @@ import ru.hse.android.project.easyenglish.controllers.PhraseStorage;
  */
 public class WordPuzzleActivity extends AppCompatActivity {
 
+    /** Tag for window with hints. */
+    private static final String HINTS = "hints";
+
+    /** Tag for window with rules. */
+    private static final String RULES = "rules";
+
     private final WordPuzzleLogic logic = new WordPuzzleLogic();
 
     /** Create game screen with phrase with shuffled words. */
@@ -51,30 +57,30 @@ public class WordPuzzleActivity extends AppCompatActivity {
         showHintsButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Word puzzle");
+            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.word_puzzle_hints));
             if (shuffleWords.size() >= 2) {
-                args.putString("message", "The second word is " + logic.getHint(1));
+                args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.word_puzzle_first_word_hints) + logic.getHint(1));
             } else if (shuffleWords.size() >= 1) {
-                args.putString("message", "The first word is " +logic.getHint(0));
+                args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.word_puzzle_second_word_hints) +logic.getHint(0));
             }
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), HINTS);
         });
 
         Button showRulesButton = findViewById(R.id.rules_button);
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", getString(R.string.rules_word_puzzle));
-            args.putString("message", getString(R.string.rules_word_puzzle_text));
+            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_word_puzzle));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_word_puzzle_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), RULES);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("end game", true);
+            intent.putExtra(GameActivity.END_GAME_TAG, true);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -85,8 +91,8 @@ public class WordPuzzleActivity extends AppCompatActivity {
         boolean result = logic.checkAnswer(givenAnswer);
         Phrase answer = logic.getAnswer();
         Intent intent = new Intent();
-        intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getEnglish() + "\n" + answer.getRussian());
+        intent.putExtra(GameActivity.GAME_RESULT_TAG, result);
+        intent.putExtra(GameActivity.WORD_TAG, answer.getEnglish() + "\n" + answer.getRussian());
         setResult(RESULT_OK, intent);
         finish();
     }

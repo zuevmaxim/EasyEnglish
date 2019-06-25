@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
@@ -45,6 +46,8 @@ public class WordListController extends SQLiteAssetHelper {
     private static final int RANDOM_WORD_LIST_LENGTH = 20;
     private static final int DAY_LIST_LENGTH = 10;
     private static final int PREF_NEW_WORDS = 7;
+    
+    private Context context;
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 
@@ -54,6 +57,7 @@ public class WordListController extends SQLiteAssetHelper {
      */
     WordListController(@NotNull Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        this.context = context;
         setForcedUpgrade();
     }
 
@@ -263,9 +267,9 @@ public class WordListController extends SQLiteAssetHelper {
      */
     private void checkListNameSpelling(@NotNull String name)throws WrongListNameException {
        if (name.isEmpty()) {
-            throw new WrongListNameException("Enter list name.");
+            throw new WrongListNameException(context.getString(R.string.empty_list_name_error));
        } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
-            throw new WrongListNameException("List name should starts with letter and only contains letters and spaces.");
+            throw new WrongListNameException(context.getString(R.string.wrong_word_format_error));
        }
     }
 
@@ -299,7 +303,7 @@ public class WordListController extends SQLiteAssetHelper {
      */
     public void addNewWordList(@NotNull String listName, @NotNull List<Word> wordList) throws WrongListNameException, WrongWordException {
         if (containsWordList(listName)) {
-            throw new WrongListNameException("Such list already exists.");
+            throw new WrongListNameException(context.getString(R.string.list_already_exists_error));
         }
         checkListNameSpelling(listName);
         checkWordsToAdd(wordList);
@@ -316,7 +320,7 @@ public class WordListController extends SQLiteAssetHelper {
      */
     public void deleteWordList(@NotNull String name) throws WrongListNameException {
         if (!containsWordList(name)) {
-            throw new WrongListNameException("No such word list.");
+            throw new WrongListNameException(context.getString(R.string.no_such_list_error) + ".");
         }
         if (getWordListId(name) == getWordListId(getCurrentWordList())) {
             setCurrentWordList(RANDOM_WORD_LIST_NAME);
@@ -335,11 +339,11 @@ public class WordListController extends SQLiteAssetHelper {
                                @NotNull List<Word> newWords)
             throws WrongWordException, WrongListNameException {
         if (!containsWordList(name)) {
-            throw new WrongListNameException("No such word list " + name + ".");
+            throw new WrongListNameException(context.getString(R.string.no_such_list_error) + name + ".");
         }
         checkListNameSpelling(newName);
         if (!name.equals(newName) && containsWordList(name)) { //same names is OK
-            throw new WrongListNameException("Such list already exists.");
+            throw new WrongListNameException(context.getString(R.string.list_already_exists_error));
         }
 
         checkWordsToAdd(newWords);
@@ -359,7 +363,7 @@ public class WordListController extends SQLiteAssetHelper {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> listWithoutDuplicates = words.stream().distinct().collect(Collectors.toList());
         if (!words.equals(listWithoutDuplicates)) {
-            throw new WrongWordException("Word duplicate.");
+            throw new WrongWordException(context.getString(R.string.dupplicate_word_error));
         }
 
         for (Word word : words) {

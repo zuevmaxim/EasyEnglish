@@ -27,6 +27,9 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     /** Code used in onActivityResult to return from EditListActivity. */
     private static final int EDIT_LIST_CODE = 38;
 
+    /** Tag to put extra list name to intent. */
+    public static final String listNameTag = "list name";
+
     /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
 
@@ -36,10 +39,10 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     /** Context of activity to show list in. */
     private final Context context;
 
-    /** Position with name of last selected current word list name*/
+    /** Position with name of last selected current word list name. */
     private int lastSelectedPosition;
 
-    private WordListController wordListController;
+    private final WordListController wordListController = MainController.getGameController().getWordListController();
 
     /**
      * Constructor.
@@ -56,10 +59,56 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     @NonNull
     @Override
     public WordListAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        wordListController = MainController.getGameController().getWordListController();
         lastSelectedPosition = wordListNames.indexOf(wordListController.getCurrentWordList());
         View view = layoutInflater.inflate(R.layout.list_item, parent, false);
         return new WordListAdapter.ViewHolder(view);
+    }
+
+    /** Show menu for random word list and day list (player can not edit and delete, only can update it). */
+    private void showUpdateMenu(@NonNull WordListAdapter.ViewHolder viewHolder, @NonNull String listName) {
+        viewHolder.menuButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
+            popupMenu.inflate(R.menu.update_menu);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                if (item.getItemId() == R.id.item_update) {
+                    if (wordListController.getWordListId(listName) == wordListController.getRandomWordListId()) {
+                        wordListController.updateRandomWordList();
+                    } else {
+                        wordListController.updateDayList();
+                    }
+                    notifyDataSetChanged();
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
+    }
+
+    /** Show menu for custom lists (player can edit and delete them). */
+    private void showEditDeleteMenu(@NonNull WordListAdapter.ViewHolder viewHolder, @NonNull String listName) {
+        viewHolder.menuButton.setOnClickListener(v -> {
+            PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
+            popupMenu.inflate(R.menu.edit_list_menu);
+            popupMenu.setOnMenuItemClickListener(item -> {
+                switch (item.getItemId()) {
+                    case R.id.item_edit :
+                        Intent intent = new Intent(context, EditListActivity.class);
+                        intent.putExtra(listNameTag, listName);
+                        ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
+                        notifyDataSetChanged();
+                        break;
+                    case R.id.item_delete :
+                        try {
+                            MainController.getGameController().getWordListController().deleteWordList(listName);
+                            wordListNames.remove(listName);
+                            updateCurrentList(wordListNames.indexOf(wordListController.getCurrentWordList()));
+                        } catch (WrongListNameException ignored) { } //this word list exists for sure
+                        break;
+                }
+                return false;
+            });
+            popupMenu.show();
+        });
     }
 
     /** Setting data into the view holder. */
@@ -69,49 +118,11 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
         viewHolder.nameView.setText(listName);
         WordListController controller = MainController.getGameController().getWordListController();
 
-        /* random word list and day list player can not edit and delete, only can update it */
         if (controller.getWordListId(listName) == controller.getRandomWordListId()
                 || controller.getWordListId(listName) == controller.getDayListId()) {
-            viewHolder.menuButton.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
-                popupMenu.inflate(R.menu.update_menu);
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    if (item.getItemId() == R.id.item_update) {
-                        if (controller.getWordListId(listName) == controller.getRandomWordListId()) {
-                            controller.updateRandomWordList();
-                        } else {
-                            controller.updateDayList();
-                        }
-                        notifyDataSetChanged();
-                    }
-                    return false;
-                });
-                popupMenu.show();
-            });
+            showUpdateMenu(viewHolder, listName);
         } else {
-            viewHolder.menuButton.setOnClickListener(v -> {
-                PopupMenu popupMenu = new PopupMenu(context, viewHolder.menuButton);
-                popupMenu.inflate(R.menu.edit_list_menu);
-                popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()) {
-                        case R.id.item_edit :
-                            Intent intent = new Intent(context, EditListActivity.class);
-                            intent.putExtra("list name", listName);
-                            ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
-                            notifyDataSetChanged();
-                            break;
-                        case R.id.item_delete :
-                            try {
-                                MainController.getGameController().getWordListController().deleteWordList(listName);
-                                wordListNames.remove(listName);
-                                updateCurrentList(wordListNames.indexOf(wordListController.getCurrentWordList()));
-                            } catch (WrongListNameException ignored) { } //this word list exists for sure
-                            break;
-                    }
-                    return false;
-                });
-                popupMenu.show();
-            });
+            showEditDeleteMenu(viewHolder, listName);
         }
         viewHolder.selectionState.setChecked(lastSelectedPosition == position);
     }

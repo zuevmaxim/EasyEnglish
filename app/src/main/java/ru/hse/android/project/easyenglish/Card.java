@@ -14,6 +14,11 @@ import ru.hse.android.project.easyenglish.words.Word;
 /** Card with English, Russian words and translation for viewPager in LearnWordsActivity. */
 public class Card extends Fragment {
 
+    /** Tags for sending words. */
+    private static final String RUSSIAN_TAG = "Russian";
+    private static final String ENGLISH_TAG = "English";
+    private static final String TRANSCRIPTION_TAG = "Transcription";
+
     /** Store instance variables. */
     private String englishWord;
     private String russianWord;
@@ -23,9 +28,9 @@ public class Card extends Fragment {
     public static Card newInstance(Word word) {
         Card fragmentFirst = new Card();
         Bundle args = new Bundle();
-        args.putString("Russian", word.getRussian());
-        args.putString("English", word.getEnglish());
-        args.putString("Transcription", word.getTranscription());
+        args.putString(RUSSIAN_TAG, word.getRussian());
+        args.putString(ENGLISH_TAG, word.getEnglish());
+        args.putString(TRANSCRIPTION_TAG, word.getTranscription());
         fragmentFirst.setArguments(args);
         return fragmentFirst;
     }
@@ -34,9 +39,9 @@ public class Card extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        russianWord = getArguments().getString("Russian");
-        englishWord = getArguments().getString("English");
-        transcription = getArguments().getString("Transcription");
+        russianWord = getArguments().getString(RUSSIAN_TAG);
+        englishWord = getArguments().getString(ENGLISH_TAG);
+        transcription = getArguments().getString(TRANSCRIPTION_TAG);
     }
 
     /** Inflate the view for the fragment based on layout XML. */

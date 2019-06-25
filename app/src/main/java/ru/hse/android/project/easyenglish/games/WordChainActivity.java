@@ -62,6 +62,12 @@ import ru.hse.android.project.easyenglish.games.logic.WordChainLogic;
  */
 public class WordChainActivity extends AppCompatActivity {
 
+    /** Tag for window with hints. */
+    private static final String HINTS = "hints";
+
+    /** Tag for window with rules. */
+    private static final String RULES = "rules";
+
     /** Log tag. */
     private static final String TAG = "WORD_CHAIN";
 
@@ -256,32 +262,32 @@ public class WordChainActivity extends AppCompatActivity {
             Log.d(TAG, "hints button clicked");
             AlertDialog.Builder adb = new AlertDialog.Builder(this);
             if (wordChain == null) {
-                adb.setTitle("Hints")
-                        .setMessage("No hints available.")
+                adb.setTitle(R.string.word_chain_hints)
+                        .setMessage(R.string.word_chain_no_hints_text)
                         .setPositiveButton("OK", (dialog, which) -> { })
                         .show();
                 return;
             }
             if (!wordChain.isMyTurn()) {
-                Toast.makeText(this, "Not your turn.", Toast.LENGTH_LONG).show();
+                Toast.makeText(this, R.string.not_your_turn_text, Toast.LENGTH_LONG).show();
                 return;
             }
             if (wordChain.getHintsNumber() == 0) {
-                adb.setTitle("Hints")
-                        .setMessage("All hints had been used.")
+                adb.setTitle(R.string.word_chain_hints)
+                        .setMessage(R.string.word_chain_all_hints_used_text)
                         .setPositiveButton("OK", (dialog, which) -> { })
                         .show();
             } else {
                 List<String> hints = wordChain.getHint();
                 int availableHints = Math.min(wordChain.getHintsNumber(), hints.size());
                 if (availableHints == 0) {
-                    adb.setTitle("Hints")
-                            .setMessage("No hints available.")
+                    adb.setTitle(R.string.word_chain_hints)
+                            .setMessage(R.string.word_chain_no_hints_text)
                             .setPositiveButton("OK", (dialog, which) -> { })
                             .show();
                 } else {
-                    adb.setTitle("Hints")
-                            .setMessage(availableHints + " hints available.\nDo you want a hint?")
+                    adb.setTitle(R.string.word_chain_hints)
+                            .setMessage(availableHints + getString(R.string.word_chain_hints_text))
                             .setPositiveButton("YES", (dialog, which) -> {
                                 wordChain.useHint();
                                 String word = hints.get(0);
@@ -374,7 +380,7 @@ public class WordChainActivity extends AppCompatActivity {
                             mPlayerId = player.getPlayerId();
                         }
                 )
-                .addOnFailureListener(createFailureListener("There was a problem getting the player!"));
+                .addOnFailureListener(createFailureListener(getString(R.string.getting_player_error)));
 
         Log.d(TAG, "onConnected(): Connection successful");
         if (!isGame) {
@@ -392,7 +398,7 @@ public class WordChainActivity extends AppCompatActivity {
                     }
                 })
                 .addOnFailureListener(createFailureListener(
-                        "There was a problem getting the activation hint!"));
+                        getString(R.string.getting_hint_error)));
 
         mInvitationsClient.registerInvitationCallback(mInvitationCallback);
         mTurnBasedMultiplayerClient.registerTurnBasedMatchUpdateCallback(mMatchUpdateCallback);
@@ -417,24 +423,24 @@ public class WordChainActivity extends AppCompatActivity {
         String nextParticipantId = getOpponentId();
         String word = mDataFirstLetterText.getText().toString().toLowerCase() + mDataView.getText().toString().toLowerCase();
         if (!wordChain.isMyTurn()) {
-            Toast.makeText(this, "Not your turn!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.not_your_turn_text, Toast.LENGTH_LONG).show();
             return;
         }
         int code = wordChain.isValidMove(word);
         if (code != WordChainLogic.RESULT_OK) {
-            String message = "Error.";
+            String message = getString(R.string.error_message);
             switch (code) {
                 case WordChainLogic.RESULT_REPETITION:
-                    message = "Such word had been used.";
+                    message = getString(R.string.already_used_error);
                     break;
                 case WordChainLogic.RESULT_NOT_A_NOUN:
-                    message = "Word is not a noun.";
+                    message = getString(R.string.not_a_noun_error);
                     break;
                 case WordChainLogic.RESULT_EMPTY:
-                    message = "Word is empty";
+                    message = getString(R.string.empty_word_error);
                     break;
                 case WordChainLogic.RESULT_WRONG_FIRST_LETTER:
-                    message = "Wrong first letter.";
+                    message = getString(R.string.wrong_first_letter_error);
                     break;
             }
             Toast.makeText(this, message, Toast.LENGTH_LONG).show();
@@ -451,7 +457,7 @@ public class WordChainActivity extends AppCompatActivity {
                     setGamePlayUI();
                     onUpdateMatch(turnBasedMatch);
                 })
-                .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
+                .addOnFailureListener(createFailureListener(getString(R.string.taking_turn_error)));
     }
 
     /** Show texts. */
@@ -466,7 +472,7 @@ public class WordChainActivity extends AppCompatActivity {
             mOpponentLastLetterText.setText("");
             mOpponentText.setText("");
         }
-        mTurnTextView.setText(String.format("%s turn", wordChain.isMyTurn() ? "Your" : "Opponent"));
+        mTurnTextView.setText(wordChain.isMyTurn() ? getString(R.string.your_turn_text) : getString(R.string.opponent_turn_text));
     }
 
 
@@ -500,7 +506,7 @@ public class WordChainActivity extends AppCompatActivity {
                     if (task.isSuccessful()) {
                         Log.d(TAG, "signOut(): success");
                     } else {
-                        handleException(task.getException(), "signOut() failed!");
+                        handleException(task.getException(), getString(R.string.sing_out_error));
                     }
                     onDisconnected();
                 });
@@ -514,7 +520,7 @@ public class WordChainActivity extends AppCompatActivity {
             TurnBasedMultiplayerClient.MatchOutOfDateApiException matchOutOfDateApiException =
                     (TurnBasedMultiplayerClient.MatchOutOfDateApiException) exception;
 
-            Log.e(TAG, "Match was out of date, updating with latest match data...");
+            Log.e(TAG, getString(R.string.out_of_date_math_error));
 
             TurnBasedMatch match = matchOutOfDateApiException.getMatch();
             updateMatch(match);
@@ -534,7 +540,7 @@ public class WordChainActivity extends AppCompatActivity {
         String message = getString(R.string.status_exception_error, details, status, exception);
         Log.e(TAG, message);
         new AlertDialog.Builder(this)
-                .setMessage("Game error. Sorry.")
+                .setMessage(R.string.game_error)
                 .setCancelable(false)
                 .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
                 .show();
@@ -570,7 +576,7 @@ public class WordChainActivity extends AppCompatActivity {
         } else if (requestCode == RC_LOOK_AT_MATCHES) {
             if (resultCode != Activity.RESULT_OK) {
                 logBadActivityResult(requestCode, resultCode,
-                        "User cancelled returning from the 'Select Match' dialog.");
+                        getString(R.string.cancel_return_error));
                 return;
             }
 
@@ -586,7 +592,7 @@ public class WordChainActivity extends AppCompatActivity {
             if (resultCode != Activity.RESULT_OK) {
                 // user canceled
                 logBadActivityResult(requestCode, resultCode,
-                        "User cancelled returning from 'Select players to Invite' dialog");
+                        getString(R.string.cancel_return_error));
                 return;
             }
 
@@ -614,7 +620,7 @@ public class WordChainActivity extends AppCompatActivity {
                         Log.d(TAG, "Match inited.");
                         onInitiateMatch(turnBasedMatch);
                     })
-                    .addOnFailureListener(createFailureListener("There was a problem creating a match!"));
+                    .addOnFailureListener(createFailureListener(getString(R.string.create_match_error)));
         }
     }
 
@@ -646,7 +652,7 @@ public class WordChainActivity extends AppCompatActivity {
                     updateMatch(match1);
                     setGamePlayUI();
                 })
-                .addOnFailureListener(createFailureListener("There was a problem taking a turn!"));
+                .addOnFailureListener(createFailureListener(getString(R.string.taking_turn_error)));
     }
 
     /** Get opponent id. */
@@ -683,8 +689,8 @@ public class WordChainActivity extends AppCompatActivity {
             AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
 
             alertDialogBuilder
-                    .setTitle("End game!")
-                    .setMessage("You win!")
+                    .setTitle(R.string.end_game_text)
+                    .setMessage(R.string.win_game_text)
                     .setCancelable(false)
                     .setPositiveButton("OK", (dialog, id) -> endGame());
             AlertDialog mAlertDialog = alertDialogBuilder.create();
@@ -784,8 +790,8 @@ public class WordChainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isGame) {
             new AlertDialog.Builder(this)
-                    .setTitle("Exiting game")
-                    .setMessage("Are you sure?")
+                    .setTitle(R.string.exit_game_text)
+                    .setMessage(R.string.exit_game_question_text)
                     .setPositiveButton("YES", (dialog, whichButton) -> cancelMatch())
                     .setNegativeButton("NO", (dialog, whichButton) -> dialog.dismiss()).show();
         } else {
@@ -799,7 +805,7 @@ public class WordChainActivity extends AppCompatActivity {
             Log.d(TAG, "Cancel game");
             mTurnBasedMultiplayerClient.cancelMatch(mMatch.getMatchId())
                     .addOnSuccessListener(s -> endGame())
-                    .addOnFailureListener(createFailureListener("There was a problem cancelling the match!"));
+                    .addOnFailureListener(createFailureListener(getString(R.string.cancel_match_error)));
         }
     }
 

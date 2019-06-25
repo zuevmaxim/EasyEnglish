@@ -21,6 +21,12 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class ChooseDefinitionActivity extends AppCompatActivity {
 
+    /** Tag for window with hints. */
+    private static final String HINTS = "hints";
+
+    /** Tag for window with rules. */
+    private static final String RULES = "rules";
+
     private final ChooseDefinitionLogic logic = new ChooseDefinitionLogic();
 
     /** Create game screen with English word task and group of possible Russian translations. */
@@ -52,26 +58,26 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", this.getString(R.string.rules_choose_definitions));
-            args.putString("message", this.getString(R.string.rules_text_choose_definitions));
+            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_choose_definitions));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_text_choose_definitions));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), RULES);
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
         hintsButton.setOnClickListener(v -> {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", this.getString(R.string.hints_choose_definitions));
-            args.putString("message", logic.getHint().getRussian() + " " + this.getString(R.string.is_wrong_answer));
+            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.hints_choose_definitions));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint().getRussian() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), "hints");
+            hints.show(getSupportFragmentManager(), HINTS);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("end game", true);
+            intent.putExtra(GameActivity.END_GAME_TAG, true);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -81,8 +87,8 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
     private void checkAnswer(Word givenAnswer, Word answer) {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
-        intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian() + "\n"
+        intent.putExtra(GameActivity.GAME_RESULT_TAG, result);
+        intent.putExtra(GameActivity.WORD_TAG, answer.getRussian() + "\n"
                 + answer.getEnglish() + "\n"
                 + answer.getTranscription());
         setResult(RESULT_OK, intent);
