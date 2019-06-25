@@ -28,7 +28,7 @@ public class ChooseDefinitionLogic {
     /** Hint for this game - odd word. */
     private Word hint;
 
-    private final Random random = new Random();
+    private final static Random RANDOM = new Random();
 
     private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
@@ -60,7 +60,7 @@ public class ChooseDefinitionLogic {
     private Word generateHint() {
         Word hint = possibleAnswers.get(0);
         while (!hint.equals(answer)) {
-            hint = possibleAnswers.get(random.nextInt(possibleAnswers.size()));
+            hint = possibleAnswers.get(RANDOM.nextInt(possibleAnswers.size()));
         }
         return hint;
     }

@@ -45,7 +45,7 @@ public class WordListController extends SQLiteAssetHelper {
     private static final int DAY_LIST_LENGTH = 10;
     private static final int PREF_NEW_WORDS = 7;
     
-    private Context context;
+    private final Context context;
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat format = new SimpleDateFormat("yyyyMMdd");
 

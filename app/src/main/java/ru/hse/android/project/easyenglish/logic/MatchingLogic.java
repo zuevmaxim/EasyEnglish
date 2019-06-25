@@ -30,7 +30,7 @@ public class MatchingLogic {
     /** Hint for this game is word - pair of russian word and its translation. */
     private Word hint;
 
-    private final Random random = new Random();
+    private final static Random RANDOM = new Random();
 
     private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
@@ -64,7 +64,7 @@ public class MatchingLogic {
     /** Generate hint - right matched pair. */
     @NonNull
     private Word generateHint() {
-        return answer.get(random.nextInt(answer.size()));
+        return answer.get(RANDOM.nextInt(answer.size()));
     }
 
     /** Check if given answer is a right matching. */

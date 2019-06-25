@@ -30,7 +30,7 @@ public class SynonymsLogic {
     /** Hint for this game - odd word in possible answers list. */
     private String hint;
 
-    private final Random random = new Random();
+    private final static Random RANDOM = new Random();
 
     private final WordStorage wordStorage = MainController.getGameController().getWordStorage();
 
@@ -43,7 +43,7 @@ public class SynonymsLogic {
         if (answer == null) {
             return false;
         }
-        answer = answer.subList(0, Math.min(random.nextInt(3) + 1, answer.size()));
+        answer = answer.subList(0, Math.min(RANDOM.nextInt(3) + 1, answer.size()));
         possibleAnswers = new ArrayList<>(answer);
 
         for (Word word : words) {
