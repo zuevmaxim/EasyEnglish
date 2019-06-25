@@ -29,10 +29,19 @@ import ru.hse.android.project.easyenglish.words.PartOfSpeech;
  * Uses Yandex.Translate API and Yandex.Dictionary API.
  */
 public class TranslateController {
+
     /** Timeout for requests. All methods could return null if an error occurred or timeout. */
     private static final int TIMEOUT = 1000;
+
     /** Timeout for synonyms game. It is longer in order to load game. */
     private static final int SYNONYMS_TIMEOUT = 2000;
+
+    /** English to russian translation. */
+    private static final String englishToRussian = "en-ru";
+
+    /** English to russian translation. */
+    private static final String russianToEnglish = "ru-en";
+
 
     /**
      * Simple translation method. Takes first translation from yandex list.
@@ -110,10 +119,10 @@ public class TranslateController {
         DictionaryTask translatorTask = new DictionaryTask();
         switch (languagePair) {
             case EN_RU:
-                translatorTask.execute(word, "en-ru");
+                translatorTask.execute(word, englishToRussian);
                 break;
             case RU_EN:
-                translatorTask.execute(word, "ru-en");
+                translatorTask.execute(word, russianToEnglish);
                 break;
         }
         try {

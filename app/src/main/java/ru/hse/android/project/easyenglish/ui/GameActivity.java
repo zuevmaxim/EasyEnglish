@@ -59,6 +59,18 @@ public class GameActivity extends AppCompatActivity {
      */
     public final static int RESULT_REMOVE_SYNONYMS = 999;
 
+    /** Tag to put extra game result to intent. */
+    public static final String GAME_RESULT_TAG = "game result";
+
+    /** Tag to put extra word to intent. */
+    public static final String WORD_TAG = "word";
+
+    /** Tag to put extra end game flag to intent. */
+    public static final String END_GAME_TAG = "word";
+
+    /** Tad to put extra game name. */
+    public static final String GAME_NAME = "game name";
+
     /**
      * Games list to play.
      * Contains several games in case of 10 words game, and only one game otherwise.
@@ -74,17 +86,17 @@ public class GameActivity extends AppCompatActivity {
                 if (data == null) {
                     throw new AssertionError();
                 }
-                boolean endOfGame = data.getBooleanExtra("end game", false);
+                boolean endOfGame = data.getBooleanExtra(END_GAME_TAG, false);
                 if (endOfGame) {
                     endGame();
                 } else {
                     final TextView wordAnswerText = findViewById(R.id.game_result_text);
                     wordAnswerText.setVisibility(View.VISIBLE);
 
-                    String word = data.getStringExtra("word");
+                    String word = data.getStringExtra(WORD_TAG);
                     wordAnswerText.setText(word);
 
-                    boolean result = data.getBooleanExtra("game result", false);
+                    boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);
                     Drawable drawable;
                     ImageView imageView = findViewById(R.id.result);
                     final TextView gameResultText = findViewById(R.id.game_result);
@@ -126,7 +138,7 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String gameName = intent.getStringExtra("game name");
+        String gameName = intent.getStringExtra(GAME_NAME);
         final Class<?> gameClass = chooseGameByName(gameName);
 
         randomGames = new ArrayList<>();
@@ -192,7 +204,7 @@ public class GameActivity extends AppCompatActivity {
 
     /** Get class of game by it's name. */
     @Nullable
-    private Class<?> chooseGameByName(@NonNull String gameName) {
+    private Class<?> chooseGameByName(@NonNull String gameName) { //TODO enum for game names
         switch (gameName) {
             case "Letter Puzzle" : return LetterPuzzleActivity.class;
             case "Choose Definition" : return ChooseDefinitionActivity.class;

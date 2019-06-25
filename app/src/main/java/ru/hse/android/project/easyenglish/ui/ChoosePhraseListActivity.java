@@ -28,7 +28,7 @@ public class ChoosePhraseListActivity extends AppCompatActivity {
         Button startGameButton = findViewById(R.id.start_game_button);
         startGameButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("game name", "Word Puzzle");
+            intent.putExtra(GameActivity.GAME_NAME, "Word Puzzle");
             startActivity(intent);
         });
     }

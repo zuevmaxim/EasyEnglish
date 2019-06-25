@@ -20,7 +20,7 @@ public class GamesMenuActivity extends AppCompatActivity {
         Button words10Button = findViewById(R.id._10words_button);
         words10Button.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra("game name", "10 Words");
+            intent.putExtra(GameActivity.GAME_NAME, "10 Words");
             startActivity(intent);
         });
 

@@ -16,6 +16,11 @@ import ru.hse.android.project.easyenglish.words.Word;
 public class WordStorage {
     private static final Random RANDOM = new Random();
 
+    /** Words for error Word with error text. */
+    private static final String russianErrorText = "ошибка";
+    private static final String englishErrorText = "error";
+
+
     /** Current list of words. */
     private List<Word> words = new ArrayList<>();
 
@@ -101,6 +106,6 @@ public class WordStorage {
             }
             double result = errorA / totalA - errorB / totalB;
             return result == 0 ? 0 : (result < 0 ? -1 : 1);
-        }).orElse(new Word("ошибка", "error"));
+        }).orElse(new Word(russianErrorText, englishErrorText));
     }
 }

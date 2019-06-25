@@ -30,6 +30,12 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class SynonymsActivity extends AppCompatActivity {
 
+    /** Tag for window with hints. */
+    private static final String HINTS = "hints";
+
+    /** Tag for window with rules. */
+    private static final String RULES = "rules";
+
     private final SynonymsLogic logic = new SynonymsLogic();
 
     private Word wordTask;
@@ -59,7 +65,7 @@ public class SynonymsActivity extends AppCompatActivity {
         for (int i = 0; i < possibleAnswers.size(); i++) {
             checkBoxes[i]  = new CheckBox(this);
             checkBoxes[i].setText(possibleAnswers.get(i));
-            checkBoxes[i].setTextColor(Color.parseColor("#CB000000"));
+            checkBoxes[i].setTextColor(Color.parseColor("#CB000000")); //TODO
             checkBoxesLayout.addView(checkBoxes[i]);
         }
 
@@ -73,26 +79,26 @@ public class SynonymsActivity extends AppCompatActivity {
         rulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", this.getString(R.string.rules_synonyms));
-            args.putString("message", this.getString(R.string.rules_synonyms_text));
+            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_synonyms));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_synonyms_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), RULES);
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
         hintsButton.setOnClickListener(v -> {
             ShowInfoActivity hints = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", this.getString(R.string.synonyms));
-            args.putString("message", logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
+            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.synonyms));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), "hints");
+            hints.show(getSupportFragmentManager(), HINTS);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("end game", true);
+            intent.putExtra(GameActivity.END_GAME_TAG, true);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -105,15 +111,15 @@ public class SynonymsActivity extends AppCompatActivity {
         List<String> answer = logic.getAnswer();
         MainController.getGameController().saveWordResult(wordTask, result);
         Intent intent = new Intent();
-        intent.putExtra("game result", result);
+        intent.putExtra(GameActivity.GAME_RESULT_TAG, result);
         String answerText;
         assert answer != null;
         if (answer.size() == 0) {
-            answerText = "There was no synonyms for word " + wordTask.getEnglish() + ".";
+            answerText = getString(R.string.no_synonyms_text) + wordTask.getEnglish() + ".";
         } else {
             answerText = wordTask.getEnglish() + " - " + String.join(", ", answer);
         }
-        intent.putExtra("word", answerText);
+        intent.putExtra(GameActivity.WORD_TAG, answerText);
         setResult(RESULT_OK, intent);
         finish();
     }

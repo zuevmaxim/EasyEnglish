@@ -18,6 +18,9 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 /** WordChainHistoryAdapter provides the ability to show list of used words from list in WordChainActivity. */
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
+    /** Empty word if there is no translation **/
+    private static final String emptyWord = "-";
+
     /** List with pairs of Opponent(key) and Player(value) used words in english. */
     private final List<Pair<String, String>> englishPairs;
 
@@ -42,12 +45,12 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         englishPairs = words;
         for (Pair<String, String> pair : englishPairs) {
             String firstRussian = TranslateController.fastTranslate(pair.getKey(), TranslateController.TranslateDirection.EN_RU);
-            if (pair.getKey().equals("-") || firstRussian.isEmpty()) {
-                firstRussian = "-";
+            if (pair.getKey().equals(emptyWord) || firstRussian.isEmpty()) {
+                firstRussian = emptyWord;
             }
             String secondRussian = TranslateController.fastTranslate(pair.getValue(), TranslateController.TranslateDirection.EN_RU);
-            if (pair.getValue().equals("-") || secondRussian.isEmpty()) {
-                secondRussian = "-";
+            if (pair.getValue().equals(emptyWord) || secondRussian.isEmpty()) {
+                secondRussian = emptyWord;
             }
             russianPairs.add(new Pair<>(firstRussian, secondRussian));
             switchPairs.add(new Pair<>(true, true));
@@ -87,8 +90,8 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         private final TextView firstText;
         private final TextView secondText;
 
-        /** Set onClickListener on words in list to show translation on click */
-        private ViewHolder(@NonNull View view) {
+        /** Set onClickListener on words in list to show translation on click. */
+        private ViewHolder(View view) {
             super(view);
             firstText = view.findViewById(R.id.first_text);
             firstText.setOnClickListener(v -> {

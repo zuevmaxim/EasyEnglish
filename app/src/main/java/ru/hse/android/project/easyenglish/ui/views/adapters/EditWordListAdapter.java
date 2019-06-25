@@ -71,8 +71,8 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         }
 
         viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
-        viewHolder.russianWordText.setHint("Russian");
-        viewHolder.englishWordText.setHint("English");
+        viewHolder.russianWordText.setHint(R.string.russian_hint_text);
+        viewHolder.englishWordText.setHint(R.string.english_hint_text);
         viewHolder.englishWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).englishTextWatcher);
         viewHolder.russianWordText.addTextChangedListener(viewHolderHashMap.get(viewHolder.getId()).russianTextWatcher);
         final AUTO_CHANGES type =  words.get(viewHolder.getId()).getValue();

@@ -39,7 +39,7 @@ public class EditListActivity extends AppCompatActivity {
         EditText wordListNameText = findViewById(R.id.list_name_text);
         List<Pair<Word, EditWordListAdapter.AUTO_CHANGES>> wordPairList = new ArrayList<>();
 
-        String listName = intent.getStringExtra("list name");
+        String listName = intent.getStringExtra("list name"); //TODO
         boolean isNewList = listName == null;
         if (isNewList) {
             wordPairList.add(new Pair<>(new Word("", ""), EditWordListAdapter.AUTO_CHANGES.BOTH));

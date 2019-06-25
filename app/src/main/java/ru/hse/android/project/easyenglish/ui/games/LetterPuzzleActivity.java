@@ -19,6 +19,12 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class LetterPuzzleActivity extends AppCompatActivity {
 
+    /** Tag for window with hints. */
+    private static final String HINTS = "hints";
+
+    /** Tag for window with rules. */
+    private static final String RULES = "rules";
+
     private final LetterPuzzleLogic logic = new LetterPuzzleLogic();
 
     private Word answer;
@@ -45,16 +51,16 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         showRulesButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", getString(R.string.rules_letter_puzzle));
-            args.putString("message", getString(R.string.rules_letter_puzzle_text));
+            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_letter_puzzle));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_letter_puzzle_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), RULES);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
         endGameButton.setOnClickListener(v -> {
             Intent intent = new Intent();
-            intent.putExtra("end game", true);
+            intent.putExtra(GameActivity.END_GAME_TAG, true);
             setResult(RESULT_OK, intent);
             finish();
         });
@@ -63,10 +69,10 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         showHintsButton.setOnClickListener(v -> {
             ShowInfoActivity rules = new ShowInfoActivity();
             Bundle args = new Bundle();
-            args.putString("title", "Letter puzzle");
-            args.putString("message", "The first letter is " + logic.getHint() + ".");
+            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.hints_letter_puzzle));
+            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.hints_letter_puzzle_text) + logic.getHint() + ".");
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), HINTS);
         });
     }
 
@@ -74,8 +80,8 @@ public class LetterPuzzleActivity extends AppCompatActivity {
     private void checkAnswer(@NonNull String givenAnswer) {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
-        intent.putExtra("game result", result);
-        intent.putExtra("word", answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
+        intent.putExtra(GameActivity.GAME_RESULT_TAG, result);
+        intent.putExtra(GameActivity.WORD_TAG, answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();
     }

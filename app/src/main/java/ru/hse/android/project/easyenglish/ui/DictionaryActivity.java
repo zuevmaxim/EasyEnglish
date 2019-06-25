@@ -90,7 +90,7 @@ public class DictionaryActivity extends AppCompatActivity {
                 }
                 translateResultText.setMovementMethod(new ScrollingMovementMethod());
                 translateResultText.setText(builder.toString());
-                yandexText.setText("«Реализовано с помощью сервиса «Яндекс.Словарь»\nhttps://tech.yandex.ru/dictionary/");
+                yandexText.setText(R.string.yandex_info_text);
             }
         });
     }
