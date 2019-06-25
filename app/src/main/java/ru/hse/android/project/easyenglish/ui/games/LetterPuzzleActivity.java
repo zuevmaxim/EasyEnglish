@@ -19,12 +19,6 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class LetterPuzzleActivity extends AppCompatActivity {
 
-    /** Tag for window with hints. */
-    private static final String HINTS = "hints";
-
-    /** Tag for window with rules. */
-    private static final String RULES = "rules";
-
     private final LetterPuzzleLogic logic = new LetterPuzzleLogic();
 
     private Word answer;
@@ -54,7 +48,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_letter_puzzle));
             args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_letter_puzzle_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), RULES);
+            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
@@ -72,7 +66,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.hints_letter_puzzle));
             args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.hints_letter_puzzle_text) + logic.getHint() + ".");
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), HINTS);
+            rules.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
         });
     }
 
@@ -81,7 +75,7 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         boolean result = logic.checkAnswer(givenAnswer);
         Intent intent = new Intent();
         intent.putExtra(GameActivity.GAME_RESULT_TAG, result);
-        intent.putExtra(GameActivity.WORD_TAG, answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
+        intent.putExtra(GameActivity.MESSAGE_TAG, answer.getRussian() + "\n" + answer.getEnglish() + "\n" + answer.getTranscription());
         setResult(RESULT_OK, intent);
         finish();
     }

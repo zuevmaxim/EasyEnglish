@@ -13,6 +13,8 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.controllers.PhrasesController;
 
+import static ru.hse.android.project.easyenglish.ui.GameActivity.Game.WORD_PUZZLE;
+
 /** In this activity player choose theme of phrases which he wants to train in WordPuzzleActivity. */
 public class ChoosePhraseListActivity extends AppCompatActivity {
 
@@ -28,7 +30,7 @@ public class ChoosePhraseListActivity extends AppCompatActivity {
         Button startGameButton = findViewById(R.id.start_game_button);
         startGameButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "Word Puzzle");
+            intent.putExtra(GameActivity.GAME_NAME, WORD_PUZZLE);
             startActivity(intent);
         });
     }

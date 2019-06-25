@@ -27,9 +27,6 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
     /** Code used in onActivityResult to return from EditListActivity. */
     private static final int EDIT_LIST_CODE = 38;
 
-    /** Tag to put extra list name to intent. */
-    public static final String listNameTag = "list name";
-
     /** LayoutInflater is used to create a new View (or Layout) object from one of xml layouts. */
     private final LayoutInflater layoutInflater;
 
@@ -93,7 +90,7 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.ViewHo
                 switch (item.getItemId()) {
                     case R.id.item_edit :
                         Intent intent = new Intent(context, EditListActivity.class);
-                        intent.putExtra(listNameTag, listName);
+                        intent.putExtra(EditListActivity.LIST_NAME_TAG, listName);
                         ((Activity) context).startActivityForResult(intent, EDIT_LIST_CODE);
                         notifyDataSetChanged();
                         break;

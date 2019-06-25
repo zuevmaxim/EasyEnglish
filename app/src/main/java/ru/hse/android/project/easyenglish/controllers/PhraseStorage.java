@@ -13,6 +13,7 @@ import ru.hse.android.project.easyenglish.words.Phrase;
  * Provides an ability to get next phrase in a random order.
  */
 public class PhraseStorage {
+
     /** Current list of phrases. */
     private List<Phrase> phrases = new ArrayList<>();
 

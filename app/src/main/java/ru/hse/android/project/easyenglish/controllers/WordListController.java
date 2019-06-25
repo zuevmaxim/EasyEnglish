@@ -28,6 +28,7 @@ import ru.hse.android.project.easyenglish.words.Word;
  * names of these tables are built in getTableName() method.
  */
 public class WordListController extends SQLiteAssetHelper {
+
     /** Database version should be updated after each change of application's database. */
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "word_lists.db";

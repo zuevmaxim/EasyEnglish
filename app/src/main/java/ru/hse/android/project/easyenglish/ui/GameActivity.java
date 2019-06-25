@@ -3,11 +3,10 @@ package ru.hse.android.project.easyenglish.ui;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -63,13 +62,19 @@ public class GameActivity extends AppCompatActivity {
     public static final String GAME_RESULT_TAG = "game result";
 
     /** Tag to put extra word to intent. */
-    public static final String WORD_TAG = "word";
+    public static final String MESSAGE_TAG = "word";
 
     /** Tag to put extra end game flag to intent. */
     public static final String END_GAME_TAG = "word";
 
     /** Tad to put extra game name. */
     public static final String GAME_NAME = "game name";
+
+    /** Tag for window with hints. */
+    public static final String HINTS_TAG = "hints";
+
+    /** Tag for window with rules. */
+    public static final String RULES_TAG = "rules";
 
     /**
      * Games list to play.
@@ -93,23 +98,20 @@ public class GameActivity extends AppCompatActivity {
                     final TextView wordAnswerText = findViewById(R.id.game_result_text);
                     wordAnswerText.setVisibility(View.VISIBLE);
 
-                    String word = data.getStringExtra(WORD_TAG);
+                    String word = data.getStringExtra(MESSAGE_TAG);
                     wordAnswerText.setText(word);
 
                     boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);
-                    Drawable drawable;
                     ImageView imageView = findViewById(R.id.result);
                     final TextView gameResultText = findViewById(R.id.game_result);
                     if (result) {
-                        gameResultText.setTextColor(Color.parseColor("#FF00574B"));
                         gameResultText.setText(getString(R.string.right_answer));
-                        drawable = getResources().getDrawable(R.drawable.right, null);
-                        imageView.setImageDrawable(drawable);
+                        gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.right, null));
                     } else {
-                        gameResultText.setTextColor(Color.parseColor("#FFD81B60"));
                         gameResultText.setText(getString(R.string.wrong_answer));
-                        drawable = getResources().getDrawable(R.drawable.wrong, null);
-                        imageView.setImageDrawable(drawable);
+                        gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.wrong, null));
                     }
 
                     succeedTasks += result ? 1 : 0;
@@ -138,11 +140,11 @@ public class GameActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String gameName = intent.getStringExtra(GAME_NAME);
+        Game gameName = (Game) intent.getSerializableExtra(GAME_NAME);
         final Class<?> gameClass = chooseGameByName(gameName);
 
         randomGames = new ArrayList<>();
-         if (gameName.equals("10 Words")) {
+         if (gameName == Game.TEN_WORDS) {
              previousListName = wordListController.getCurrentWordList();
              wordListController.setCurrentDayList();
              randomGames.add(LetterPuzzleActivity.class);
@@ -204,13 +206,13 @@ public class GameActivity extends AppCompatActivity {
 
     /** Get class of game by it's name. */
     @Nullable
-    private Class<?> chooseGameByName(@NonNull String gameName) { //TODO enum for game names
+    private Class<?> chooseGameByName(@NonNull Game gameName) {
         switch (gameName) {
-            case "Letter Puzzle" : return LetterPuzzleActivity.class;
-            case "Choose Definition" : return ChooseDefinitionActivity.class;
-            case "Word Puzzle" : return WordPuzzleActivity.class;
-            case "Matching" : return MatchingActivity.class;
-            case "Synonyms" : return SynonymsActivity.class;
+            case LETTER_PUZZLE : return LetterPuzzleActivity.class;
+            case CHOOSE_DEFINITION : return ChooseDefinitionActivity.class;
+            case WORD_PUZZLE : return WordPuzzleActivity.class;
+            case  MATCHING : return MatchingActivity.class;
+            case SYNONYMS : return SynonymsActivity.class;
         }
         return null;
     }
@@ -236,5 +238,15 @@ public class GameActivity extends AppCompatActivity {
             wordListController.setCurrentWordList(previousListName);
         }
         super.onStop();
+    }
+
+    /** Name of all games. */
+    public enum Game {
+        LETTER_PUZZLE,
+        CHOOSE_DEFINITION,
+        WORD_PUZZLE,
+        MATCHING,
+        SYNONYMS,
+        TEN_WORDS
     }
 }

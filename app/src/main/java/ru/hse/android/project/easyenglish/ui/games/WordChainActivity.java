@@ -51,6 +51,7 @@ import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.logic.WordChainLogic;
+import ru.hse.android.project.easyenglish.ui.GameActivity;
 import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.ui.views.adapters.WordChainHistoryAdapter;
 
@@ -59,12 +60,6 @@ import ru.hse.android.project.easyenglish.ui.views.adapters.WordChainHistoryAdap
  * Rules : Two players come up with words that begin with the letter or letters that the previous word ended with. Words may not be repeated in the same game.
  */
 public class WordChainActivity extends AppCompatActivity {
-
-    /** Tag for window with hints. */
-    private static final String HINTS = "hints";
-
-    /** Tag for window with rules. */
-    private static final String RULES = "rules";
 
     /** Log tag. */
     private static final String TAG = "WORD_CHAIN";
@@ -244,43 +239,8 @@ public class WordChainActivity extends AppCompatActivity {
             args.putString("title", "Word Chain Rules");
             args.putString("message", getString(R.string.rules_word_chain_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), "message");
+            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
         });
-
-        Button historyButton = findViewById(R.id.history_button);
-        historyButton.setOnClickListener(view -> {
-            AlertDialog.Builder adb = new AlertDialog.Builder(WordChainActivity.this);
-            adb.setTitle("Game history");
-            View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-            adb.setView(dialogView).setPositiveButton("OK", (dialogInterface, i) -> { });
-            RecyclerView recyclerView = dialogView.findViewById(R.id.list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(WordChainActivity.this));
-            List<Pair<String, String>> history = new ArrayList<>();
-            for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
-                String word1 = it.next();
-                String word2 = it.hasNext() ? it.next() : "-";
-                history.add(new Pair<>(word1, word2));
-            }
-            WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(WordChainActivity.this, history);
-            recyclerView.setAdapter(adapter);
-            adb.show();
-        });
-
-        mDataFirstLetterText = findViewById(R.id.player_first_letter);
-        mDataView = findViewById(R.id.answer_word_text);
-        mOpponentText = findViewById(R.id.opponent_word);
-        mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
-        mTurnTextView = findViewById(R.id.turn_status_text);
-        progressBar = findViewById(R.id.progressBar);
-        progressBar.setVisibility(View.INVISIBLE);
-
-        opponentLayout = findViewById(R.id.opponent_layout);
-        playerLayout = findViewById(R.id.player_layout);
-        animationOpponentDown = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_down);
-        animationPlayerUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
-        animationOpponentUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
-        animationPlayerDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
-
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
@@ -325,6 +285,40 @@ public class WordChainActivity extends AppCompatActivity {
 
             }
         });
+
+        Button historyButton = findViewById(R.id.history_button);
+        historyButton.setOnClickListener(view -> {
+            AlertDialog.Builder adb = new AlertDialog.Builder(WordChainActivity.this);
+            adb.setTitle("Game history");
+            View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+            adb.setView(dialogView).setPositiveButton("OK", (dialogInterface, i) -> { });
+            RecyclerView recyclerView = dialogView.findViewById(R.id.list);
+            recyclerView.setLayoutManager(new LinearLayoutManager(WordChainActivity.this));
+            List<Pair<String, String>> history = new ArrayList<>();
+            for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
+                String word1 = it.next();
+                String word2 = it.hasNext() ? it.next() : "-";
+                history.add(new Pair<>(word1, word2));
+            }
+            WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(WordChainActivity.this, history);
+            recyclerView.setAdapter(adapter);
+            adb.show();
+        });
+
+        mDataFirstLetterText = findViewById(R.id.player_first_letter);
+        mDataView = findViewById(R.id.answer_word_text);
+        mOpponentText = findViewById(R.id.opponent_word);
+        mOpponentLastLetterText = findViewById(R.id.opponent_last_letter);
+        mTurnTextView = findViewById(R.id.turn_status_text);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
+        opponentLayout = findViewById(R.id.opponent_layout);
+        playerLayout = findViewById(R.id.player_layout);
+        animationOpponentDown = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_down);
+        animationPlayerUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
+        animationOpponentUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
+        animationPlayerDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
     }
 
     /** Show animation when sending answer. */

@@ -9,6 +9,8 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.ui.ChoosePhraseListActivity;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
 
+import static ru.hse.android.project.easyenglish.ui.GameActivity.Game.*;
+
 /** Menu for local games. */
 public class LocalGamesMenuActivity extends AppCompatActivity {
 
@@ -20,14 +22,14 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
         Button matchingButton = findViewById(R.id.matching_button);
         matchingButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "Matching");
+            intent.putExtra(GameActivity.GAME_NAME, MATCHING);
             startActivity(intent);
         });
 
         Button letterPuzzleButton = findViewById(R.id.letter_puzzle_button);
         letterPuzzleButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "Letter Puzzle");
+            intent.putExtra(GameActivity.GAME_NAME, LETTER_PUZZLE);
             startActivity(intent);
         });
 
@@ -40,14 +42,14 @@ public class LocalGamesMenuActivity extends AppCompatActivity {
         Button definitionsButton = findViewById(R.id.definitions_button);
         definitionsButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "Choose Definition");
+            intent.putExtra(GameActivity.GAME_NAME, CHOOSE_DEFINITION);
             startActivity(intent);
         });
 
         Button synonymsButton = findViewById(R.id.synonyms_button);
         synonymsButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, GameActivity.class);
-            intent.putExtra(GameActivity.GAME_NAME, "Synonyms");
+            intent.putExtra(GameActivity.GAME_NAME, SYNONYMS);
             startActivity(intent);
         });
     }

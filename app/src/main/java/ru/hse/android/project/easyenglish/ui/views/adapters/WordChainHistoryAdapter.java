@@ -19,7 +19,7 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHistoryAdapter.ViewHolder> {
 
     /** Empty word if there is no translation **/
-    private static final String emptyWord = "-";
+    private static final String EMPTY_WORD = "-";
 
     /** List with pairs of Opponent(key) and Player(value) used words in english. */
     private final List<Pair<String, String>> englishPairs;
@@ -45,12 +45,12 @@ public class WordChainHistoryAdapter extends RecyclerView.Adapter<WordChainHisto
         englishPairs = words;
         for (Pair<String, String> pair : englishPairs) {
             String firstRussian = TranslateController.fastTranslate(pair.first, TranslateController.TranslateDirection.EN_RU);
-            if (pair.first.equals("-") || firstRussian.isEmpty()) {
-                firstRussian = "-";
+            if (pair.first.equals(EMPTY_WORD) || firstRussian.isEmpty()) {
+                firstRussian = EMPTY_WORD;
             }
             String secondRussian = TranslateController.fastTranslate(pair.second, TranslateController.TranslateDirection.EN_RU);
-            if (pair.second.equals("-") || secondRussian.isEmpty()) {
-                secondRussian = "-";
+            if (pair.second.equals(EMPTY_WORD) || secondRussian.isEmpty()) {
+                secondRussian = EMPTY_WORD;
             }
             russianPairs.add(new Pair<>(firstRussian, secondRussian));
             switchPairs.add(new Pair<>(true, true));

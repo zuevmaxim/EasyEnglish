@@ -36,6 +36,7 @@
             android:id="@+id/russian_phrase_text"
             style="@style/ElementInBorder"
             android:layout_marginTop="10dp"
+            android:layout_weight="0.05"
             android:layout_marginBottom="20dp"
             android:layout_height="wrap_content"
             android:textSize="18sp" />

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -29,12 +30,6 @@ import ru.hse.android.project.easyenglish.words.Word;
  * Rules : You are given words in English. Your task is to choose all the synonyms of the word from the list.
  */
 public class SynonymsActivity extends AppCompatActivity {
-
-    /** Tag for window with hints. */
-    private static final String HINTS = "hints";
-
-    /** Tag for window with rules. */
-    private static final String RULES = "rules";
 
     private final SynonymsLogic logic = new SynonymsLogic();
 
@@ -65,7 +60,7 @@ public class SynonymsActivity extends AppCompatActivity {
         for (int i = 0; i < possibleAnswers.size(); i++) {
             checkBoxes[i]  = new CheckBox(this);
             checkBoxes[i].setText(possibleAnswers.get(i));
-            checkBoxes[i].setTextColor(Color.parseColor("#CB000000")); //TODO
+            checkBoxes[i].setTextColor(ContextCompat.getColor(this, R.color.colorDark));
             checkBoxesLayout.addView(checkBoxes[i]);
         }
 
@@ -82,7 +77,7 @@ public class SynonymsActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_synonyms));
             args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_synonyms_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), RULES);
+            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
@@ -92,7 +87,7 @@ public class SynonymsActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.synonyms));
             args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), HINTS);
+            hints.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
@@ -119,7 +114,7 @@ public class SynonymsActivity extends AppCompatActivity {
         } else {
             answerText = wordTask.getEnglish() + " - " + String.join(", ", answer);
         }
-        intent.putExtra(GameActivity.WORD_TAG, answerText);
+        intent.putExtra(GameActivity.MESSAGE_TAG, answerText);
         setResult(RESULT_OK, intent);
         finish();
     }
