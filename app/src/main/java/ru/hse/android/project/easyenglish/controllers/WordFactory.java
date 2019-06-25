@@ -260,7 +260,7 @@ public class WordFactory extends SQLiteAssetHelper {
         if (cursor.moveToNext()) {
             wordId = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
         } else {
-            throw new WrongWordException("No such word.");
+            throw new WrongWordException(context.getString(R.string.no_such_word_error));
         }
         cursor.close();
         return wordId;

@@ -38,7 +38,6 @@ public class SynonymsLogic {
     public boolean update() {
         final List<Word> words = wordStorage.getSetOfWords(SIZE);
         wordTask = words.remove(0);
-
         answer = TranslateController.getSynonyms(wordTask.getEnglish());
         if (answer == null) {
             return false;
@@ -54,7 +53,6 @@ public class SynonymsLogic {
                 possibleAnswers.add(word.getEnglish());
             }
         }
-
         hint = generateHint();
         Collections.shuffle(possibleAnswers);
         return true;

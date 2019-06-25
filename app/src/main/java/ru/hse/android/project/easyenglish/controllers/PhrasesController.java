@@ -17,6 +17,7 @@ import ru.hse.android.project.easyenglish.words.Phrase;
  * and a table for each list, where phrases are stored.
  */
 public class PhrasesController extends SQLiteAssetHelper {
+
     /** Database version should be updated after each change of application's database. */
     private static final int DATABASE_VERSION = 2;
     private static final String DATABASE_NAME = "phrases.db";

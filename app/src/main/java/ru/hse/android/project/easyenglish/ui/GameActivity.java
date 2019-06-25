@@ -63,13 +63,19 @@ public class GameActivity extends AppCompatActivity {
     public static final String GAME_RESULT_TAG = "game result";
 
     /** Tag to put extra word to intent. */
-    public static final String WORD_TAG = "word";
+    public static final String MESSAGE_TAG = "word";
 
     /** Tag to put extra end game flag to intent. */
     public static final String END_GAME_TAG = "word";
 
     /** Tad to put extra game name. */
     public static final String GAME_NAME = "game name";
+
+    /** Tag for window with hints. */
+    public static final String HINTS_TAG = "hints";
+
+    /** Tag for window with rules. */
+    public static final String RULES_TAG = "rules";
 
     /**
      * Games list to play.
@@ -93,7 +99,7 @@ public class GameActivity extends AppCompatActivity {
                     final TextView wordAnswerText = findViewById(R.id.game_result_text);
                     wordAnswerText.setVisibility(View.VISIBLE);
 
-                    String word = data.getStringExtra(WORD_TAG);
+                    String word = data.getStringExtra(MESSAGE_TAG);
                     wordAnswerText.setText(word);
 
                     boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);

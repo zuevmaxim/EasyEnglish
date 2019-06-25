@@ -12,6 +12,7 @@ import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
 /** Word chain game logic. */
 public class WordChainLogic {
+
     /** Turn == 1 iff it is player's turn. */
     private int turn = 0;
 

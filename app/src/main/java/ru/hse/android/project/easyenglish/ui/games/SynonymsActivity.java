@@ -30,12 +30,6 @@ import ru.hse.android.project.easyenglish.words.Word;
  */
 public class SynonymsActivity extends AppCompatActivity {
 
-    /** Tag for window with hints. */
-    private static final String HINTS = "hints";
-
-    /** Tag for window with rules. */
-    private static final String RULES = "rules";
-
     private final SynonymsLogic logic = new SynonymsLogic();
 
     private Word wordTask;
@@ -82,7 +76,7 @@ public class SynonymsActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_synonyms));
             args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_synonyms_text));
             rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), RULES);
+            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
         });
 
         Button hintsButton = findViewById(R.id.hints_button);
@@ -92,7 +86,7 @@ public class SynonymsActivity extends AppCompatActivity {
             args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.synonyms));
             args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
             hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), HINTS);
+            hints.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
         });
 
         Button endGameButton = findViewById(R.id.end_game_button);
@@ -119,7 +113,7 @@ public class SynonymsActivity extends AppCompatActivity {
         } else {
             answerText = wordTask.getEnglish() + " - " + String.join(", ", answer);
         }
-        intent.putExtra(GameActivity.WORD_TAG, answerText);
+        intent.putExtra(GameActivity.MESSAGE_TAG, answerText);
         setResult(RESULT_OK, intent);
         finish();
     }

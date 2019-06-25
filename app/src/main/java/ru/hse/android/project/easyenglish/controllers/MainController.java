@@ -8,6 +8,7 @@ import android.support.annotation.NonNull;
  * Should be static in oder to have an ability to reach it simply from everywhere.
  */
 public class MainController {
+
     private static GameController gameController;
 
     private MainController() { }

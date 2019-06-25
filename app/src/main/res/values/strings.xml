@@ -149,5 +149,6 @@
     <string name="word_puzzle_first_word_hints">The second word is</string>
     <string name="word_puzzle_second_word_hints">The first word is</string>
     <string name="yandex_info_text">«Реализовано с помощью сервиса «Яндекс.Словарь» https://tech.yandex.ru/dictionary/</string>
+    <string name="no_such_word_error">No such word.</string>
 
 </resources>
