@@ -3,10 +3,7 @@ package ru.hse.android.project.easyenglish.controllers;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
-
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -14,37 +11,23 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import ru.hse.android.project.easyenglish.R;
+import ru.hse.android.project.easyenglish.controllers.db.ListsDB;
 import ru.hse.android.project.easyenglish.exceptions.WrongListNameException;
 import ru.hse.android.project.easyenglish.exceptions.WrongWordException;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
- * A database contains word lists.
- * Including special lists: random word list -- contains of random words,
- * and day list -- contains of words with bad statistics and new words,
- * updates every day automatically.
- * A database has a table, where word lists' names are stored,
- * and a table for each list, where words' ids are stored,
- * names of these tables are built in getTableName() method.
+ * Controller for working with word lists.
  */
-public class WordListController extends SQLiteAssetHelper {
-
-    /** Database version should be updated after each change of application's database. */
-    private static final int DATABASE_VERSION = 2;
-    private static final String DATABASE_NAME = "word_lists.db";
-    private static final String WORD_LISTS_TABLE_NAME = "word_lists";
-    private static final String RANDOM_WORD_LIST_NAME = "random word list";
-    private static final String DAY_LIST_NAME = "day list";
-    private static final String NAME_COLUMN = "name";
-    private static final String DATE_COLUMN = "date";
-    private static final String CURRENT_LIST_COLUMN = "is_current";
-    private static final String ID_COLUMN = "id";
-    private static final String WORD_ID_COLUMN = "word_id";
-    private static final String TABLE = "table";
+public class WordListController {
 
     private static final int RANDOM_WORD_LIST_LENGTH = 20;
     private static final int DAY_LIST_LENGTH = 10;
     private static final int PREF_NEW_WORDS = 7;
+    private static final String CURRENT_VALUE =  "1";
+    private static final String NOT_CURRENT_VALUE =  "0";
+
+    private final ListsDB listsDB;
     
     private final Context context;
     @SuppressLint("SimpleDateFormat")
@@ -55,9 +38,8 @@ public class WordListController extends SQLiteAssetHelper {
      * and upgrade it if application reinstalled and database version has changed.
      */
     WordListController(@NonNull Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        listsDB = new ListsDB(context);
         this.context = context;
-        setForcedUpgrade();
     }
 
     /**
@@ -66,39 +48,17 @@ public class WordListController extends SQLiteAssetHelper {
      * @return list id or 0 if no such list exists
      */
     public int getWordListId(@NonNull  String name) {
-        String[] columns = {ID_COLUMN};
-        Cursor cursor = getReadableDatabase()
-                .query(WORD_LISTS_TABLE_NAME,
-                        columns,
-                        NAME_COLUMN + " = ?",
-                        new String[]{name}, null, null, null);
-        int result = 0;
-        while (cursor.moveToNext()) {
-            result = cursor.getInt(cursor.getColumnIndexOrThrow(ID_COLUMN));
-        }
-        cursor.close();
-        return result;
+        return listsDB.getWordListId(name);
     }
 
     /** Get id of the random word list. */
     public int getRandomWordListId() {
-        return getWordListId(RANDOM_WORD_LIST_NAME);
+        return getWordListId(ListsDB.RANDOM_WORD_LIST_NAME);
     }
 
     /** Get id of the day list. */
     public int getDayListId() {
-        return getWordListId(DAY_LIST_NAME);
-    }
-
-    /**
-     * Construct name of the table, contains a list.
-     * The name consists of "table" word and id of the list.
-     * @param wordListName list name
-     * @return table name
-     */
-    @NonNull
-    private String getTableName(@NonNull String wordListName) {
-        return TABLE + getWordListId(wordListName);
+        return getWordListId(ListsDB.DAY_LIST_NAME);
     }
 
     /**
@@ -106,13 +66,7 @@ public class WordListController extends SQLiteAssetHelper {
      * @return true iff random word list is empty
      */
     boolean needsInit() {
-        String[] columns = {WORD_ID_COLUMN};
-        Cursor cursor = getReadableDatabase().query(getTableName(RANDOM_WORD_LIST_NAME), columns, null, null, null, null, null);
-        if (cursor.moveToNext()) {
-            return false;
-        }
-        cursor.close();
-        return true;
+        return listsDB.isEmptyList(ListsDB.RANDOM_WORD_LIST_NAME);
     }
 
     /**
@@ -120,23 +74,8 @@ public class WordListController extends SQLiteAssetHelper {
      * @return true iff day list is outdated
      */
     boolean needsDayListInit() {
-        Cursor dayListCursor = getReadableDatabase().query(WORD_LISTS_TABLE_NAME,
-                new String[] {DATE_COLUMN},
-                NAME_COLUMN + " = ?",
-                new String[] {DAY_LIST_NAME},
-                null, null, null);
-        boolean result = false;
         String currentDate = format.format(System.currentTimeMillis());
-        if (dayListCursor.moveToNext()) {
-            String date = dayListCursor.getString(dayListCursor.getColumnIndexOrThrow(DATE_COLUMN));
-            if (!date.equals(currentDate)) {
-                result = true;
-            }
-        } else {
-            result = true;
-        }
-        dayListCursor.close();
-        return result;
+        return listsDB.isEmptyList(ListsDB.DAY_LIST_NAME) || !listsDB.getListDate(ListsDB.DAY_LIST_NAME).equals(currentDate);
     }
 
     /**
@@ -145,15 +84,9 @@ public class WordListController extends SQLiteAssetHelper {
      * And update word storage.
      */
     public void updateRandomWordList() {
-        String tableName = getTableName(RANDOM_WORD_LIST_NAME);
-        getWritableDatabase().execSQL("DELETE FROM " + tableName);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Integer> ids = wordFactory.nextWordIds(RANDOM_WORD_LIST_LENGTH);
-        for (int id : ids) {
-            getWritableDatabase().execSQL(
-                    "INSERT INTO " + tableName +
-                            "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
-        }
+        listsDB.updateRandomWordList(ids);
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
@@ -163,32 +96,17 @@ public class WordListController extends SQLiteAssetHelper {
      */
     public void updateDayList() {
         String currentDate = format.format(System.currentTimeMillis());
-        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + DATE_COLUMN + " = " + currentDate +
-                " WHERE " + NAME_COLUMN + " = '" + DAY_LIST_NAME + "'");
-        String tableName = getTableName(DAY_LIST_NAME);
-        getWritableDatabase().execSQL("DELETE FROM " + tableName);
+        listsDB.setListDate(ListsDB.DAY_LIST_NAME, currentDate);
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Integer> ids = wordFactory.generateDayList(DAY_LIST_LENGTH, PREF_NEW_WORDS);
-        for (int id : ids) {
-            getWritableDatabase().execSQL(
-                    "INSERT INTO " + tableName +
-                            "(" + WORD_ID_COLUMN + ") VALUES ('" + id + "')");
-        }
+        listsDB.updateDayList(ids);
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
     /** Get a list of names of word lists. */
     @NonNull
     public List<String> getWordLists() {
-        List<String> lists = new ArrayList<>();
-        String[] columns = {NAME_COLUMN};
-        Cursor cursor = getReadableDatabase().query(WORD_LISTS_TABLE_NAME, columns, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            String list = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-            lists.add(list);
-        }
-        cursor.close();
-        return lists;
+        return listsDB.getWordLists();
     }
 
     /** Get words of the current word list. */
@@ -202,60 +120,35 @@ public class WordListController extends SQLiteAssetHelper {
     public List<Word> getListWords(@NonNull String wordListName) {
         WordFactory wordFactory = MainController.getGameController().getWordFactory();
         List<Word> words = new ArrayList<>();
-        String[] columns = {WORD_ID_COLUMN};
-        String tableName = getTableName(wordListName);
-        Cursor cursor = getReadableDatabase().query(tableName, columns, null, null, null, null, null);
-        while (cursor.moveToNext()) {
-            int wordId = cursor.getInt(cursor.getColumnIndexOrThrow(WORD_ID_COLUMN));
-            words.add(wordFactory.getWordById(wordId));
+        List<Integer> ids = listsDB.getListWords(wordListName);
+        for (int id : ids) {
+            words.add(wordFactory.getWordById(id));
         }
-        cursor.close();
         return words;
     }
 
     /** Get name of the current word list. */
     @NonNull
     public String getCurrentWordList() {
-        String[] columns = {NAME_COLUMN};
-        Cursor cursor = getReadableDatabase()
-                .query(WORD_LISTS_TABLE_NAME,
-                        columns,
-                        CURRENT_LIST_COLUMN + " = ?",
-                        new String[]{"1"}, null, null, null);
-        String result = "";
-        while (cursor.moveToNext()) {
-            result = cursor.getString(cursor.getColumnIndexOrThrow(NAME_COLUMN));
-        }
-        cursor.close();
-        return result;
+        return listsDB.getCurrentWordList();
     }
 
     /** Set new current word list. */
     public void setCurrentWordList(@NonNull String newListName) {
         String currentListName = getCurrentWordList();
-        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 0 WHERE " + NAME_COLUMN + " = '" + currentListName + "'");
-        getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = 1 WHERE " + NAME_COLUMN + " = '" + newListName + "'");
+        listsDB.setCurrentValue(currentListName, NOT_CURRENT_VALUE);
+        listsDB.setCurrentValue(newListName, CURRENT_VALUE);
         MainController.getGameController().getWordStorage().updateStorage();
     }
 
     /** Set day list as current. */
     public void setCurrentDayList() {
-        setCurrentWordList(DAY_LIST_NAME);
+        setCurrentWordList(ListsDB.DAY_LIST_NAME);
     }
 
     /** Check if database contains such a list. */
     private boolean containsWordList(@NonNull String listName) {
-        boolean result = false;
-        Cursor cursor = getReadableDatabase()
-                .query(WORD_LISTS_TABLE_NAME,
-                        new String[]{NAME_COLUMN},
-                        NAME_COLUMN + " = ? ",
-                        new String[]{listName}, null, null, null);
-        if (cursor.moveToNext()) {
-            result = true;
-        }
-        cursor.close();
-        return result;
+        return listsDB.containsWordList(listName);
     }
 
     /**
@@ -267,32 +160,9 @@ public class WordListController extends SQLiteAssetHelper {
     private void checkListNameSpelling(@NonNull String name)throws WrongListNameException {
        if (name.isEmpty()) {
             throw new WrongListNameException(context.getString(R.string.empty_list_name_error));
-       } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]+")) {
+       } else if (!name.matches("[A-Za-zА-яа-я][A-Za-zА-яа-я0-9\\s]*")) {
             throw new WrongListNameException(context.getString(R.string.wrong_word_format_error));
        }
-    }
-
-    /** Add new list into database. */
-    private void addNewWordList(@NonNull String name) {
-        getWritableDatabase().execSQL(
-                "INSERT INTO " + WORD_LISTS_TABLE_NAME +
-                        "(" + NAME_COLUMN + ", " + CURRENT_LIST_COLUMN + ") VALUES ('" + name + "', 0)");
-        getWritableDatabase().execSQL(
-                "CREATE TABLE " + getTableName(name) +
-                        "(" + ID_COLUMN + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        WORD_ID_COLUMN + " INTEGER)");
-    }
-
-    /**
-     * Add new word into a list. Inserts a word into word database.
-     * @throws WrongWordException if word is illegal
-     */
-    private void addNewWordIntoList(@NonNull String listName, @NonNull Word word) throws WrongWordException {
-        WordFactory wordFactory = MainController.getGameController().getWordFactory();
-        int wordId = wordFactory.addNewWord(word);
-        getWritableDatabase().execSQL(
-                "INSERT INTO " + getTableName(listName) +
-                        "(" + WORD_ID_COLUMN + ") VALUES ('" + wordId + "')");
     }
 
     /**
@@ -306,10 +176,14 @@ public class WordListController extends SQLiteAssetHelper {
         }
         checkListNameSpelling(listName);
         checkWordsToAdd(wordList);
-        addNewWordList(listName);
-        for (Word word : wordList) {
-            addNewWordIntoList(listName, word);
-        }
+        WordFactory wordFactory = MainController.getGameController().getWordFactory();
+        List<Integer> ids = wordList.stream().map(word -> {
+            try {
+                return wordFactory.addNewWord(word);
+            } catch (WrongWordException ignored) { }
+            return 0;
+        }).collect(Collectors.toList());
+        listsDB.addNewWordList(listName, ids);
     }
 
     /**
@@ -322,10 +196,9 @@ public class WordListController extends SQLiteAssetHelper {
             throw new WrongListNameException(context.getString(R.string.no_such_list_error) + ".");
         }
         if (getWordListId(name) == getWordListId(getCurrentWordList())) {
-            setCurrentWordList(RANDOM_WORD_LIST_NAME);
+            setCurrentWordList(ListsDB.RANDOM_WORD_LIST_NAME);
         }
-        getWritableDatabase().execSQL("DROP TABLE " + getTableName(name));
-        getWritableDatabase().execSQL("DELETE FROM " + WORD_LISTS_TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordListId(name));
+        listsDB.deleteWordList(name);
     }
 
     /**
