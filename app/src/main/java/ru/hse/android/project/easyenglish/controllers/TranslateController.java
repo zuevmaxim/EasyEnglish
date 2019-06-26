@@ -53,12 +53,6 @@ public class TranslateController {
     static void init(Context context) throws IllegalStateException {
         dictionaryKey = context.getString(R.string.yandex_dictionary_key);
         translateKey = context.getString(R.string.yandex_translate_key);
-        if (dictionaryKey.startsWith("YOUR_")) {
-            throw new IllegalStateException(context.getString(R.string.dictionary_key_error));
-        }
-        if (translateKey.startsWith("YOUR_")) {
-            throw new IllegalStateException(context.getString(R.string.translate_key_error));
-        }
     }
 
     /**
@@ -169,27 +163,34 @@ public class TranslateController {
         return null;
     }
 
+    /** Get a list of PartOfSpeech of a word from definitions. */
+    @NonNull
+    private static List<PartOfSpeech> getPartOfSpeechList(@NonNull DicResult.Definition[] definitions) {
+        List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
+        for (DicResult.Definition definition : definitions) {
+            if (definition != null) {
+                PartOfSpeech partOfSpeech = convertFromString(definition.pos);
+                if (partOfSpeech != null) {
+                    partOfSpeechList.add(partOfSpeech);
+                }
+            }
+        }
+        return partOfSpeechList;
+    }
+
     /** Get word transcription and part of speech. */
     @NonNull
     public static ExtendedWord wordInfo(@NonNull String word) {
         DicResult dicResult = translateTotal(word, TranslateDirection.EN_RU);
         String transcription = "";
         List<PartOfSpeech> partOfSpeechList = new ArrayList<>();
-        if (dicResult != null
-                && dicResult.def != null) {
+        if (dicResult != null && dicResult.def != null) {
             if (dicResult.def.length > 0
                     && dicResult.def[0] != null
                     && dicResult.def[0].ts != null) {
                 transcription = "[" + dicResult.def[0].ts + "]";
             }
-            for (DicResult.Definition definition : dicResult.def) {
-                if (definition != null) {
-                    PartOfSpeech partOfSpeech = convertFromString(definition.pos);
-                    if (partOfSpeech != null) {
-                        partOfSpeechList.add(partOfSpeech);
-                    }
-                }
-            }
+            partOfSpeechList = getPartOfSpeechList(dicResult.def);
         }
         return new ExtendedWord(word, transcription, partOfSpeechList);
     }
@@ -211,6 +212,22 @@ public class TranslateController {
         return result == null ? "" : result;
     }
 
+    /** Make yandex request and return resulting string. */
+    private static String makeYandexRequest(String request) throws IOException {
+        StringBuilder stringBuilder = new StringBuilder();
+        URL yandexTranslateURL = new URL(request);
+        HttpURLConnection httpJsonConnection = (HttpURLConnection) yandexTranslateURL.openConnection();
+        try (InputStream inputStream = httpJsonConnection.getInputStream();
+             BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
+            String jsonString;
+            while ((jsonString = bufferedReader.readLine()) != null) {
+                stringBuilder.append(jsonString).append("\n");
+            }
+        }
+        httpJsonConnection.disconnect();
+        return stringBuilder.toString().trim();
+    }
+
     /** Task for making request to Yandex.Dictionary. */
     static class DictionaryTask extends AsyncTask<String, Void, DicResult> {
 
@@ -219,35 +236,17 @@ public class TranslateController {
         protected DicResult doInBackground(String... params) {
             String textToBeTranslated = params[0];
             String languagePair = params[1];
-            if (textToBeTranslated == null) {
-                return null;
-            }
-            if (textToBeTranslated.isEmpty()) {
+            if (textToBeTranslated == null || textToBeTranslated.isEmpty()) {
                 return null;
             }
             String yandexUrl = String.format(DICTIONARY_REQUEST, dictionaryKey, languagePair, textToBeTranslated);
-            StringBuilder stringBuilder = new StringBuilder();
-
             try {
-                URL yandexTranslateURL = new URL(yandexUrl);
-                HttpURLConnection httpJsonConnection = (HttpURLConnection) yandexTranslateURL.openConnection();
-
-                try (InputStream inputStream = httpJsonConnection.getInputStream();
-                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-                    String jsonString;
-                    while ((jsonString = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(jsonString).append("\n");
-                    }
-                }
-
-                httpJsonConnection.disconnect();
+                String resultString = makeYandexRequest(yandexUrl);
+                return JSON.parseObject(resultString, DicResult.class);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-
-            String resultString = stringBuilder.toString().trim();
-            return JSON.parseObject(resultString, DicResult.class);
         }
     }
 
@@ -263,23 +262,13 @@ public class TranslateController {
             }
 
             String yandexUrl = String.format(TRANSLATE_REQUEST, translateKey, languagePair, textToBeTranslated);
-            StringBuilder stringBuilder = new StringBuilder();
+            String resultString;
             try {
-                URL yandexTranslateURL = new URL(yandexUrl);
-                HttpURLConnection httpJsonConnection = (HttpURLConnection) yandexTranslateURL.openConnection();
-                try (InputStream inputStream = httpJsonConnection.getInputStream();
-                     BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream))) {
-                    String jsonString;
-                    while ((jsonString = bufferedReader.readLine()) != null) {
-                        stringBuilder.append(jsonString).append("\n");
-                    }
-                }
-                httpJsonConnection.disconnect();
+                resultString = makeYandexRequest(yandexUrl);
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
-            String resultString = stringBuilder.toString().trim();
             Pattern pattern = Pattern.compile("\\[\"(\\w*)\"\\]");
             Matcher matcher = pattern.matcher(resultString);
             if (matcher.find()) {

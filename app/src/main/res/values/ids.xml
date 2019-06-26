@@ -4,10 +4,12 @@
     <!--
         Enter your Yandex.Dictionary code here. You can get it at https://yandex.ru/dev/dictionary/
     -->
-    <string name="yandex_dictionary_key">dict.1.1.20190518T080755Z.a6b5a273366a623b.3a3d0f3248d904cd51a43d31e4d86bb7890822a1</string>
+    <!--<string name="yandex_dictionary_key">YOUR_DICTIONARY_KEY</string> -->
 
-    <!--
-        Enter your Yandex.Translate code here. You can get it at https://yandex.ru/dev/translate/
-    -->
+     <string name="yandex_dictionary_key">dict.1.1.20190518T080755Z.a6b5a273366a623b.3a3d0f3248d904cd51a43d31e4d86bb7890822a1</string>
+
+        <!--
+            Enter your Yandex.Translate code here. You can get it at https://yandex.ru/dev/translate/
+        -->
     <string name="yandex_translate_key">trnsl.1.1.20190312T113058Z.7f00768b72b9448a.44608f0910349bb5b3217137b8e605101fa2e17d</string>
 </resources>

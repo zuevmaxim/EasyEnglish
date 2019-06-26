@@ -4,8 +4,8 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 
-import org.junit.After;
-import org.junit.Before;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -37,14 +37,14 @@ public class LocalGamesTests {
 
     private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final Random RANDOM = new Random();
-    private String suffix = "";
+    private static String suffix = "";
     private static final int SUFFIX_LENGTH = 20;
 
-    private List<Word> testList;
+    private static List<Word> testList;
     private static final String TEST_LIST = "LocalGameTest";
 
-    @Before
-    public void initMainController() throws WrongListNameException, WrongWordException {
+    @BeforeClass
+    public static void initMainController() throws WrongListNameException, WrongWordException {
         Context appContext = InstrumentationRegistry.getTargetContext();
         MainController.init(appContext);
         for (int i = 0; i < SUFFIX_LENGTH; i++) {
@@ -62,8 +62,8 @@ public class LocalGamesTests {
         MainController.getGameController().getWordListController().setCurrentWordList(TEST_LIST);
     }
 
-    @After
-    public void deleteTestList() throws WrongListNameException {
+    @AfterClass
+    public static void deleteTestList() throws WrongListNameException {
         MainController.getGameController().getWordListController().deleteWordList(TEST_LIST);
         for (Word word : testList) {
             MainController.getGameController().getWordFactory().deleteWord(word);
@@ -163,6 +163,7 @@ public class LocalGamesTests {
         String hint = game.getHint();
         Word word = game.getWordTask();
 
+        assert possible != null;
         assertTrue(possible.contains(hint));
         assertFalse(answer.contains(hint));
 
