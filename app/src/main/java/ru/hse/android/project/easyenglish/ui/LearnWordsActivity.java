@@ -29,6 +29,7 @@ public class LearnWordsActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_learn_words_cards_mode);
+
         WordListController wordListController = MainController.getGameController().getWordListController();
         TextView listNameText = findViewById(R.id.list_name_text);
         listNameText.setText(wordListController.getCurrentWordList().toUpperCase());

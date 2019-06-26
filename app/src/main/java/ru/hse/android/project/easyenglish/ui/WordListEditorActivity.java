@@ -18,7 +18,7 @@ import ru.hse.android.project.easyenglish.ui.views.adapters.WordListAdapter;
 public class WordListEditorActivity extends AppCompatActivity {
 
     /** Code used in onActivityResult to return from EDIT_LIST_ACTIVITY. */
-    private static final int EDIT_LIST_ACTIVITY = 37;
+    private static final int EDIT_LIST_ACTIVITY_CODE = 37;
 
     /** Create activity screen. */
     @Override
@@ -29,7 +29,7 @@ public class WordListEditorActivity extends AppCompatActivity {
         Button addNewListButton = findViewById(R.id.add_new_list_button);
         addNewListButton.setOnClickListener(v -> {
             Intent intent = new Intent(this, EditListActivity.class);
-            startActivityForResult(intent, EDIT_LIST_ACTIVITY);
+            startActivityForResult(intent, EDIT_LIST_ACTIVITY_CODE);
         });
         setResult(RESULT_OK);
     }
@@ -46,7 +46,7 @@ public class WordListEditorActivity extends AppCompatActivity {
     /** Accept result from EditListActivity. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        if (requestCode == EDIT_LIST_ACTIVITY) {
+        if (requestCode == EDIT_LIST_ACTIVITY_CODE) {
             if (resultCode == RESULT_OK) {
                 setUpListView();
             }
