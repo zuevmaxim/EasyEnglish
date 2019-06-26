@@ -20,6 +20,7 @@ public class MainMenuActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_menu);
 
+        checkKeys();
         MainController.init(this);
 
         Button gamesButton = findViewById(R.id.games_button);
@@ -51,5 +52,15 @@ public class MainMenuActivity extends AppCompatActivity {
             Intent intent = new Intent(this, LearnWordsActivity.class);
             startActivity(intent);
         });
+    }
+
+    /** Check that yandex keys are specified. */
+    private void checkKeys() {
+        if (getString(R.string.yandex_dictionary_key).startsWith("YOUR_")) {
+            throw new RuntimeException(getString(R.string.dictionary_key_error));
+        }
+        if (getString(R.string.yandex_translate_key).startsWith("YOUR_")) {
+            throw new RuntimeException(getString(R.string.translate_key_error));
+        }
     }
 }
