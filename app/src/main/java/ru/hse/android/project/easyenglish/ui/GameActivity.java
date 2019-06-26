@@ -209,7 +209,7 @@ public class GameActivity extends AppCompatActivity {
         return null;
     }
 
-    /** Init button to show rules. */
+    /** Init button to show rules. */ //TODO extract from games
     public void initRulesButton() {
 
     }
