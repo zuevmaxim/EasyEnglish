@@ -18,7 +18,7 @@ public class MainController {
         return gameController;
     }
 
-    /** Create GameController and init it. */
+    /** Create GameController and init it. Init TranslateController. */
     public static void init(@NonNull Context context) {
         gameController = new GameController(context);
         gameController.init();

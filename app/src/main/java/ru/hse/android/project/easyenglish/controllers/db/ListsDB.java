@@ -109,7 +109,7 @@ public class ListsDB extends SQLiteAssetHelper {
     /**
      * Update random word list by specified ids.
      */
-    public void updateRandomWordList(List<Integer> ids) {
+    public void updateRandomWordList(@NonNull List<Integer> ids) {
         String tableName = getTableName(RANDOM_WORD_LIST_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);
         for (int id : ids) {
@@ -126,10 +126,9 @@ public class ListsDB extends SQLiteAssetHelper {
     }
 
     /**
-     * Update day list, and update word storage.
-     * Generates a new word list, where some words are new and the others are with bad statistics.
+     * Update day list with specified ids.
      */
-    public void updateDayList(List<Integer> ids) {
+    public void updateDayList(@NonNull List<Integer> ids) {
         String tableName = getTableName(DAY_LIST_NAME);
         getWritableDatabase().execSQL("DELETE FROM " + tableName);
         for (int id : ids) {
@@ -188,7 +187,7 @@ public class ListsDB extends SQLiteAssetHelper {
     /** Set new current word list. */
     public void setCurrentValue(@NonNull String listName, @NonNull String value) {
         getWritableDatabase().execSQL("UPDATE " + WORD_LISTS_TABLE_NAME + " SET " + CURRENT_LIST_COLUMN + " = " + value + " WHERE " + NAME_COLUMN + " = '" + listName + "'");
-        }
+    }
 
     /** Check if database contains such a list. */
     public boolean containsWordList(@NonNull String listName) {
@@ -228,7 +227,7 @@ public class ListsDB extends SQLiteAssetHelper {
     /**
      * Add new word list into a database with checking the ability of it.
      */
-    public void addNewWordList(@NonNull String listName, @NonNull  List<Integer> ids) {
+    public void addNewWordList(@NonNull String listName, @NonNull List<Integer> ids) {
         addNewWordList(listName);
         for (int id : ids) {
             addNewWordIntoList(listName, id);

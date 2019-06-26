@@ -1,12 +1,8 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
@@ -20,14 +16,15 @@ public class WordFactory {
     private final WordsDB wordsDB;
     private final Context context;
 
-    public WordFactory(@NonNull Context context) {
+    WordFactory(@NonNull Context context) {
         wordsDB = new WordsDB(context);
         this.context = context;
     }
 
     /** Get a random set of words of specified length. */
+    @SuppressWarnings("SameParameterValue")
     @NonNull
-    public List<Integer> nextWordIds(int length) {
+    List<Integer> nextWordIds(int length) {
         return wordsDB.nextWordIds(length);
     }
 
@@ -36,8 +33,9 @@ public class WordFactory {
      * @param length length of the list
      * @param newWordsLength preference number of new words
      */
+    @SuppressWarnings("SameParameterValue")
     @NonNull
-    public List<Integer> generateDayList(int length, int newWordsLength) {
+    List<Integer> generateDayList(int length, int newWordsLength) {
         List<Integer> result = wordsDB.getZeroWords(newWordsLength);
         int rest = length - result.size();
         result.addAll(wordsDB.getMinimalList(rest));
@@ -46,7 +44,7 @@ public class WordFactory {
 
     /** Get a word by it's id. */
     @NonNull
-    public Word getWordById(int id) {
+    Word getWordById(int id) {
         return wordsDB.getWordById(id);
     }
 
@@ -69,7 +67,7 @@ public class WordFactory {
      * Save result of a game for the word.
      * @param result true iff was given a correct answer
      */
-    public void saveWordStatistic(@NonNull Word word, boolean result) {
+    void saveWordStatistic(@NonNull Word word, boolean result) {
         int previousErrorResult = getWordErrorNumber(word);
         int previousTotalResult = getWordTotalNumber(word);
         int error = result ? previousErrorResult : previousErrorResult + 1;
@@ -83,7 +81,7 @@ public class WordFactory {
      * Check that word's spelling is legal.
      * @throws WrongWordException if spelling is illegal
      */
-    public void checkWordSpelling(@NonNull Word word) throws WrongWordException {
+    void checkWordSpelling(@NonNull Word word) throws WrongWordException {
         checkEnglishSpelling(word.getEnglish());
         checkRussianSpelling(word.getRussian());
     }
@@ -123,7 +121,7 @@ public class WordFactory {
      * @return word's id in the database
      * @throws WrongWordException if spelling is illegal
      */
-    public int addNewWord(@NonNull Word word) throws WrongWordException {
+    int addNewWord(@NonNull Word word) throws WrongWordException {
         checkWordSpelling(word);
 
         if (wordsDB.containsWord(word)) {

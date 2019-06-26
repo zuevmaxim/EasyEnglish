@@ -47,7 +47,7 @@ public class WordListController {
      * @param name list name
      * @return list id or 0 if no such list exists
      */
-    public int getWordListId(@NonNull  String name) {
+    public int getWordListId(@NonNull String name) {
         return listsDB.getWordListId(name);
     }
 
@@ -170,7 +170,7 @@ public class WordListController {
      * @throws WrongListNameException if list name is illegal or such list already exists
      * @throws WrongWordException if some words in the list are illegal
      */
-    public void addNewWordList(@NonNull String listName, @NonNull  List<Word> wordList) throws WrongListNameException, WrongWordException {
+    public void addNewWordList(@NonNull String listName, @NonNull List<Word> wordList) throws WrongListNameException, WrongWordException {
         if (containsWordList(listName)) {
             throw new WrongListNameException(context.getString(R.string.list_already_exists_error));
         }

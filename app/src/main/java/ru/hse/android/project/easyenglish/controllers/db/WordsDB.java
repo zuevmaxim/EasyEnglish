@@ -161,11 +161,9 @@ public class WordsDB extends SQLiteAssetHelper {
      * @return word's id in the database
      */
     public int addNewWord(@NonNull Word word) {
-        String russianWord = word.getRussian();
-        String englishWord = word.getEnglish();
         getWritableDatabase().execSQL(
                 "INSERT INTO " + TABLE_NAME + "(" + RUSSIAN_COLUMN + "," + ENGLISH_COLUMN + "," + TRANSCRIPTION_COLUMN + ") " +
-                        "VALUES ('" + russianWord + "', '" + englishWord + "', '" + word.getTranscription() + "')");
+                        "VALUES ('" + word.getRussian() + "', '" + word.getEnglish() + "', '" + word.getTranscription() + "')");
 
         int id = 0;
         try {

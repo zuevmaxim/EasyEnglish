@@ -62,6 +62,7 @@ public class TranslateController {
      * @param timeout time for request
      * @return translation or null if error occurred
      */
+    @SuppressWarnings("SameParameterValue")
     @Nullable
     private static String translate(@NonNull String word, @NonNull TranslateDirection languagePair, int timeout) {
         DicResult dicResult = translateTotal(word, languagePair, timeout);
@@ -96,6 +97,7 @@ public class TranslateController {
      * Make a request for Russian word and find synonyms of English word.
      * @return list of synonyms of English word
      */
+    @SuppressWarnings("SameParameterValue")
     @Nullable
     private static List<String> findSynonymsInTranslation(@NonNull String russian, @NonNull String english, int timeout) {
         DicResult dicResult = translateTotal(russian, TranslateDirection.RU_EN, timeout);

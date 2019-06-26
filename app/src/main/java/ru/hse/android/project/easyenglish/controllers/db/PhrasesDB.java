@@ -37,7 +37,7 @@ public class PhrasesDB extends SQLiteAssetHelper {
     }
 
     /** Find list with specified current value. */
-    public String getThemeWithCurrentValue(String current) {
+    public String getThemeWithCurrentValue(@NonNull String current) {
         String[] columns = {NAME_COLUMN};
         Cursor cursor = getReadableDatabase()
                 .query(THEMES_TABLE_NAME,

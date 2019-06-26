@@ -49,11 +49,6 @@ public class GameController {
         wordFactory.saveWordStatistic(word, result);
     }
 
-    /** Reset all the statistics of the word. */
-    public void resetStatistics(@NonNull Word word) {
-        wordFactory.resetStatistics(word);
-    }
-
     @NonNull
     public PhraseStorage getPhraseStorage() {
         return phaseStorage;
