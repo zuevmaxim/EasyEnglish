@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -76,58 +77,63 @@ public class GameActivity extends AppCompatActivity {
     /** Tag for window with rules. */
     public static final String RULES_TAG = "rules";
 
+    /** Image with game result. */
+    private final ImageView imageView = findViewById(R.id.result);
+
+    /** Text with game result. */
+    private final TextView gameResultText = findViewById(R.id.game_result);
+
     /**
      * Games list to play.
      * Contains several games in case of 10 words game, and only one game otherwise.
      */
-    private List<Class<?>> randomGames;
+    private List<Class<?>> currentGames;
 
     /** Getting result from a game. */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         Log.e("TAG", "onActivityResult");
         if (requestCode == GAME_RESULT_CODE) {
-            if (resultCode == RESULT_OK) {
-                if (data == null) {
-                    throw new AssertionError();
-                }
-                boolean endOfGame = data.getBooleanExtra(END_GAME_TAG, false);
-                if (endOfGame) {
-                    endGame();
-                } else {
-                    final TextView wordAnswerText = findViewById(R.id.game_result_text);
-                    wordAnswerText.setVisibility(View.VISIBLE);
-
-                    String word = data.getStringExtra(MESSAGE_TAG);
-                    wordAnswerText.setText(word);
-
-                    boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);
-                    ImageView imageView = findViewById(R.id.result);
-                    final TextView gameResultText = findViewById(R.id.game_result);
-                    if (result) {
-                        gameResultText.setText(getString(R.string.right_answer));
-                        gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
-                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.right, null));
-                    } else {
-                        gameResultText.setText(getString(R.string.wrong_answer));
-                        gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
-                        imageView.setImageDrawable(getResources().getDrawable(R.drawable.wrong, null));
+            switch (resultCode) {
+                case RESULT_OK:
+                    if (data == null) {
+                        throw new AssertionError();
                     }
+                    boolean endOfGame = data.getBooleanExtra(END_GAME_TAG, false);
+                    if (endOfGame) {
+                        endGame();
+                    } else {
+                        final TextView gameMessageText = findViewById(R.id.game_result_text);
+                        gameMessageText.setVisibility(View.VISIBLE);
+                        gameMessageText.setText(data.getStringExtra(MESSAGE_TAG));
 
-                    succeedTasks += result ? 1 : 0;
-                    totalTasks++;
-                }
-            } else if (resultCode == RESULT_REMOVE_SYNONYMS) {
-                randomGames.remove(SynonymsActivity.class);
-                if (randomGames.isEmpty()) {
-                    new AlertDialog.Builder(this)
-                            .setMessage(this.getString(R.string.check_internet_connect))
-                            .setCancelable(false)
-                            .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
-                            .show();
-                    return;
-                }
-                runGame(randomGame());
+                        boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);
+                        if (result) {
+                            gameResultText.setText(getString(R.string.right_answer));
+                            gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorPrimaryDark));
+                            imageView.setImageDrawable(getResources().getDrawable(R.drawable.right, null));
+                        } else {
+                            gameResultText.setText(getString(R.string.wrong_answer));
+                            gameResultText.setTextColor(ContextCompat.getColor(this, R.color.colorAccent));
+                            imageView.setImageDrawable(getResources().getDrawable(R.drawable.wrong, null));
+                        }
+
+                        succeedTasks += result ? 1 : 0;
+                        totalTasks++;
+                    }
+                    break;
+                case RESULT_REMOVE_SYNONYMS:
+                    currentGames.remove(SynonymsActivity.class);
+                    if (currentGames.isEmpty()) {
+                        new AlertDialog.Builder(this)
+                                .setMessage(this.getString(R.string.check_internet_connect))
+                                .setCancelable(false)
+                                .setNeutralButton(android.R.string.ok, (dialogInterface, i) -> finish())
+                                .show();
+                        return;
+                    }
+                    runGame(randomGame());
+                    break;
             }
         }
     }
@@ -139,20 +145,18 @@ public class GameActivity extends AppCompatActivity {
         setContentView(R.layout.activity_game);
 
         Intent intent = getIntent();
-
         Game gameName = (Game) intent.getSerializableExtra(GAME_NAME);
         final Class<?> gameClass = chooseGameByName(gameName);
 
-        randomGames = new ArrayList<>();
+        currentGames = new ArrayList<>();
          if (gameName == Game.TEN_WORDS) {
              previousListName = wordListController.getCurrentWordList();
              wordListController.setCurrentDayList();
-             randomGames.add(LetterPuzzleActivity.class);
-             randomGames.add(ChooseDefinitionActivity.class);
-             randomGames.add(MatchingActivity.class);
-             randomGames.add(SynonymsActivity.class);
+             currentGames.addAll(Arrays.asList(
+                     LetterPuzzleActivity.class, ChooseDefinitionActivity.class,
+                     MatchingActivity.class, SynonymsActivity.class));
          } else {
-             randomGames.add(gameClass);
+             currentGames.add(gameClass);
          }
 
         succeedTasks = 0;
@@ -160,20 +164,15 @@ public class GameActivity extends AppCompatActivity {
 
         runGame(randomGame());
 
-        final Button toMenuButton = findViewById(R.id.to_menu_button);
-        toMenuButton.setVisibility(View.INVISIBLE);
-
-        final Button nextWordButton = findViewById(R.id.next_word_button);
-        nextWordButton.setOnClickListener(v -> runGame(randomGame()));
-
-        final Button finishGameButton = findViewById(R.id.end_game_button);
-        finishGameButton.setOnClickListener(v -> endGame());
+        findViewById(R.id.to_menu_button).setVisibility(View.INVISIBLE);
+        findViewById(R.id.next_word_button).setOnClickListener(v -> runGame(randomGame()));
+        findViewById(R.id.end_game_button).setOnClickListener(v -> endGame());
     }
 
     /** Choose random game. */
     @NonNull
     private Class<?> randomGame() {
-        return randomGames.get(RANDOM.nextInt(randomGames.size()));
+        return currentGames.get(RANDOM.nextInt(currentGames.size()));
     }
 
     /** Start game activity. */
@@ -184,17 +183,10 @@ public class GameActivity extends AppCompatActivity {
 
     /** End game and show result. */
     private void endGame() {
-        final TextView gameResult = findViewById(R.id.game_result);
-        gameResult.setVisibility(View.GONE);
-
-        final ImageView imageView = findViewById(R.id.result);
-        imageView.setVisibility(View.GONE);
-
-        final Button nextWordButton = findViewById(R.id.next_word_button);
-        nextWordButton.setVisibility(View.INVISIBLE);
-
-        final Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setVisibility(View.INVISIBLE);
+        findViewById(R.id.game_result).setVisibility(View.GONE);
+        findViewById(R.id.result).setVisibility(View.GONE);
+        findViewById(R.id.next_word_button).setVisibility(View.INVISIBLE);
+        findViewById(R.id.end_game_button).setVisibility(View.INVISIBLE);
 
         final TextView gameResultText = findViewById(R.id.game_result_text);
         gameResultText.setText(("result : " + succeedTasks + " out of " + totalTasks));
@@ -215,6 +207,21 @@ public class GameActivity extends AppCompatActivity {
             case SYNONYMS : return SynonymsActivity.class;
         }
         return null;
+    }
+
+    /** Init button to show rules. */ //TODO extract from games
+    public void initRulesButton() {
+
+    }
+
+    /** Init button to show hints. */
+    public void initHintsButton() {
+
+    }
+
+    /** Init button to end game. */
+    public void initEndGameButton() {
+
     }
 
     /** React on back button pressed in local games. */

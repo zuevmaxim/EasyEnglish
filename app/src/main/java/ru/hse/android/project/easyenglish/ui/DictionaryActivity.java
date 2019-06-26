@@ -11,11 +11,18 @@ import android.widget.TextView;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.TranslateController;
 
+import static ru.hse.android.project.easyenglish.controllers.TranslateController.*;
+import static ru.hse.android.project.easyenglish.controllers.TranslateController.TranslateDirection.EN_RU;
+import static ru.hse.android.project.easyenglish.controllers.TranslateController.TranslateDirection.RU_EN;
+
 /**
  * Application English-Russian and Russian-English translator.
  * Get all possible translations and synonyms from Yandex translator.
  */
 public class DictionaryActivity extends AppCompatActivity {
+
+    /** Direction to translate word(True - from russian to english, False - visa versa). */
+    private boolean translationDirection = true;
 
     /** Get word, ask TranslateController for translation and show result. */
     @Override
@@ -31,67 +38,72 @@ public class DictionaryActivity extends AppCompatActivity {
             CharSequence newLanguageFrom = languageToText.getText();
             languageToText.setText(newLanguageTo);
             languageFromText.setText(newLanguageFrom);
+            translationDirection = !translationDirection;
         });
-
-        final TextView translateResultText = findViewById(R.id.translation_text);
-        final TextView yandexText = findViewById(R.id.yandex_text);
-        final EditText enterText = findViewById(R.id.enter_word);
         Button translateButton = findViewById(R.id.translate_button);
-        translateButton.setOnClickListener(v -> {
-            String word = enterText.getText().toString();
-            String languageFrom = languageFromText.getText().toString();
-            String languageTo = languageToText.getText().toString();
-            TranslateController.TranslateDirection languagePair;
-            if (languageFrom.equals("RU") && languageTo.equals("EN")) {
-                languagePair = TranslateController.TranslateDirection.RU_EN;
-            } else {
-                languagePair = TranslateController.TranslateDirection.EN_RU;
+        translateButton.setOnClickListener(v -> setTranslationInfo());
+
+        final TextView yandexText = findViewById(R.id.yandex_text);
+        yandexText.setText(R.string.yandex_info_text);
+    }
+
+    /** Show translation info fro request. */
+    private void setTranslationInfo() {
+        final TextView translateResultText = findViewById(R.id.translation_text);
+        final EditText enterText = findViewById(R.id.enter_word);
+        String word = enterText.getText().toString();
+        TranslateDirection languagePair = translationDirection ? RU_EN : EN_RU;
+        DicResult result = TranslateController.translateTotal(word, languagePair);
+        if (result == null) {
+            new AlertDialog.Builder(this)
+                    .setMessage(this.getString(R.string.check_internet_connect))
+                    .setNeutralButton(android.R.string.ok, null)
+                    .show();
+        } else if (result.def != null) {
+            translateResultText.setMovementMethod(new ScrollingMovementMethod());
+            translateResultText.setText(getDefinitions(result));
+        }
+    }
+
+    /** Show all definitions for requested word. */
+    private String getDefinitions(DicResult result) {
+        StringBuilder builder = new StringBuilder();
+        for (DicResult.Definition definition : result.def) {
+            if (definition != null && definition.text != null) {
+                builder.append(definition.text);
+                if (definition.ts != null) {
+                    builder.append("\t\t\t[").append(definition.ts).append("]");
+                }
+                if (definition.pos != null) {
+                    builder.append("\t\t\t(").append(definition.pos).append(")");
+                }
+                builder.append("\n");
+                if (definition.tr != null) {
+                    getTranslations(builder, definition);
+                }
             }
-            TranslateController.DicResult result = TranslateController.translateTotal(word, languagePair);
-            if (result == null) {
-                new AlertDialog.Builder(this)
-                        .setMessage(this.getString(R.string.check_internet_connect))
-                        .setNeutralButton(android.R.string.ok, null)
-                        .show();
-            } else {
-                StringBuilder builder = new StringBuilder();
-                if (result.def != null) {
-                    for (TranslateController.DicResult.Definition definition : result.def) {
-                        if (definition != null && definition.text != null) {
-                            builder.append(definition.text);
-                            if (definition.ts != null) {
-                                builder.append("\t\t\t[").append(definition.ts).append("]");
-                            }
-                            if (definition.pos != null) {
-                                builder.append("\t\t\t(").append(definition.pos).append(")");
-                            }
-                            builder.append("\n");
-                            if (definition.tr != null) {
-                                for (TranslateController.DicResult.Translation translation : definition.tr) {
-                                    if (translation != null && translation.text != null) {
-                                        builder.append("\t\t-").append(translation.text);
-                                        if (translation.pos != null) {
-                                            builder.append("\t\t\t(").append(translation.pos).append(")").append("\n");
-                                        }
-                                        if (translation.mean != null) {
-                                            for (TranslateController.DicResult.Meaning meaning : translation.mean) {
-                                                if (meaning != null && meaning.text != null) {
-                                                    builder.append("\t\t\t\t-").append(meaning.text).append("\n");
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                                builder.append("\n");
-                            }
+            builder.append("\n");
+        }
+        return builder.toString();
+    }
+
+    /** Show all translations for definitions for requested word. */
+    private void getTranslations(StringBuilder builder, DicResult.Definition definition) {
+        for (TranslateController.DicResult.Translation translation : definition.tr) {
+            if (translation != null && translation.text != null) {
+                builder.append("\t\t-").append(translation.text);
+                if (translation.pos != null) {
+                    builder.append("\t\t\t(").append(translation.pos).append(")").append("\n");
+                }
+                if (translation.mean != null) {
+                    for (TranslateController.DicResult.Meaning meaning : translation.mean) {
+                        if (meaning != null && meaning.text != null) {
+                            builder.append("\t\t\t\t-").append(meaning.text).append("\n");
                         }
-                        builder.append("\n");
                     }
                 }
-                translateResultText.setMovementMethod(new ScrollingMovementMethod());
-                translateResultText.setText(builder.toString());
-                yandexText.setText(R.string.yandex_info_text);
             }
-        });
+        }
+        builder.append("\n");
     }
 }

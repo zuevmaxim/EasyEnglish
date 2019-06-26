@@ -150,11 +150,16 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         private TextWatcher englishTextWatcher;
         private TextWatcher russianTextWatcher;
 
+        private Consumer<AUTO_CHANGES> setAutoChanges;
+        private Supplier<AUTO_CHANGES> getAutoChanges;
+        private  Word word;
+
         /** Construct watchers if there are none. */
         private void init() {
-            Word word = words.get(viewHolder.getId()).first;
-            Consumer<AUTO_CHANGES> setAutoChanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
-            Supplier<AUTO_CHANGES> getAutoChanges = () -> words.get(viewHolder.getId()).second;
+            word = words.get(viewHolder.getId()).first;
+            setAutoChanges = (v) -> words.set(viewHolder.getId(), new Pair<>(word, v));
+            getAutoChanges = () -> words.get(viewHolder.getId()).second;
+
             russianTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -171,39 +176,10 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    switch (getAutoChanges.get()) {
-                        case SET_UP:
-                            setErrorIfWrongSpelling(viewHolder);
-                            return;
-                        case BOTH:
-                            if (!s.toString().isEmpty()) {
-                                setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
-                            }
-                            break;
-                        case NONE:
-                            if (s.toString().isEmpty()) {
-                                setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
-                            }
-                            break;
-                        case ENGLISH:
-                            if (s.toString().isEmpty()) {
-                                word.setEnglish("");
-                                viewHolder.englishWordText.setText(word.getEnglish());
-                                setAutoChanges.accept(AUTO_CHANGES.BOTH);
-                            }
-                            break;
-                        case RUSSIAN:
-                            setAutoChanges.accept(AUTO_CHANGES.NONE);
-                            break;
-                    }
-                    if (getAutoChanges.get() == AUTO_CHANGES.ENGLISH) {
-                        word.setEnglish((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.RU_EN)));
-                        viewHolder.englishWordText.setText(word.getEnglish());
-                        setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
-                    }
-                    setErrorIfWrongSpelling(viewHolder);
+                    makeRussianTransition(s);
                 }
             };
+
             englishTextWatcher = new TextWatcher() {
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -219,39 +195,79 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    switch (getAutoChanges.get()) {
-                        case SET_UP:
-                            setErrorIfWrongSpelling(viewHolder);
-                            return;
-                        case BOTH:
-                            if (!s.toString().isEmpty()) {
-                                setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
-                            }
-                            break;
-                        case NONE:
-                            if (s.toString().isEmpty()) {
-                                setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
-                            }
-                            break;
-                        case ENGLISH:
-                            setAutoChanges.accept(AUTO_CHANGES.NONE);
-                            break;
-                        case RUSSIAN:
-                            if (s.toString().isEmpty()) {
-                                word.setRussian("");
-                                viewHolder.russianWordText.setText(word.getRussian());
-                                setAutoChanges.accept(AUTO_CHANGES.BOTH);
-                            }
-                            break;
-                    }
-                    if (getAutoChanges.get() == AUTO_CHANGES.RUSSIAN) {
-                        word.setRussian((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.EN_RU)));
-                        viewHolder.russianWordText.setText(word.getRussian());
-                        setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
-                    }
-                    setErrorIfWrongSpelling(viewHolder);
+                    makeEnglishTransition(s);
                 }
             };
+        }
+
+        /** Control state of russian text after it had been changed. */
+        private void makeRussianTransition(Editable s) {
+            switch (getAutoChanges.get()) {
+                case SET_UP:
+                    setErrorIfWrongSpelling(viewHolder);
+                    return;
+                case BOTH:
+                    if (!s.toString().isEmpty()) {
+                        setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
+                    }
+                    break;
+                case NONE:
+                    if (s.toString().isEmpty()) {
+                        setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
+                    }
+                    break;
+                case ENGLISH:
+                    if (s.toString().isEmpty()) {
+                        word.setEnglish("");
+                        viewHolder.englishWordText.setText(word.getEnglish());
+                        setAutoChanges.accept(AUTO_CHANGES.BOTH);
+                    }
+                    break;
+                case RUSSIAN:
+                    setAutoChanges.accept(AUTO_CHANGES.NONE);
+                    break;
+            }
+            if (getAutoChanges.get() == AUTO_CHANGES.ENGLISH) {
+                word.setEnglish((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.RU_EN)));
+                viewHolder.englishWordText.setText(word.getEnglish());
+                setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
+            }
+            setErrorIfWrongSpelling(viewHolder);
+        }
+
+        /** Control state of english text after it had been changed. */
+        private void makeEnglishTransition(Editable s) {
+            switch (getAutoChanges.get()) {
+                case SET_UP:
+                    setErrorIfWrongSpelling(viewHolder);
+                    return;
+                case BOTH:
+                    if (!s.toString().isEmpty()) {
+                        setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
+                    }
+                    break;
+                case NONE:
+                    if (s.toString().isEmpty()) {
+                        setAutoChanges.accept(AUTO_CHANGES.ENGLISH);
+                    }
+                    break;
+                case ENGLISH:
+                    setAutoChanges.accept(AUTO_CHANGES.NONE);
+                    break;
+                case RUSSIAN:
+                    if (s.toString().isEmpty()) {
+                        word.setRussian("");
+                        viewHolder.russianWordText.setText(word.getRussian());
+                        setAutoChanges.accept(AUTO_CHANGES.BOTH);
+                    }
+                    break;
+            }
+            if (getAutoChanges.get() == AUTO_CHANGES.RUSSIAN) {
+                word.setRussian((TranslateController.fastTranslate(s.toString(), TranslateController.TranslateDirection.EN_RU)));
+                viewHolder.russianWordText.setText(word.getRussian());
+                setAutoChanges.accept(AUTO_CHANGES.RUSSIAN);
+            }
+            setErrorIfWrongSpelling(viewHolder);
         }
 
         private void setViewHolder(@NonNull ViewHolder viewHolder) {
