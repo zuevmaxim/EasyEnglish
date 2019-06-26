@@ -41,33 +41,15 @@ public class LetterPuzzleActivity extends AppCompatActivity {
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> checkAnswer(answerText.getText().toString()));
 
-        Button showRulesButton = findViewById(R.id.rules_button);
-        showRulesButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_letter_puzzle));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_letter_puzzle_text));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.rules_letter_puzzle),
+                getString(R.string.rules_letter_puzzle_text));
 
-        Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra(GameActivity.END_GAME_TAG, true);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        GameActivity.initHintsButton(this,
+                getString(R.string.hints_letter_puzzle),
+                getString(R.string.hints_letter_puzzle_text) + " " + logic.getHint() + ".");
 
-        Button showHintsButton = findViewById(R.id.hints_button);
-        showHintsButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.hints_letter_puzzle));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.hints_letter_puzzle_text) + logic.getHint() + ".");
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
-        });
+        GameActivity.initEndGameButton(this);
     }
 
     /** Check given answer and send report to GameActivity. */

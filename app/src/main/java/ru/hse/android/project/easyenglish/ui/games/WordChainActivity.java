@@ -232,15 +232,9 @@ public class WordChainActivity extends AppCompatActivity {
             adb.show();
         });
 
-        Button rulesButton = findViewById(R.id.rules_button);
-        rulesButton.setOnClickListener(view -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString("title", "Word Chain Rules");
-            args.putString("message", getString(R.string.rules_word_chain_text));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.word_chain_rules),
+                getString(R.string.rules_word_chain_text));
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
@@ -282,7 +276,6 @@ public class WordChainActivity extends AppCompatActivity {
                             .setNegativeButton("Cancel", (dialog, which) -> {})
                             .show();
                 }
-
             }
         });
 

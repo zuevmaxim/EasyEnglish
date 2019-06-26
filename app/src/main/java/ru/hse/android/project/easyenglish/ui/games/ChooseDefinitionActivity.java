@@ -49,33 +49,15 @@ public class ChooseDefinitionActivity extends AppCompatActivity {
 
         radioGroup.setOnCheckedChangeListener((group, checkedId) -> checkAnswer(possibleAnswers.get(checkedId), answer));
 
-        Button rulesButton = findViewById(R.id.rules_button);
-        rulesButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_choose_definitions));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_text_choose_definitions));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.rules_choose_definitions),
+                getString(R.string.rules_text_choose_definitions));
 
-        Button hintsButton = findViewById(R.id.hints_button);
-        hintsButton.setOnClickListener(v -> {
-            ShowInfoActivity hints = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.hints_choose_definitions));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint().getRussian() + " " + this.getString(R.string.is_wrong_answer));
-            hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
-        });
+        GameActivity.initHintsButton(this,
+                getString(R.string.hints_choose_definitions),
+                logic.getHint().getRussian() + " " + getString(R.string.is_wrong_answer));
 
-        Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra(GameActivity.END_GAME_TAG, true);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        GameActivity.initEndGameButton(this);
     }
 
     /** Check answer and send report to GameActivity. */

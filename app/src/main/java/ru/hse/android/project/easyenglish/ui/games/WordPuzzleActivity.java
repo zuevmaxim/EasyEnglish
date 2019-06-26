@@ -45,37 +45,21 @@ public class WordPuzzleActivity extends AppCompatActivity {
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffleWords));
 
-        Button showRulesButton = findViewById(R.id.rules_button);
-        showRulesButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_word_puzzle));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_word_puzzle_text));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.rules_word_puzzle),
+                getString(R.string.rules_word_puzzle_text));
 
-        Button showHintsButton = findViewById(R.id.hints_button);
-        showHintsButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.word_puzzle_hints));
-            if (shuffleWords.size() >= 2) {
-                args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.word_puzzle_first_word_hints) + logic.getHint(1));
-            } else if (shuffleWords.size() >= 1) {
-                args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.word_puzzle_second_word_hints) + logic.getHint(0));
-            }
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
-        });
+        String hint = "";
+        if (shuffleWords.size() >= 2) {
+            hint = getString(R.string.word_puzzle_first_word_hints) + logic.getHint(1);
+        } else if (shuffleWords.size() >= 1) {
+            hint = getString(R.string.word_puzzle_second_word_hints) + logic.getHint(0);
+        }
+        GameActivity.initHintsButton(this,
+                getString(R.string.word_puzzle_hints),
+                hint);
 
-        Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra(GameActivity.END_GAME_TAG, true);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        GameActivity.initEndGameButton(this);
     }
 
     /** Check if given answer equals to model and send report to GameActivity. */

@@ -46,34 +46,15 @@ public class MatchingActivity extends AppCompatActivity {
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> checkAnswer(shuffledEnglishWords));
 
-        Button showRulesButton = findViewById(R.id.rules_button);
-        showRulesButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.rules_matching));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, getString(R.string.rules_matching_text));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.rules_matching),
+                getString(R.string.rules_matching_text));
 
-        Button showHintsButton = findViewById(R.id.hints_button);
-        showHintsButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, getString(R.string.matching_hints));
-            Word hint = logic.getHint();
-            args.putString(ShowInfoActivity.MESSAGE_TAG, hint.getEnglish() + " - " + hint.getRussian());
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
-        });
+        GameActivity.initHintsButton(this,
+                getString(R.string.matching_hints),
+                logic.getHint().getRussian() + " - " + logic.getHint().getEnglish());
 
-        Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra(GameActivity.END_GAME_TAG, true);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        GameActivity.initEndGameButton(this);
     }
 
     /** Check if given answer equals to model and send report to GameActivity. */

@@ -27,6 +27,7 @@ import ru.hse.android.project.easyenglish.ui.games.LetterPuzzleActivity;
 import ru.hse.android.project.easyenglish.ui.games.MatchingActivity;
 import ru.hse.android.project.easyenglish.ui.games.SynonymsActivity;
 import ru.hse.android.project.easyenglish.ui.games.WordPuzzleActivity;
+import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 
 /**
  * GameActivity is common for all local games.
@@ -63,10 +64,10 @@ public class GameActivity extends AppCompatActivity {
     public static final String GAME_RESULT_TAG = "game result";
 
     /** Tag to put extra word to intent. */
-    public static final String MESSAGE_TAG = "word";
+    public static final String MESSAGE_TAG = "message";
 
     /** Tag to put extra end game flag to intent. */
-    public static final String END_GAME_TAG = "word";
+    public static final String END_GAME_TAG = "end game";
 
     /** Tad to put extra game name. */
     public static final String GAME_NAME = "game name";
@@ -76,12 +77,6 @@ public class GameActivity extends AppCompatActivity {
 
     /** Tag for window with rules. */
     public static final String RULES_TAG = "rules";
-
-    /** Image with game result. */
-    private final ImageView imageView = findViewById(R.id.result);
-
-    /** Text with game result. */
-    private final TextView gameResultText = findViewById(R.id.game_result);
 
     /**
      * Games list to play.
@@ -106,7 +101,8 @@ public class GameActivity extends AppCompatActivity {
                         final TextView gameMessageText = findViewById(R.id.game_result_text);
                         gameMessageText.setVisibility(View.VISIBLE);
                         gameMessageText.setText(data.getStringExtra(MESSAGE_TAG));
-
+                        final ImageView imageView = findViewById(R.id.result);
+                        final TextView gameResultText = findViewById(R.id.game_result);
                         boolean result = data.getBooleanExtra(GAME_RESULT_TAG, false);
                         if (result) {
                             gameResultText.setText(getString(R.string.right_answer));
@@ -210,18 +206,40 @@ public class GameActivity extends AppCompatActivity {
     }
 
     /** Init button to show rules. */ //TODO extract from games
-    public void initRulesButton() {
-
+    public static void initRulesButton(@NonNull AppCompatActivity context, @NonNull String title, @NonNull String message) {
+        Button rulesButton = context.findViewById(R.id.rules_button);
+        rulesButton.setOnClickListener(v -> {
+            ShowInfoActivity rules = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString(ShowInfoActivity.TITLE_TAG, title);
+            args.putString(ShowInfoActivity.MESSAGE_TAG, message);
+            rules.setArguments(args);
+            rules.show(context.getSupportFragmentManager(), RULES_TAG);
+        });
     }
 
     /** Init button to show hints. */
-    public void initHintsButton() {
-
+    public static void initHintsButton(@NonNull AppCompatActivity context, @NonNull String title, @NonNull String message) {
+        Button hintsButton = context.findViewById(R.id.hints_button);
+        hintsButton.setOnClickListener(v -> {
+            ShowInfoActivity hints = new ShowInfoActivity();
+            Bundle args = new Bundle();
+            args.putString(ShowInfoActivity.TITLE_TAG, title);
+            args.putString(ShowInfoActivity.MESSAGE_TAG, message);
+            hints.setArguments(args);
+            hints.show(context.getSupportFragmentManager(), GameActivity.HINTS_TAG);
+        });
     }
 
     /** Init button to end game. */
-    public void initEndGameButton() {
-
+    public static void initEndGameButton(@NonNull AppCompatActivity context) {
+        Button endGameButton = context.findViewById(R.id.end_game_button);
+        endGameButton.setOnClickListener(v -> {
+            Intent intent = new Intent();
+            intent.putExtra(GameActivity.END_GAME_TAG, true);
+            context.setResult(RESULT_OK, intent);
+            context.finish();
+        });
     }
 
     /** React on back button pressed in local games. */
@@ -231,7 +249,7 @@ public class GameActivity extends AppCompatActivity {
                 .setMessage("Are you sure?")
                 .setPositiveButton("YES", (dialog, whichButton) -> {
                     Intent intent = new Intent();
-                    intent.putExtra("end game", true);
+                    intent.putExtra(END_GAME_TAG, true);
                     context.setResult(RESULT_OK, intent);
                     context.finish();
                     dialog.dismiss();

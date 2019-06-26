@@ -1,13 +1,11 @@
 package ru.hse.android.project.easyenglish.ui.games;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.annotation.RequiresApi;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -22,7 +20,6 @@ import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.controllers.MainController;
 import ru.hse.android.project.easyenglish.logic.SynonymsLogic;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
-import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
@@ -36,7 +33,6 @@ public class SynonymsActivity extends AppCompatActivity {
     private Word wordTask;
 
     /** Create game screen with with English word task and list of possible synonyms. */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,41 +62,25 @@ public class SynonymsActivity extends AppCompatActivity {
 
         Button checkAnswerButton = findViewById(R.id.send_answer_button);
         checkAnswerButton.setOnClickListener(v -> {
-            List<String> checkedSynonyms = Arrays.stream(checkBoxes).filter(CompoundButton::isChecked).map(checkBox -> checkBox.getText().toString()).collect(Collectors.toList());
+            List<String> checkedSynonyms = Arrays.stream(checkBoxes)
+                    .filter(CompoundButton::isChecked)
+                    .map(checkBox -> checkBox.getText().toString())
+                    .collect(Collectors.toList());
             checkAnswer(checkedSynonyms);
         });
 
-        Button rulesButton = findViewById(R.id.rules_button);
-        rulesButton.setOnClickListener(v -> {
-            ShowInfoActivity rules = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.rules_synonyms));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, this.getString(R.string.rules_synonyms_text));
-            rules.setArguments(args);
-            rules.show(getSupportFragmentManager(), GameActivity.RULES_TAG);
-        });
+        GameActivity.initRulesButton(this,
+                getString(R.string.rules_synonyms),
+                getString(R.string.rules_synonyms_text));
 
-        Button hintsButton = findViewById(R.id.hints_button);
-        hintsButton.setOnClickListener(v -> {
-            ShowInfoActivity hints = new ShowInfoActivity();
-            Bundle args = new Bundle();
-            args.putString(ShowInfoActivity.TITLE_TAG, this.getString(R.string.synonyms));
-            args.putString(ShowInfoActivity.MESSAGE_TAG, logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
-            hints.setArguments(args);
-            hints.show(getSupportFragmentManager(), GameActivity.HINTS_TAG);
-        });
+        GameActivity.initHintsButton(this,
+                getString(R.string.synonyms),
+                logic.getHint() + " " + this.getString(R.string.is_wrong_answer));
 
-        Button endGameButton = findViewById(R.id.end_game_button);
-        endGameButton.setOnClickListener(v -> {
-            Intent intent = new Intent();
-            intent.putExtra(GameActivity.END_GAME_TAG, true);
-            setResult(RESULT_OK, intent);
-            finish();
-        });
+        GameActivity.initEndGameButton(this);
     }
 
     /** Check if given answer equals to model and send report to GameActivity. */
-    @RequiresApi(api = Build.VERSION_CODES.O)
     private void checkAnswer(@NonNull List<String> givenAnswer) {
         boolean result = logic.checkAnswer(givenAnswer);
         List<String> answer = logic.getAnswer();
@@ -112,7 +92,7 @@ public class SynonymsActivity extends AppCompatActivity {
         if (answer.size() == 0) {
             answerText = getString(R.string.no_synonyms_text) + wordTask.getEnglish() + ".";
         } else {
-            answerText = wordTask.getEnglish() + " - " + String.join(", ", answer);
+            answerText = wordTask.getEnglish() + " - " + TextUtils.join(", ", answer);
         }
         intent.putExtra(GameActivity.MESSAGE_TAG, answerText);
         setResult(RESULT_OK, intent);

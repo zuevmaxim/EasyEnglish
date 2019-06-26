@@ -58,8 +58,8 @@ public class ChooseDefinitionLogic {
     /** Generate hint - odd word. */
     @NonNull
     private Word generateHint() {
-        Word hint = possibleAnswers.get(0);
-        while (!hint.equals(answer)) {
+        Word hint = possibleAnswers.get(RANDOM.nextInt(possibleAnswers.size()));
+        while (hint.equals(answer)) {
             hint = possibleAnswers.get(RANDOM.nextInt(possibleAnswers.size()));
         }
         return hint;
