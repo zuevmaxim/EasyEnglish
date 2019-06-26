@@ -37,7 +37,6 @@ public class LocalGamesTests {
 
     private static final String LETTERS = "abcdefghijklmnopqrstuvwxyz";
     private static final Random RANDOM = new Random();
-    private static String suffix = "";
     private static final int SUFFIX_LENGTH = 20;
 
     private static List<Word> testList;
@@ -47,9 +46,11 @@ public class LocalGamesTests {
     public static void initMainController() throws WrongListNameException, WrongWordException {
         Context appContext = InstrumentationRegistry.getTargetContext();
         MainController.init(appContext);
+        StringBuilder suffixBuilder = new StringBuilder();
         for (int i = 0; i < SUFFIX_LENGTH; i++) {
-            suffix += LETTERS.charAt(RANDOM.nextInt(LETTERS.length()));
+            suffixBuilder.append(LETTERS.charAt(RANDOM.nextInt(LETTERS.length())));
         }
+        final String suffix = suffixBuilder.toString();
 
         testList = new ArrayList<>(Arrays.asList(
                 new Word ("первоеслово", "firstword" + suffix),
@@ -101,7 +102,6 @@ public class LocalGamesTests {
             }
         }
     }
-
 
     @Test
     public void letterPuzzleTest() {

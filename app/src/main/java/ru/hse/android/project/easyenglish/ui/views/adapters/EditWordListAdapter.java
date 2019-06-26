@@ -69,7 +69,6 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
             viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
             viewHolderHashMap.get(viewHolder.getId()).init();
         }
-
         viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
         viewHolder.russianWordText.setHint(R.string.russian_hint_text);
         viewHolder.englishWordText.setHint(R.string.english_hint_text);
@@ -165,7 +164,6 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
                 }
-
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (getAutoChanges.get() == AUTO_CHANGES.SET_UP) {
@@ -173,7 +171,6 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                     }
                     word.setRussian(s.toString());
                 }
-
                 @Override
                 public void afterTextChanged(Editable s) {
                     makeRussianTransition(s);
@@ -184,7 +181,6 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                 @Override
                 public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 }
-
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
                     if (getAutoChanges.get() == AUTO_CHANGES.SET_UP) {
@@ -192,7 +188,6 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
                     }
                     word.setEnglish(s.toString());
                 }
-
                 @Override
                 public void afterTextChanged(Editable s) {
                     makeEnglishTransition(s);

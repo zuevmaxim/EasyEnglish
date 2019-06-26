@@ -1,12 +1,8 @@
 package ru.hse.android.project.easyenglish.controllers;
 
 import android.content.Context;
-import android.database.Cursor;
 import android.support.annotation.NonNull;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
-
-import java.util.ArrayList;
 import java.util.List;
 
 import ru.hse.android.project.easyenglish.R;
