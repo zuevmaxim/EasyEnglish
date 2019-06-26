@@ -152,5 +152,8 @@
     <string name="translate_key_error">Translate key is not specified.</string>
     <string name="no_such_word_error">No such word.</string>
     <string name="word_chain_rules">Word Chain rules:</string>
+    <string name="edit_list">Edit</string>
+    <string name="delete_list">Delete</string>
+    <string name="update">Update</string>
 
 </resources>

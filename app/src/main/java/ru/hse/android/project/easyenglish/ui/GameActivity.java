@@ -67,16 +67,16 @@ public class GameActivity extends AppCompatActivity {
     public static final String MESSAGE_TAG = "message";
 
     /** Tag to put extra end game flag to intent. */
-    public static final String END_GAME_TAG = "end game";
+    private static final String END_GAME_TAG = "end game";
 
     /** Tad to put extra game name. */
     public static final String GAME_NAME = "game name";
 
     /** Tag for window with hints. */
-    public static final String HINTS_TAG = "hints";
+    private static final String HINTS_TAG = "hints";
 
     /** Tag for window with rules. */
-    public static final String RULES_TAG = "rules";
+    private static final String RULES_TAG = "rules";
 
     /**
      * Games list to play.

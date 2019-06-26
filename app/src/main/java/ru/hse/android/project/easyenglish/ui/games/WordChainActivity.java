@@ -236,14 +236,10 @@ public class WordChainActivity extends AppCompatActivity {
                 getString(R.string.rules_word_chain_text));
 
         Button showHintsButton = findViewById(R.id.hints_button);
-        showHintsButton.setOnClickListener(v -> {
-            showHints();
-        });
+        showHintsButton.setOnClickListener(v -> showHints());
 
         Button historyButton = findViewById(R.id.history_button);
-        historyButton.setOnClickListener(view -> {
-            showHistory();
-        });
+        historyButton.setOnClickListener(view -> showHistory());
 
         mDataFirstLetterText = findViewById(R.id.player_first_letter);
         mDataView = findViewById(R.id.answer_word_text);
