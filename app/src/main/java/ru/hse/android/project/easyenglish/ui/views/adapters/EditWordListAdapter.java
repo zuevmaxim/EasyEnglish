@@ -38,7 +38,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
 
     /** Each word should have it's own TextWatcher, so they are saved in a HashMap. */
     @SuppressLint("UseSparseArrays")
-    private final HashMap<Integer, ViewHolderHolder> viewHolderHashMap = new HashMap<>();
+    private final HashMap<Integer, TextWatcherHolder> viewHolderHashMap = new HashMap<>();
 
     /**
      * Constructor.
@@ -65,7 +65,7 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         final Word word = words.get(viewHolder.getId()).first;
 
         if (!viewHolderHashMap.containsKey(viewHolder.getId())) {
-            viewHolderHashMap.put(viewHolder.getId(), new ViewHolderHolder());
+            viewHolderHashMap.put(viewHolder.getId(), new TextWatcherHolder());
             viewHolderHashMap.get(viewHolder.getId()).setViewHolder(viewHolder);
             viewHolderHashMap.get(viewHolder.getId()).init();
         }
@@ -142,8 +142,8 @@ public class EditWordListAdapter extends RecyclerView.Adapter<EditWordListAdapte
         }
     }
 
-    /** ViewHolderHolder holds the view holder and text watchers. */
-    private class ViewHolderHolder {
+    /** TextWatcherHolder holds the view holder and text watchers. */
+    private class TextWatcherHolder {
 
         private ViewHolder viewHolder;
         private TextWatcher englishTextWatcher;

@@ -237,64 +237,12 @@ public class WordChainActivity extends AppCompatActivity {
 
         Button showHintsButton = findViewById(R.id.hints_button);
         showHintsButton.setOnClickListener(v -> {
-            Log.d(TAG, "hints button clicked");
-            AlertDialog.Builder adb = new AlertDialog.Builder(this);
-            if (wordChain == null) {
-                adb.setTitle(R.string.word_chain_hints)
-                        .setMessage(R.string.word_chain_no_hints_text)
-                        .setPositiveButton("OK", (dialog, which) -> { })
-                        .show();
-                return;
-            }
-            if (!wordChain.isMyTurn()) {
-                Toast.makeText(this, R.string.not_your_turn_text, Toast.LENGTH_LONG).show();
-                return;
-            }
-            if (wordChain.getHintsNumber() == 0) {
-                adb.setTitle(R.string.word_chain_hints)
-                        .setMessage(R.string.word_chain_all_hints_used_text)
-                        .setPositiveButton("OK", (dialog, which) -> { })
-                        .show();
-            } else {
-                List<String> hints = wordChain.getHint();
-                int availableHints = Math.min(wordChain.getHintsNumber(), hints.size());
-                if (availableHints == 0) {
-                    adb.setTitle(R.string.word_chain_hints)
-                            .setMessage(R.string.word_chain_no_hints_text)
-                            .setPositiveButton("OK", (dialog, which) -> { })
-                            .show();
-                } else {
-                    adb.setTitle(R.string.word_chain_hints)
-                            .setMessage(availableHints + getString(R.string.word_chain_hints_text))
-                            .setPositiveButton("YES", (dialog, which) -> {
-                                wordChain.useHint();
-                                String word = hints.get(0);
-                                Toast.makeText(this, word, Toast.LENGTH_LONG).show();
-                                dialog.dismiss();
-                            })
-                            .setNegativeButton("Cancel", (dialog, which) -> {})
-                            .show();
-                }
-            }
+            showHints();
         });
 
         Button historyButton = findViewById(R.id.history_button);
         historyButton.setOnClickListener(view -> {
-            AlertDialog.Builder adb = new AlertDialog.Builder(WordChainActivity.this);
-            adb.setTitle("Game history");
-            View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
-            adb.setView(dialogView).setPositiveButton("OK", (dialogInterface, i) -> { });
-            RecyclerView recyclerView = dialogView.findViewById(R.id.list);
-            recyclerView.setLayoutManager(new LinearLayoutManager(WordChainActivity.this));
-            List<Pair<String, String>> history = new ArrayList<>();
-            for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
-                String word1 = it.next();
-                String word2 = it.hasNext() ? it.next() : "-";
-                history.add(new Pair<>(word1, word2));
-            }
-            WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(WordChainActivity.this, history);
-            recyclerView.setAdapter(adapter);
-            adb.show();
+            showHistory();
         });
 
         mDataFirstLetterText = findViewById(R.id.player_first_letter);
@@ -311,6 +259,66 @@ public class WordChainActivity extends AppCompatActivity {
         animationPlayerUp = AnimationUtils.loadAnimation(this, R.anim.translation_player_up);
         animationOpponentUp = AnimationUtils.loadAnimation(this, R.anim.translation_opponent_up);
         animationPlayerDown = AnimationUtils.loadAnimation(this, R.anim.translation_player_down);
+    }
+
+    private void showHints() {
+        Log.d(TAG, "hints button clicked");
+        AlertDialog.Builder adb = new AlertDialog.Builder(this);
+        if (wordChain == null) {
+            adb.setTitle(R.string.word_chain_hints)
+                    .setMessage(R.string.word_chain_no_hints_text)
+                    .setPositiveButton("OK", (dialog, which) -> { })
+                    .show();
+            return;
+        }
+        if (!wordChain.isMyTurn()) {
+            Toast.makeText(this, R.string.not_your_turn_text, Toast.LENGTH_LONG).show();
+            return;
+        }
+        if (wordChain.getHintsNumber() == 0) {
+            adb.setTitle(R.string.word_chain_hints)
+                    .setMessage(R.string.word_chain_all_hints_used_text)
+                    .setPositiveButton("OK", (dialog, which) -> { })
+                    .show();
+        } else {
+            List<String> hints = wordChain.getHint();
+            int availableHints = Math.min(wordChain.getHintsNumber(), hints.size());
+            if (availableHints == 0) {
+                adb.setTitle(R.string.word_chain_hints)
+                        .setMessage(R.string.word_chain_no_hints_text)
+                        .setPositiveButton("OK", (dialog, which) -> { })
+                        .show();
+            } else {
+                adb.setTitle(R.string.word_chain_hints)
+                        .setMessage(availableHints + getString(R.string.word_chain_hints_text))
+                        .setPositiveButton("YES", (dialog, which) -> {
+                            wordChain.useHint();
+                            String word = hints.get(0);
+                            Toast.makeText(this, word, Toast.LENGTH_LONG).show();
+                            dialog.dismiss();
+                        })
+                        .setNegativeButton("Cancel", (dialog, which) -> {})
+                        .show();
+            }
+        }
+    }
+
+    private void showHistory() {
+        AlertDialog.Builder adb = new AlertDialog.Builder(WordChainActivity.this);
+        adb.setTitle("Game history");
+        View dialogView = getLayoutInflater().inflate(R.layout.custom_dialog, null);
+        adb.setView(dialogView).setPositiveButton("OK", (dialogInterface, i) -> { });
+        RecyclerView recyclerView = dialogView.findViewById(R.id.list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(WordChainActivity.this));
+        List<Pair<String, String>> history = new ArrayList<>();
+        for (Iterator<String> it = wordChain.getPreviousWords().iterator(); it.hasNext();) {
+            String word1 = it.next();
+            String word2 = it.hasNext() ? it.next() : "-";
+            history.add(new Pair<>(word1, word2));
+        }
+        WordChainHistoryAdapter adapter = new WordChainHistoryAdapter(WordChainActivity.this, history);
+        recyclerView.setAdapter(adapter);
+        adb.show();
     }
 
     /** Show animation when sending answer. */
