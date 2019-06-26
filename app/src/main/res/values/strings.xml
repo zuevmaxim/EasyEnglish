@@ -97,7 +97,6 @@
     <string name="rules_matching">Matching rules:</string>
     <string name="rules_matching_text">You are given a list of word in Russian and shuffled list of their translations. Your task is to match words with their translations.</string>
     <string name="Transcription">Transcription</string>
-    <string name="A">A</string>
     <string name="history">History</string>
     <string name="finish_game">finish game</string>
     <string name="leave_game">leave game</string>

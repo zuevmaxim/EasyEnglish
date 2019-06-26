@@ -90,7 +90,7 @@ public class SynonymsActivity extends AppCompatActivity {
         String answerText;
         assert answer != null;
         if (answer.size() == 0) {
-            answerText = getString(R.string.no_synonyms_text) + wordTask.getEnglish() + ".";
+            answerText = getString(R.string.no_synonyms_text) + " " + wordTask.getEnglish() + ".";
         } else {
             answerText = wordTask.getEnglish() + " - " + TextUtils.join(", ", answer);
         }

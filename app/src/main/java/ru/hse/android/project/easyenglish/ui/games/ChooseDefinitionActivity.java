@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.widget.Button;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
@@ -14,7 +13,6 @@ import java.util.List;
 import ru.hse.android.project.easyenglish.R;
 import ru.hse.android.project.easyenglish.logic.ChooseDefinitionLogic;
 import ru.hse.android.project.easyenglish.ui.GameActivity;
-import ru.hse.android.project.easyenglish.ui.views.ShowInfoActivity;
 import ru.hse.android.project.easyenglish.words.Word;
 
 /**
