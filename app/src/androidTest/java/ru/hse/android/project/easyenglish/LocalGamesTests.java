@@ -41,6 +41,7 @@ public class LocalGamesTests {
 
     private static List<Word> testList;
     private static final String TEST_LIST = "LocalGameTest";
+    private static String suffix;
 
     @BeforeClass
     public static void initMainController() throws WrongListNameException, WrongWordException {
@@ -50,7 +51,7 @@ public class LocalGamesTests {
         for (int i = 0; i < SUFFIX_LENGTH; i++) {
             suffixBuilder.append(LETTERS.charAt(RANDOM.nextInt(LETTERS.length())));
         }
-        final String suffix = suffixBuilder.toString();
+        suffix = suffixBuilder.toString();
 
         testList = new ArrayList<>(Arrays.asList(
                 new Word ("первоеслово", "firstword" + suffix),
@@ -59,17 +60,33 @@ public class LocalGamesTests {
                 new Word ("четвертоеслово", "fourthword" + suffix),
                 new Word ("пятоеслово", "fifthword" + suffix),
                 new Word ("шестоеслово", "sixthword" + suffix)));
+        long size = MainController.getGameController().getWordFactory().count();
         MainController.getGameController().getWordListController().addNewWordList(TEST_LIST, testList);
+        assertEquals(size + 6, MainController.getGameController().getWordFactory().count());
         MainController.getGameController().getWordListController().setCurrentWordList(TEST_LIST);
     }
 
     @AfterClass
     public static void deleteTestList() throws WrongListNameException {
         MainController.getGameController().getWordListController().deleteWordList(TEST_LIST);
+        long size = MainController.getGameController().getWordFactory().count();
         for (Word word : testList) {
             MainController.getGameController().getWordFactory().deleteWord(word);
             assertFalse(MainController.getGameController().getWordFactory().containsWord(word));
         }
+        assertEquals(size - 6, MainController.getGameController().getWordFactory().count());
+    }
+
+    @Test
+    public void addDeleteWordTest() throws WrongWordException {
+        long size = MainController.getGameController().getWordFactory().count();
+        Word word = new Word ("тестовоеслово", "testword" + suffix);
+        MainController.getGameController().getWordFactory().addNewWord(word);
+        assertTrue(MainController.getGameController().getWordFactory().containsWord(word));
+        assertEquals(size + 1, MainController.getGameController().getWordFactory().count());
+        MainController.getGameController().getWordFactory().deleteWord(word);
+        assertFalse(MainController.getGameController().getWordFactory().containsWord(word));
+        assertEquals(size, MainController.getGameController().getWordFactory().count());
     }
 
     @Test

@@ -234,4 +234,9 @@ public class WordsDB extends SQLiteAssetHelper {
             getWritableDatabase().execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COLUMN + " = " + getWordId(word));
         } catch (WrongWordException ignore) { }
     }
+
+    /** Count words in a database. */
+    public long count() {
+        return getReadableDatabase().compileStatement("SELECT COUNT(*) FROM " + TABLE_NAME).simpleQueryForLong();
+    }
 }

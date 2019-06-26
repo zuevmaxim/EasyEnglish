@@ -121,7 +121,7 @@ public class WordFactory {
      * @return word's id in the database
      * @throws WrongWordException if spelling is illegal
      */
-    int addNewWord(@NonNull Word word) throws WrongWordException {
+    public int addNewWord(@NonNull Word word) throws WrongWordException {
         checkWordSpelling(word);
 
         if (wordsDB.containsWord(word)) {
@@ -147,5 +147,10 @@ public class WordFactory {
 
     public void deleteWord(@NonNull Word word) {
         wordsDB.deleteWord(word);
+    }
+
+    /** Count number of words in a database. */
+    public long count() {
+        return wordsDB.count();
     }
 }
